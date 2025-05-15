@@ -6,32 +6,35 @@
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
+    overflow-y: hidden;
 
     .content {
-        width: 24.5rem;
+        /* width: 24.5rem; */
         display: flex;
         flex-direction: column;
         align-items: center;
         position: relative;
+        justify-content: space-around;
+        height: 85vh;
     }
 
     .page-title {
         color: #000000;
         font-size: 2.5rem;
-        font-weight: 400;
+        /* font-weight: 400; */
         letter-spacing: 0;
-        line-height: 1.2em;
+        line-height: 1.3em;
         text-align: center;
         white-space: nowrap;
-        margin-top: 8rem;
+        margin-top: 5rem;
     }
 
     .seperate-line {
         /* margin-bottom: 3rem; */
-        margin-top: 1rem;
+        margin-top: 0rem;
     }
     .decoration {
-        margin-top: 3rem;
+        /* margin-top: 1rem; */
         position: relative;
         width: 20rem;
         height: 20rem;
@@ -39,7 +42,7 @@
         #mascot {
             position: absolute;
             z-index: 999;
-            height: 20rem;
+            height: 18rem;
             /* width: 15.4rem; */
             /* left: 4.3rem; */
         }
@@ -75,7 +78,7 @@
     }
 
     .button {
-        margin-top: 2rem;
+        margin-top: 1rem;
         font-family: inherit;
         background-color: #7F84C5;
         border-radius: 1rem;
@@ -96,5 +99,18 @@
 
     .button:active {
         filter: brightness(75%);
+    }
+
+    .mascot-group {
+        position: fixed;
+        bottom: -0.5rem;
+        overflow-y: hidden;
+        display: flex;
+        justify-content: space-evenly;
+
+        .mascot-bottom {
+            width: 7.5rem;
+        }
+
     }
 }
