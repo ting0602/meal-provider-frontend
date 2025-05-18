@@ -1,0 +1,85 @@
+#login {
+    width: 100%;
+    background-color: #F9F9EE;
+    max-height: 100vh;
+    max-width: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+
+    .content {
+        width: 24.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .page-title {
+        color: #000000;
+        font-size: 2.5rem;
+        font-weight: normal;
+        letter-spacing: 0;
+        line-height: normal;
+        text-align: center;
+        white-space: nowrap;
+        margin-top: 12rem;
+    }
+
+    #seperate-line {
+        margin-bottom: 4rem;
+        margin-top: 1rem;
+    }
+
+    #mascot {
+        width: 15rem;
+        height: 15rem;
+        /* transform: rotate(-90deg); */
+        -webkit-transform:scaleX(-1);
+        position: absolute;
+        top: 0rem;
+        left: 12rem;
+        object-fit: cover;
+    }
+
+    #login-button {
+        margin-top: 2rem;
+        font-family: inherit;
+        background-color: #7F84C5;
+        border-radius: 1rem;
+        border: none;
+        color: #FFFFFF;
+        width: 14rem;
+        height: 3rem;
+        font-size: 1.5rem;
+        font-weight: 400;
+        white-space: nowrap;
+        letter-spacing: 0;
+        line-height: normal;
+    }
+
+    #login-button:hover {
+        cursor: pointer;
+    }
+
+    #login-button:active {
+        filter: brightness(75%);
+    }
+
+    .signup-wrapper {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .signup-hint {
+            color: #35413C;
+        }
+
+        .signup-link {
+            color: #EF7753;
+        }
+    }
+}

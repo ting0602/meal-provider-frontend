@@ -1,0 +1,100 @@
+#welcome {
+    width: 100%;
+    background-color: #F9F9EE;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+
+    .content {
+        width: 24.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .page-title {
+        color: #000000;
+        font-size: 2.5rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 1.2em;
+        text-align: center;
+        white-space: nowrap;
+        margin-top: 8rem;
+    }
+
+    .seperate-line {
+        /* margin-bottom: 3rem; */
+        margin-top: 1rem;
+    }
+    .decoration {
+        margin-top: 3rem;
+        position: relative;
+        width: 20rem;
+        height: 20rem;
+
+        #mascot {
+            position: absolute;
+            z-index: 999;
+            height: 20rem;
+            /* width: 15.4rem; */
+            /* left: 4.3rem; */
+        }
+
+        #chef-cat-with-spoon {
+            width: 15rem;
+            height: 15rem;
+            transform: rotate(1.327deg);
+            position: absolute;
+            top: 3.5rem;
+            left: 1rem;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        #orange-star1 {
+            width: 3rem;
+            height: 3rem;
+            position: absolute;
+            top: 9rem;
+            left: .8rem;
+            z-index: 3;
+        }
+
+        #orange-star2 {
+            width: 3rem;
+            height: 3rem;
+            position: absolute;
+            top: 15rem;
+            right: 0rem;
+            z-index: 3;
+        }
+    }
+
+    .button {
+        margin-top: 2rem;
+        font-family: inherit;
+        background-color: #7F84C5;
+        border-radius: 1rem;
+        border: none;
+        color: #FFFFFF;
+        width: 14rem;
+        height: 3rem;
+        font-size: 1.5rem;
+        font-weight: normal;
+        white-space: nowrap;
+        letter-spacing: 0;
+        line-height: normal;
+    }
+
+    .button:hover {
+        cursor: pointer;
+    }
+
+    .button:active {
+        filter: brightness(75%);
+    }
+}

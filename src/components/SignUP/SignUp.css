@@ -1,0 +1,189 @@
+#sign-up {
+    width: 100%;
+    height: 100%;
+    background-color: #F9F9EE;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+
+    .content {
+        width: 24.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+
+    .page-title {
+        color: #000000;
+        font-size: 2.5rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: normal;
+        text-align: center;
+        white-space: nowrap;
+        margin-top: 8rem;
+        z-index: 2;
+    }
+
+    #seperate-line {
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    #create-button {
+        margin-top: 1rem;
+        font-family: inherit;
+        background-color: #7F84C5;
+        border-radius: 1rem;
+        border: none;
+        color: #FFFFFF;
+        width: 14rem;
+        height: 3rem;
+        font-size: 1.5rem;
+        font-weight: normal;
+        white-space: nowrap;
+        letter-spacing: 0;
+        line-height: normal;
+    }
+
+    #create-button:hover {
+        cursor: pointer;
+    }
+
+    #create-button:active {
+        filter: brightness(75%);
+    }
+
+    .avatar-picker {
+        margin-top: 2.5rem;
+        margin-bottom: 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .avatar-wrapper {
+            width: 10rem;
+            height: 10rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+
+            .avatar-picker-background {
+                top: .4rem;
+                width: 10.5rem;
+                height: 10rem;
+                position: absolute;
+                z-index: 1;
+            }
+
+            .avatar-frame {
+                width: 10rem;
+                height: 10rem;
+                position: absolute;
+                z-index: 2;
+                border: #A1876A;
+                border-radius: 999%;
+                border-width: 1rem;
+                border-style: solid;
+            }
+
+            .avatar-icon {
+                position: absolute;
+                margin-top: .5rem;
+                z-index: 3;
+            }
+        }
+
+        .avatar-label {
+            font-size: 1.5rem;
+        }
+    }
+
+    .avatar-picker-popup {
+        top: 30%;
+        width: 80%;
+        border-radius: 1rem;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ECECB8;
+        z-index: 4;
+
+        .close-button {
+            top: .4rem;
+            left: .4rem;
+            width: 2rem;
+            height: 2rem;
+            padding: 0.5rem;
+            align-self: flex-start;
+        }
+
+        .popup-title-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            border-radius: 2.5rem;
+            background-color: #F9F9EE;
+        }
+
+        .popup-title-text {
+            padding: 1rem;
+            font-size: 1.25rem;
+            color: #A1876A;
+        }
+
+        .icon-container {
+            margin: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .avatar-icon {
+            width: 6rem;
+            height: 6rem;
+            border: #A1876A;
+            border-radius: 999%;
+            border-width: 0.5rem;
+            border-style: solid;
+        }
+    }
+
+    .login-wrapper {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .login-hint {
+            color: #35413C;
+        }
+
+        .login-link {
+            color: #EF7753;
+            margin-left: .5rem;
+        }
+    }
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5); /* gray transparent mask */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999; /* make sure it’s above everything */
+      }
+
+}
