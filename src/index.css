@@ -17,6 +17,11 @@ body {
   margin: 0%;
 }
 
+button,
+span,
+div {
+  font-family: 'jf-openhuninn-2.1', 'Noto Sans TC', sans-serif !important;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

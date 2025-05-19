@@ -3,7 +3,7 @@
     background-color: #F9F9EE;
     color: #7D7D2D;
     overflow-y: scroll;
-
+    
 
     .factory-list {
         padding: 0;
@@ -16,16 +16,19 @@
             flex-direction: column;
             justify-items: center;
             /* align-items: center; */
+            
             .header-text {
                 width: 100%;
                 display: block;
                 text-align: center;
+                font-family: inherit;
               }
 
             .list-header {
                 background-color: #ECECB8;
                 padding-left: 1rem;
                 font-size: 1rem;
+                font-family: inherit;
             }
 
             .header-icon {
@@ -39,6 +42,7 @@
             .list-item {
                 border-bottom: 1px solid #ECECB8;
                 text-align: center;
+                font-family: inherit;
             }
     }
     }
