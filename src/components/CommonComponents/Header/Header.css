@@ -3,6 +3,8 @@
     background-color: #F9F9EE;
     color: #7D7D2D;
     overflow-y: scroll;
+    position: fixed;
+    top: 0;
     
 
     .factory-list {
