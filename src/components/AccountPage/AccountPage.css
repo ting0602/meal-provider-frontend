@@ -1,0 +1,143 @@
+#account-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.account-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 4rem;
+  padding-bottom: 6rem;
+}
+
+.avatar {
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 50%;
+  border: 0.5rem solid #A1876A;
+  object-fit: cover;
+}
+
+.username {
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #7D7D2D;
+}
+
+.employee-id {
+  font-size: 1rem;
+  color: #7D7D2D;
+  margin-bottom: .5rem;
+  margin-top: -0.5rem;
+}
+
+.logout-button {
+  margin-top: 0.3rem;
+  background-color: #ECECB8;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #000;
+  margin-top: -0.5rem;
+}
+
+.chart-card {
+  background-color: #fff;
+  border: 0.2rem solid #FFCDBE;
+  border-radius: 0.5rem;
+  padding: 0.8rem 0.5rem;
+  width: 18rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: -10;
+}
+
+.chart-title-day {
+  font-size: 1rem;
+  color: #D0694B;
+  font-weight: bold;
+  align-self: flex-start;
+  margin-left: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.chart-title-count {
+  font-size: 1.2rem;
+  color: #000000;
+  font-weight: bold;
+  align-self: flex-start;
+  margin-left: 0.5rem;
+  margin-bottom: 0.2rem;
+  line-height: 1.5rem;
+}
+
+.mui-chart {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.info-card {
+  background-color: #fff;
+  border: 0.2rem solid #FFCDBE;
+  border-radius: 0.5rem;
+  width: 18rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 7rem;
+  color: #D0694B;
+
+}
+
+.info-card.unpaid {
+  border-color: #FFCDBE;
+}
+.status.unpaid {
+  color: #EF7753;
+}
+
+.info-card.paid {
+  border-color: #BDDDB9;
+  color: #77C56D;
+}
+.status.paid {
+  color: #77C56D;
+}
+
+.amount {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000000;
+  margin-top: 0.8rem;
+  /* align-items: center; */
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.status {
+  font-size: 1rem;
+  color: #EF7753;
+  display: flex;
+  justify-self: right;
+  align-self: center;
+  /* margin-right: 0.5rem; */
+}

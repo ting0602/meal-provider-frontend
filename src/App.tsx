@@ -7,6 +7,7 @@ import SignUp from "components/SignUP";
 import HomePage from "components/HomePage";
 import OrderPage from "components/OrderPage";
 import OrderDetailPage from "components/OrderDetailPage";
+import AccountPage from "components/AccountPage";
 
 import './App.css';
 
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/home" element={<HomePage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/order/:orderId" element={<OrderDetailPage />} />
+        <Route path="/account" element={<AccountPage />} />
       </Routes>
     </Router>
   );
