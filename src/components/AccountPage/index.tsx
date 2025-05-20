@@ -66,6 +66,7 @@ const AccountPage = () => {
                     label: '消費金額',
                   },
                 ]}
+                slotProps={{ tooltip: { trigger: 'item' } }}
                 dataset={weeklySpending}
                 width={280}
                 height={140}
@@ -75,7 +76,7 @@ const AccountPage = () => {
                   '.MuiChartsTooltip-root': {
                     fontFamily: 'jf-openhuninn-2.1, Noto Sans TC, sans-serif',
                     fontSize: '0.8rem',
-                    display: 'none',
+                    display: 'block',
                   },
                   '.MuiChartsAxis-left': {
                     display: 'none',
