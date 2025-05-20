@@ -6,6 +6,7 @@ import Welcome from "components/Weclome";
 import SignUp from "components/SignUP";
 import HomePage from "components/HomePage";
 import OrderPage from "components/OrderPage";
+import OrderDetailPage from "components/OrderDetailPage";
 
 import './App.css';
 
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/order" element={<OrderPage />} />
+        <Route path="/order/:orderId" element={<OrderDetailPage />} />
       </Routes>
     </Router>
   );

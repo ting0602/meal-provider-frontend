@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import Footer from 'components/CommonComponents/Footer';
 import OrderInfoCard from 'components/CommonComponents/OrderInfoCard';
 
@@ -42,50 +43,30 @@ const orderList = [
     price: 70,
     quantity: 1,
   },
-    {
-    id: 4,
-    type: 1,
-    name: '蜂蜜檸檬茶',
-    image: DrinkShop,
-    date: '2025/05/27',
-    price: 70,
-    quantity: 1,
-  },
-    {
-    id: 4,
-    type: 1,
-    name: '蜂蜜檸檬茶',
-    image: DrinkShop,
-    date: '2025/05/27',
-    price: 70,
-    quantity: 1,
-  },
-    {
-    id: 4,
-    type: 1,
-    name: '蜂蜜檸檬茶',
-    image: DrinkShop,
-    date: '2025/05/27',
-    price: 70,
-    quantity: 1,
-  },
 ];
 
 const OrderPage = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (orderId: number) => {
+    navigate(`/order/${orderId}`);
+  };
+
   return (
     <div>
       <div id="order-page">
         <div className="content">
           {orderList.map((order) => (
-            <OrderInfoCard
-              key={order.id}
-              type={order.type as 0 | 1}
-              name={order.name}
-              image={order.image}
-              date={order.date}
-              price={order.price}
-              quantity={order.quantity}
-            />
+            <div key={order.id} onClick={() => handleClick(order.id)} style={{ cursor: 'pointer' }}>
+              <OrderInfoCard
+                type={order.type as 0 | 1}
+                name={order.name}
+                image={order.image}
+                date={order.date}
+                price={order.price}
+                quantity={order.quantity}
+              />
+            </div>
           ))}
         </div>
       </div>
