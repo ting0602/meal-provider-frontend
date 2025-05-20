@@ -1,0 +1,91 @@
+.order-item {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  color: #7D7D2D;
+}
+
+.order-card {
+  width: 20rem;
+  display: flex;
+  align-items: center;
+  padding: .8rem;
+  border-radius: .5rem;
+  /* background-color: #fff; */
+  border: 0.3rem solid transparent;
+  box-sizing: border-box;
+}
+
+.type-meal {
+  border-color: #BABEF4;
+  background-color: #FFFFFF;
+}
+
+.type-dessert {
+  border-color: #FFCDBE;
+  background-color: #FFFFFF;
+}
+
+.type-meal .image-circle {
+  background-color: #BABEF4;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 0.1rem;
+  margin-right: 1.2rem;
+}
+
+.type-dessert .image-circle {
+  background-color: #FFCDBE;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 0.1rem;
+  margin-right: 1.2rem;
+}
+
+.order-image {
+  max-width: 65%;
+  max-height: 65%;
+  /* margin: 1rem; */
+  object-fit: contain;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  /* background-color: #ddd; */
+}
+
+.order-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.order-title {
+  font-size: 1.1rem;
+  text-transform: lowercase;
+  color: #D0694B;
+}
+
+.type-meal .order-title {
+  color: #4E4EAC;
+}
+
+.order-date,
+.order-detail {
+  font-size: 0.85rem;
+  color: #555;
+}
