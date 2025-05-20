@@ -83,6 +83,12 @@ const AccountPage = () => {
                   '.MuiChartsAxis-right': {
                     display: 'none',
                   },
+                  '.MuiChartsAxis-bottom .MuiChartsAxis-line': {
+                    stroke: 'transparent',
+                  },
+                  '.MuiChartsAxis-bottom .MuiChartsAxis-tick': {
+                    stroke: 'transparent',
+                  },
                   '.MuiChartsAxis-line': {
                     stroke: 'transparent',
                   },
