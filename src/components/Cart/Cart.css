@@ -1,0 +1,37 @@
+.cart-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding-bottom: 80px;
+}
+
+.cart-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 16px;
+}
+
+.cart-empty {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 40px;
+}
+
+.checkout-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #E0E096;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.checkout-button:hover {
+    background-color: #d0d086;
+}
