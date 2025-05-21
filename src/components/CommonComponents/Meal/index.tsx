@@ -45,22 +45,25 @@ const Meal: React.FC<MealProps> = ({ meal, onQuantityChange }) => {
                 
                 <div className="meal-info">
                     <div className="meal-name">{meal.name}</div>
-                    <div className="meal-price">${meal.price}</div>  
-                </div>
+                    <div className='meal-group'>
+                        <div className="meal-price">${meal.price}</div>  
+                        <div id="meal-quantity-control">
+                            <div className="quantity-control-wrapper">
+                                <div className="quantity-button" onClick={handleRemove}>
+                                    <img src={MinusIcon} alt="減少" className="quantity-icon" />
+                                </div>
 
-                <div id="meal-quantity-control">
-                    <div className="quantity-control-wrapper">
-                        <div className="quantity-button" onClick={handleRemove}>
-                            <img src={MinusIcon} alt="減少" className="quantity-icon" />
-                        </div>
+                                <div className="quantity-display-box">{quantity}</div>
 
-                        <div className="quantity-display-box">{quantity}</div>
-
-                        <div className="quantity-button" onClick={handleAdd}>
-                            <img src={PlusIcon} alt="增加" className="quantity-icon" />
+                                <div className="quantity-button" onClick={handleAdd}>
+                                    <img src={PlusIcon} alt="增加" className="quantity-icon" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     );
