@@ -1,6 +1,7 @@
 import Header from 'components/CommonComponents/Header';
 import Footer from 'components/CommonComponents/Footer';
 import ShopInfoCard from 'components/CommonComponents/ShopInfoCard';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import DrinkShop from 'assets/shop/drink_shop.svg';
 import MealShop from 'assets/shop/meal_shop.svg';
 import './HomePage.css';
@@ -52,6 +53,10 @@ const HomePage = () => {
                         />
                     ))}
                 </div>
+                <button className="pay-button">
+                <QrCodeScannerIcon className="pay-icon" />
+                結帳條碼
+                </button>
             </div>
             <Footer />
         </div>
