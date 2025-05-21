@@ -51,5 +51,9 @@
 }
 
 #footer .footer-nav .footer-action.Mui-selected {
-    color: #4E4E1F !important;
+  background-color: transparent !important;
+  color: #4E4E1F !important;
+}
+.footer-action.Mui-selected .MuiBottomNavigationAction-label {
+  background-color: transparent !important;
 }

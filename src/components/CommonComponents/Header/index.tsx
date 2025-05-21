@@ -24,7 +24,7 @@ const Header = () => {
     <div id="header">
         {/* <div className='content'> */}
             <List className="factory-list">
-                <div className="content">
+                <div className="header-content">
                     <ListItemButton onClick={handleToggle} className={open ? 'list-header expanded' : 'list-header'}>
                     {open ? <ExpandLessIcon className='header-icon' /> : <ExpandMoreIcon className='header-icon' />}
                     <ListItemText
