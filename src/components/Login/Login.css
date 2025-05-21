@@ -25,7 +25,7 @@
         line-height: normal;
         text-align: center;
         white-space: nowrap;
-        margin-top: 12rem;
+        margin-top: 8rem;
     }
 
     #seperate-line {
@@ -33,18 +33,23 @@
         margin-top: 1rem;
     }
 
+    .signup-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
     #mascot {
-        width: 15rem;
-        height: 15rem;
+        width: 12rem;
+        height: 12rem;
         /* transform: rotate(-90deg); */
         -webkit-transform:scaleX(-1);
         position: absolute;
         top: 0rem;
-        left: 12rem;
+        left: 15rem;
         object-fit: cover;
     }
 
-    #login-button {
+    /* #login-button {
         margin-top: 2rem;
         font-family: inherit;
         background-color: #7F84C5;
@@ -58,6 +63,23 @@
         white-space: nowrap;
         letter-spacing: 0;
         line-height: normal;
+    } */
+    #login-button {
+        margin-top: 1rem;
+        font-family: inherit;
+        background-color: #7F84C5;
+        border-radius: 1rem;
+        border: none;
+        color: #FFFFFF;
+        font-size: 1.5rem;
+        white-space: nowrap;
+        letter-spacing: 0;
+        line-height: normal;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 5rem;
     }
 
     #login-button:hover {

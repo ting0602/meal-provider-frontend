@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  Button, TextField, ToggleButton, ToggleButtonGroup, Typography
+  Button, TextField, ToggleButton, ToggleButtonGroup
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import UploadIcon from '@mui/icons-material/Upload';

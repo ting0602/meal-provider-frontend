@@ -44,20 +44,21 @@ const Login = () => {
             <div className="content">
                 <div className="page-title">登入</div>
                 <img id="seperate-line" src={SeperateLine} alt="" />
-
-                <InputField
-                    Icon={MailOutlineIcon}
-                    placeholder="MAIL"
-                    value={mailValue}
-                    onChange={handleMailChange}
-                />
-                <InputField
-                    Icon={LockOutlinedIcon}
-                    type="password"
-                    placeholder="PASSWORD"
-                    value={passwdValue}
-                    onChange={handlePasswdChange}
-                />
+                <div className="input-wrapper">
+                    <InputField
+                        Icon={MailOutlineIcon}
+                        placeholder="MAIL"
+                        value={mailValue}
+                        onChange={handleMailChange}
+                    />
+                    <InputField
+                        Icon={LockOutlinedIcon}
+                        type="password"
+                        placeholder="PASSWORD"
+                        value={passwdValue}
+                        onChange={handlePasswdChange}
+                    />
+                </div>
 
                 <button onClick={handleLogin} id="login-button">
                     LOGIN
