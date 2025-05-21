@@ -1,0 +1,209 @@
+/*#meal-card {
+    background-color: white;
+    border-radius: 1rem; 
+    padding: 1rem; 
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: 100%;
+    max-width: 20rem; 
+    margin: 0.8rem auto; 
+
+    .meal-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        position: relative;
+    }
+
+    .meal-image-wrapper {
+        flex-shrink: 0;
+    }
+
+    .meal-image-background {
+        background-color: #D9D9D9;
+        width: 5rem;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .meal-image {
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        border-radius: 0.3rem;
+    }
+      
+    .meal-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem; 
+
+        .meal-name {
+            font-size: 1.25rem; 
+            font-weight: 600;
+            color: #000000;
+        }
+    
+        .meal-price {
+            font-size: 1rem; 
+            font-weight: bold;
+            color: #000000;
+        }
+    }
+
+    #meal-quantity-control {
+        position: absolute;
+        bottom: 0.1rem;
+        right: 0.1rem;
+    
+        .quantity-control-wrapper {
+            background-color: #E0E096;
+            border-radius: 0.5rem;
+            padding: 0.1rem 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .quantity-button {
+            background: none;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        
+        .quantity-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        
+        .quantity-display-box {
+            background-color: white;
+            border-radius: 0.3rem;
+            padding: 0.1rem 0.6rem;
+            padding-bottom: 0.2rem;
+            min-width: 0.8rem;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #333;
+        }
+    }
+    
+}*/
+
+#meal-card {
+    background-color: white;
+    border-radius: 0.2rem; 
+    padding: 1rem; 
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: 100%;
+    max-width: 20rem; 
+    margin: 0.8rem auto; 
+}
+
+#meal-card .meal-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    position: relative;
+}
+
+#meal-card .meal-image-wrapper {
+    flex-shrink: 0;
+}
+
+#meal-card .meal-image-background {
+    background-color: #D9D9D9;
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#meal-card .meal-image {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    border-radius: 0.2rem;
+}
+
+#meal-card .meal-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem; 
+}
+
+#meal-card .meal-info .meal-name {
+    font-size: 1.25rem; 
+    font-weight: 600;
+    color: #000000;
+}
+
+#meal-card .meal-info .meal-price {
+    font-size: 1rem; 
+    font-weight: bold;
+    color: #000000;
+}
+
+#meal-quantity-control {
+    position: absolute;
+    bottom: 0.1rem;
+    right: 0.1rem;
+}
+
+#meal-quantity-control .quantity-control-wrapper {
+    background-color: #E0E096;
+    border-radius: 0.2rem;
+    padding: 0.1rem 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+#meal-quantity-control .quantity-button {
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+#meal-quantity-control .quantity-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+#meal-quantity-control .quantity-display-box {
+    background-color: white;
+    border-radius: 0.2rem;
+    padding: 0.1rem 0.6rem;
+    padding-bottom: 0.2rem;
+    min-width: 0.8rem;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #333;
+}
+
