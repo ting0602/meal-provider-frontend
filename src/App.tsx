@@ -8,7 +8,9 @@ import HomePage from "components/HomePage";
 import OrderPage from "components/OrderPage";
 import OrderDetailPage from "components/OrderDetailPage";
 import AccountPage from "components/AccountPage";
-
+import CreateMealPage from "components/CreateMealPage";
+import UserQRCode from "components/CommonComponents/UserQRCode";
+import QrCodeScanner from "components/QrCodeScanner";
 import './App.css';
 
 const App = () => {
@@ -22,6 +24,9 @@ const App = () => {
         <Route path="/order" element={<OrderPage />} />
         <Route path="/order/:orderId" element={<OrderDetailPage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/create-meal" element={<CreateMealPage />} />
+        <Route path="/qrcode" element={<UserQRCode />} />
+        <Route path="/scanner" element={<QrCodeScanner />} />
       </Routes>
     </Router>
   );
