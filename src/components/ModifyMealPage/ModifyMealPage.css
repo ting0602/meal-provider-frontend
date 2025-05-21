@@ -1,0 +1,196 @@
+.modify-meal-page {
+  max-height: 100vh;
+  padding: 1em;
+  /* background-color: #F9F9EE; */
+  /* font-family: 'jf-openhuninn-2.1', 'Noto Sans TC', sans-serif; */
+}
+
+.header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.back-button {
+  position: absolute;
+  left: 0;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  margin-left: 0.2rem;
+  cursor: pointer;
+  color: #000;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 2rem;
+  /* font-weight: bold; */
+  color: #000;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 80vh;
+  padding: 1rem;
+  /* align-items: center; */
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  align-items: center;
+  /* margin-bottom: 3rem; */
+}
+
+.image-preview-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-preview {
+  width: 6rem;
+  height: 6rem;
+  background-color: #D9D9D9;
+  margin-bottom: 0.5rem;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-button {
+  background-color: #E0E096 !important;
+  color: #333 !important;
+  font-size: 0.8rem !important;
+  padding: 0.3rem 0.8rem !important;
+  /* border-radius: 0.5rem  !important; */
+  text-transform: none;
+  box-shadow: none !important;
+}
+
+.text-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* margin-top: 1rem; */
+}
+
+.text-field {
+  margin: 0.2rem 0 !important;
+  background-color: #FFFFFF;
+}
+
+.section {
+  margin-top: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.section > .MuiTypography-root {
+  font-size: 1rem;
+  color: #7D7D2D;
+  margin-bottom: 0.4rem;
+}
+
+.toggle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* margin-top: 0rem; */
+  margin-bottom: 2rem;
+}
+
+.tag-button {
+  border-radius: 0.8rem !important;
+  background-color: #FFD8CC !important;
+  /* color: #D0694B !important; */
+  
+  padding: 0.3rem 1rem !important;
+  font-size: 0.9rem !important;
+  width: 5rem;
+  text-transform: none;
+  margin: 0.2rem !important;
+  border: none !important;
+}
+
+.Mui-selected {
+  background-color: #F4AFA3 !important;
+}
+
+/* .button-wrapper {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 1rem;
+} */
+
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+.submit-button {
+  background-color: #A3CFB2;
+  color: #000;
+  font-size: 1rem !important;
+  padding: 0.5rem 2rem !important;
+  border-radius: 0.5rem;
+}
+
+.upload-section.horizontal {
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.meal-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.meal-name {
+  font-size: 1rem;
+  /* font-weight: bold; */
+  color: #000;
+}
+
+.meal-price {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  color: #000;
+}
+
+.button-wrapper.two-buttons {
+  justify-content: space-between;
+}
+
+.delete-button {
+  background-color: #EF7753 !important;
+  color: #fff !important;
+  font-size: 1rem !important;
+  padding: 0.5rem 1.5rem !important;
+  border-radius: 0.5rem;
+}
