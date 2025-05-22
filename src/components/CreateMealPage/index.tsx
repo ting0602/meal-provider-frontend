@@ -109,7 +109,7 @@ const CreateMealPage = () => {
             </div>
           </div>
         </div>
-        <div className="button-wrapper">
+        <div className="create-button-wrapper">
           <Button
             variant="contained"
             color="success"
