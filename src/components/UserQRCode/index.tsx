@@ -8,7 +8,7 @@ import av1 from 'assets/checkoutbottom/Avatar1.svg'
 import av2 from 'assets/checkoutbottom/Avatar2.svg'
 import av3 from 'assets/checkoutbottom/Avatar3.svg'
 import av4 from 'assets/checkoutbottom/Avatar4.svg'
-import './Pay.css';
+import './UserQRCode.css';
 
 const UserQRCode = () => {
   // # TODO: Replace with real userId from backend

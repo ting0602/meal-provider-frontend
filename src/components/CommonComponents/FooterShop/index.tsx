@@ -23,8 +23,8 @@ const FooterShop = () => {
   }, []);
 
   const navItems = [
-    { label: '訂單', icon: <ReceiptLongIcon className="footer-icon" />, path: '/order' },
-    { label: '掃描', icon: <QrCodeScannerIcon className="footer-icon" />, path: '/scan' },
+    { label: '訂單', icon: <ReceiptLongIcon className="footer-icon" />, path: '/shop-order' },
+    { label: '掃描', icon: <QrCodeScannerIcon className="footer-icon" />, path: '/scanner' },
     { label: '帳號', icon: <img src={avatarImages[avatarIndex]} alt="帳號" className="avatar-icon" />, path: '/shop-account' }
   ];
 

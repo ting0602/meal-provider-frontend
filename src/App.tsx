@@ -13,9 +13,10 @@ import AccountPage from "components/AccountPage";
 import CreateMealPage from "components/CreateMealPage";
 import ModifyMealPage from "components/ModifyMealPage";
 import ShopAccountPage from "components/ShopAccountPage";
-import Pay from "components/Pay";
+import UserQRCode from "components/UserQRCode";
 import Shopkeep from "components/Shopkeepermeal";
 import Checkorder from "components/Checkorder";
+import ShopOrderPage from "components/ShopOrderPage";
 import QrCodeScanner from "components/QrCodeScanner";
 import './App.css';
 
@@ -36,11 +37,10 @@ const App = () => {
         {/* <Route path="/modify-meal/:mealId" element={<ModifyMealPage />} /> */}
         <Route path="/modify-meal" element={<ModifyMealPage />} />
         <Route path="/shop-account" element={<ShopAccountPage />} />
-        {/* <Route path="/qrcode" element={<UserQRCode />} /> */}
-        {/* <Route path="/scanner" element={<QrCodeScanner />} /> */}
-        <Route path="/pay" element={<Pay />} />
         <Route path="/shopkeep" element={<Shopkeep />} />
         <Route path="/checkorder" element={<Checkorder />} />
+        <Route path="/shop-order" element={<ShopOrderPage />} />
+        <Route path="/qrcode" element={<UserQRCode />} />
         <Route path="/scanner" element={<QrCodeScanner />} />
       </Routes>
     </Router>

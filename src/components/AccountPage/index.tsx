@@ -5,6 +5,7 @@ import avatar1 from 'assets/avatar/Avatar1.svg';
 import avatar2 from 'assets/avatar/Avatar2.svg';
 import avatar3 from 'assets/avatar/Avatar3.svg';
 import avatar4 from 'assets/avatar/Avatar4.svg';
+import { useState } from 'react';
 
 import { BarChart } from '@mui/x-charts';
 
@@ -12,9 +13,12 @@ const AccountPage = () => {
   // # TODO: Fetch these from API
   const avatarIndex = 1; // # TODO: Replace with API response
   const avatars = [avatar1, avatar2, avatar3, avatar4];
-
+  const factories = ['台積電1廠', '台積電2廠', '台積電3廠', '台積電4廠', '台積電5廠'];
   const username = 'User name';
   const employeeId = '123456789';
+  const [locationIndex, setLocationIndex] = useState(0);
+  console.log('目前地點：', factories[locationIndex]);
+
   const weeklySpending = [
     { day: '6/13', amount: 50 },
     { day: '6/14', amount: 100 },
@@ -33,7 +37,7 @@ const AccountPage = () => {
 
   return (
     <div>
-      <Header />
+      <Header onSelectFactory={(_, index) => setLocationIndex(index)} />
       <div id='account-page'>
         <div className="account-content">
           <img src={avatars[avatarIndex]} className="avatar" alt="avatar" />

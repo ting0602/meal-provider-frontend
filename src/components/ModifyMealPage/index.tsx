@@ -120,19 +120,6 @@ const ModifyMealPage = () => {
           </div>
         </div>
 
-        {/* <label htmlFor="image-upload">
-          <input
-            id="image-upload"
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={handleImageUpload}
-          />
-          <Button variant="contained" component="span" className="upload-button" startIcon={<UploadIcon style={{ fontSize: '1.2rem' }} />}>
-            上傳圖片
-          </Button>
-        </label> */}
-
         <div className='text-fields'>
           <TextField
             fullWidth
@@ -182,7 +169,7 @@ const ModifyMealPage = () => {
           </div>
         </div>
 
-        <div className="button-wrapper two-buttons">
+        <div className="modify-button-wrapper two-buttons">
           <Button variant="contained" color="error" className="delete-button" onClick={handleDelete}>
             刪除餐點
           </Button>
