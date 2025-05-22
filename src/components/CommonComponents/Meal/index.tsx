@@ -14,23 +14,26 @@ type MealData = {
 
 type MealProps = {
     meal: MealData;
-    onQuantityChange: (meal: MealData, quantity: number) => void;
+    onQuantityChange?: (meal: MealData, quantity: number) => void;
+    initialQuantity?: number;
+    readOnly?: boolean;
 };
 
-const Meal: React.FC<MealProps> = ({ meal, onQuantityChange }) => {
-    const [quantity, setQuantity] = useState(0);
+const Meal: React.FC<MealProps> = ({ meal, onQuantityChange, initialQuantity = 0, readOnly = false }) => {
+    const [quantity, setQuantity] = useState(initialQuantity);
 
     const handleAdd = () => {
+        if (readOnly) return;
         const newQuantity = quantity + 1;
         setQuantity(newQuantity);
-        onQuantityChange(meal, newQuantity);
+        if (onQuantityChange) onQuantityChange(meal, newQuantity);
     };
 
     const handleRemove = () => {
-        if (quantity === 0) return;
+        if (readOnly || quantity === 0) return;
         const newQuantity = quantity - 1;
         setQuantity(newQuantity);
-        onQuantityChange(meal, newQuantity);
+        if (onQuantityChange) onQuantityChange(meal, newQuantity);
     };
 
     return (

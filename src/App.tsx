@@ -6,13 +6,16 @@ import Welcome from "components/Weclome";
 import SignUp from "components/SignUP";
 import HomePage from "components/HomePage";
 import Menu from "components/Menu";
+import Cart from "components/Cart";
 import OrderPage from "components/OrderPage";
 import OrderDetailPage from "components/OrderDetailPage";
 import AccountPage from "components/AccountPage";
 import CreateMealPage from "components/CreateMealPage";
 import ModifyMealPage from "components/ModifyMealPage";
 import ShopAccountPage from "components/ShopAccountPage";
-import UserQRCode from "components/CommonComponents/UserQRCode";
+import Pay from "components/Pay";
+import Shopkeep from "components/Shopkeepermeal";
+import Checkorder from "components/Checkorder";
 import QrCodeScanner from "components/QrCodeScanner";
 import './App.css';
 
@@ -25,6 +28,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/order/:orderId" element={<OrderDetailPage />} />
         <Route path="/account" element={<AccountPage />} />
@@ -34,7 +38,9 @@ const App = () => {
         <Route path="/shop-account" element={<ShopAccountPage />} />
         {/* <Route path="/qrcode" element={<UserQRCode />} /> */}
         {/* <Route path="/scanner" element={<QrCodeScanner />} /> */}
-        <Route path="/qrcode" element={<UserQRCode />} />
+        <Route path="/pay" element={<Pay />} />
+        <Route path="/shopkeep" element={<Shopkeep />} />
+        <Route path="/checkorder" element={<Checkorder />} />
         <Route path="/scanner" element={<QrCodeScanner />} />
       </Routes>
     </Router>

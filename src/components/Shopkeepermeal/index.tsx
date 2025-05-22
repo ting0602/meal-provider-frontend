@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { List } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import Meal from "components/CommonComponents/Meal";
+import KMeal from "components/CommonComponents/Keepermeal";
 import Backheader from 'components/CommonComponents/BackHeader';
 import mealsvg from 'assets/meal/meal.svg';
-import car from 'assets/car 1.svg'
 
-import './Menu.css';
+import './Skeepermeal.css';
 
 // TODO: Replace with real API call
 // import { useRestaurantMenu } from 'hooks/useRestaurant';
@@ -91,31 +90,14 @@ const RestaurantMenu = () => {
         setMenuItems(mockMenu);
     }, []);
 
-    const handleQuantityChange = (meal: MenuItem, quantity: number) => {
-        setCartItems((prev) => {
-            const existing = prev.find(ci => ci.item.id === meal.id);
-            if (existing) {
-              if (quantity === 0) {
-                return prev.filter(ci => ci.item.id !== meal.id);
-              } else {
-                return prev.map(ci => ci.item.id === meal.id ? {...ci, quantity} : ci);
-              }
-            } else if (quantity > 0) {
-              return [...prev, {item: meal, quantity}];
-            }
-            return prev;
-          });
-      };
-    
-      const totalPrice = cartItems.reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0);
-      const goToCart = () => {
+        const goToCreate = () => { // need adjust
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        navigate('/cart', { state: { cartItems } });
-      };
+        navigate('/create-meal', { state: { cartItems } });
+        };
 
     return (
         <div id="restaurant-menu">
-            <Backheader description={restaurantName} backTo="/home" />
+            <Backheader description={restaurantName} backTo="/home" /> {/*back to where? need adjust*/}
 
             <div id="menu-category-tabs">
                 {['推薦', '主食', '副餐', '其他'].map((cat) => (
@@ -134,29 +116,19 @@ const RestaurantMenu = () => {
                     {menuItems
                         .filter((item) => item.category.includes(selectedCategory))
                         .map((item) => {
-                            const existing = cartItems.find(ci => ci.item.id === item.id);
+                            //const existing = cartItems.find(ci => ci.item.id === item.id);
                             return (
-                                <Meal
+                                <KMeal
                                     key={item.id}
                                     meal={item}
-                                    initialQuantity={existing?.quantity ?? 0}
-                                    onQuantityChange={(meal, q) => handleQuantityChange(meal, q)}
                                 />
                             );
                         })}
                 </div>
             </List>
 
-            <div
-                className="cart-button"
-                onClick={goToCart}
-                style={{
-                    opacity: totalPrice > 0 ? 1 : 0.6,
-                    pointerEvents: 'auto'
-                }}
-                >
-                <img src={car} alt="Cart" className="cart-icon" />
-                <span className="cart-price">${totalPrice}</span>
+            <div className="add-button" onClick={goToCreate}>
+                新增餐點
             </div>
         </div>
     );

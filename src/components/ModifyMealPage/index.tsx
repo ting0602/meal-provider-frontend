@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Button, TextField, ToggleButton, ToggleButtonGroup
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import UploadIcon from '@mui/icons-material/Upload';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import MealShop from 'assets/shop/meal_shop.svg';
 
 import './ModifyMealPage.css';
 
 const ModifyMealPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   // TODO: connect to API to fetch meal data
+  /*
   const initialMeal = {
     imageUrl: '/path/to/image.jpg',
     name: '好韓好韓韓式拌飯',
@@ -27,6 +30,32 @@ const ModifyMealPage = () => {
   const [isRecommended, setIsRecommended] = useState(initialMeal.isRecommended);
 
   const navigate = useNavigate();
+  */
+  
+  const meal = location.state?.meal;
+
+  useEffect(() => {
+    if (!meal) {
+      alert('錯誤：找不到餐點資料，將返回前頁。');
+      navigate(-1);
+    }
+  }, [meal, navigate]);
+
+  const [image, setImage] = useState<File | null>(null);
+  const [name, setName] = useState(meal?.name || '');
+  const [price, setPrice] = useState(String(meal?.price || ''));
+  const getCategoryValue = (cats: string[]) => {
+    if (cats.includes('主食')) return 0;
+    if (cats.includes('副餐')) return 1;
+    return 2; // 預設為其他
+  };
+  
+  const [category, setCategory] = useState<number>(
+    meal ? getCategoryValue(meal.category) : 2
+  );
+  const [isRecommended, setIsRecommended] = useState(
+    meal?.category?.includes('推薦') || false
+  );
   const isFormValid = name.trim() !== '' && price.trim() !== '' && category !== null;
 
 
@@ -39,18 +68,20 @@ const ModifyMealPage = () => {
   const handleUpdate = () => {
     if (!isFormValid) return;
     console.log({ image, name, price, category, isRecommended });
+    // TODO: 呼叫 API 更新資料
   };
 
   const handleDelete = () => {
     if (window.confirm('確定要刪除這個餐點嗎？')) {
       console.log('刪除餐點');
+      // TODO: 呼叫 API 刪除資料
     }
   };
   const hasChanges =
-    name !== initialMeal.name ||
-    price !== String(initialMeal.price) ||
-    category !== initialMeal.category ||
-    isRecommended !== initialMeal.isRecommended ||
+    name !== meal?.name ||
+    price !== String(meal?.price) ||
+    category !== (meal?.category?.[0] === '主食' ? 0 : meal?.category?.[0] === '副餐' ? 1 : 2) ||
+    isRecommended !== meal?.category?.includes('推薦') ||
     image !== null;
 
   return (
@@ -66,7 +97,7 @@ const ModifyMealPage = () => {
         <div className="upload-section horizontal">
           <div className='image-preview-wrapper'>
             <div className="image-preview">
-              <img src={image ? URL.createObjectURL(image) : MealShop} alt="preview" />
+              <img src={image ? URL.createObjectURL(image) : meal?.imageUrl || MealShop} alt="preview" />
             </div>
             <label htmlFor="image-upload">
               <input
@@ -83,9 +114,9 @@ const ModifyMealPage = () => {
           </div>
 
           <div className="meal-info">
-            <div className="meal-name">{initialMeal.name}</div>
+            <div className="meal-name">{meal?.name}</div>
             <br />
-            <div className="meal-price">${initialMeal.price}</div>
+            <div className="meal-price">${meal?.price}</div>
           </div>
         </div>
 

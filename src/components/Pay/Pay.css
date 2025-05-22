@@ -1,0 +1,84 @@
+#pay-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 50rem;
+  margin: 0 auto;
+  padding-top: 1.25rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  box-sizing: border-box;
+
+  .dollars-bar {
+      display: flex;
+      justify-content: center; /* 水平置中 */
+      align-items: center;      /* 垂直置中 */
+      gap: 0.5rem;              /* icon 與金額之間的間距 */
+      background-color: #E0E096;
+      font-weight: 600;
+      margin: 1rem 0;
+      margin-top: 2.5rem;
+      padding: 0.5rem 0rem;
+      border-top-left-radius: 1.2rem;
+      border-top-right-radius: 1.2rem;
+      border-bottom: 0.1rem solid #ccc;
+  }
+  
+  .cart-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+  }
+  
+  
+}
+
+#user-qrcode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: inherit;
+  margin: 2.5rem 2.5rem;
+  /* padding: 1rem */
+}
+
+.userid {
+  display: flex;
+  justify-content: center; /* 水平置中 */
+  align-items: center;
+  padding-top: 2rem;
+  font-weight: 650;
+  font-size: 2rem;
+}
+
+.footer-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.footer-images img {
+  
+  width: 30%;
+  height: auto;
+  object-fit: contain;
+  background-color: transparent;
+  margin-bottom: -0.5rem;
+}
+.footer-images img:nth-child(4) {
+  margin-left: -1rem;
+}
+.footer-images img:nth-child(3) {
+  margin-left: -1rem;
+}
+.footer-images img:nth-child(2) {
+  margin-left: -2rem;
+}
+.footer-images img:first-child {
+  margin-left: 0; /* 第一張圖片不要往左移 */
+}
