@@ -13,7 +13,7 @@ import CreateMealPage from "components/CreateMealPage";
 import ModifyMealPage from "components/ModifyMealPage";
 import ShopAccountPage from "components/ShopAccountPage";
 import ShopOrderPage from "components/ShopOrderPage";
-import UserQRCode from "components/CommonComponents/UserQRCode";
+import UserQRCode from "components/UserQRCode";
 import QrCodeScanner from "components/QrCodeScanner";
 import './App.css';
 

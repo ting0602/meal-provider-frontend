@@ -1,0 +1,130 @@
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.payment-modal {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  width: 75vw;
+  max-height: 70vh;
+  height: 25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  /* font-weight: bold; */
+}
+
+.modal-title.success {
+  color: #4CAF50;
+}
+
+.modal-title.fail {
+  color: #EF7754;
+}
+
+.modal-icon.success .circle-border {
+  background-color: white;
+  border-radius: 50%;
+  width: 9rem;
+  height: 9rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1rem #84C98A; /* 模擬內框 */
+}
+
+
+.amount-text {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: black;
+}
+
+.modal-icon.fail {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6rem;
+  height: 6rem;
+  margin: 0 auto 1rem auto;
+}
+
+.modal-time-box {
+  background-color: #BDDDB9;
+  border-radius: 0.8rem;
+  padding: 1.5rem 3rem;
+  font-size: 1rem;
+  margin: 1rem 0;
+
+}
+
+.modal-error-box {
+  background-color: #F6EDEA;
+  border-radius: 0.8rem;
+  padding: 1.5rem 3rem;
+  color: #D0694B;
+  font-size: 1rem;
+  margin: 1rem 0;
+}
+
+.modal-shop {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.payment-shop-name {
+  color: #4CAF50;
+  font-weight: normal;
+}
+
+.modal-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modal-buttons.two-buttons {
+  justify-content: space-evenly;
+}
+
+.modal-btn {
+  border-radius: 1rem !important;
+  padding: 0.5rem 1.5rem !important;
+  width: 7.5rem;
+  /* font-weight: bold !important; */
+  font-size: 1rem !important;
+  color: black !important;
+}
+
+.modal-btn.home {
+  background-color: #77C56D !important;
+}
+
+.modal-btn.fail {
+  background-color: #EF7754 !important;
+  color: white !important;
+}
+.modal-btn.order {
+  background-color: #77C56D !important;
+}
