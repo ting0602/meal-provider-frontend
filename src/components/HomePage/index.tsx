@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Header from 'components/CommonComponents/Header';
 import Footer from 'components/CommonComponents/Footer';
 import ShopInfoCard from 'components/CommonComponents/ShopInfoCard';
+import ShopScoreCard from 'components/CommonComponents/ShopScoreCard';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import DrinkShop from 'assets/shop/drink_shop.svg';
 import MealShop from 'assets/shop/meal_shop.svg';
@@ -18,8 +19,11 @@ const shopList = [
   { id: 8, type: 0, name: '天天海南雞', image: MealShop, rating: 4.3, location: 2 },
 ];
 
+
 const HomePage = () => {
   const [selectedFactoryIndex, setSelectedFactoryIndex] = useState(0);
+  const [showScoreModal, setShowScoreModal] = useState(true);
+
 
   const filteredShops = shopList.filter(shop => shop.location === selectedFactoryIndex);
 
@@ -27,6 +31,18 @@ const HomePage = () => {
     <div>
       <Header onSelectFactory={(_, index) => setSelectedFactoryIndex(index)} />
       <div id='home-page'>
+        {showScoreModal && (
+        <ShopScoreCard
+            shop={{ type: 0, name: 'cool bibimbap', image: MealShop, rating: 4.7 }}
+            time="2025/06/02 13:00"
+            onClose={() => setShowScoreModal(false)}
+            onSubmit={(score) => {
+            console.log('score is', score);
+            setShowScoreModal(false);
+            }}
+        />
+        )}
+
         <div className="home-content">
           {filteredShops.map((shop) => (
             <ShopInfoCard

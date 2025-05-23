@@ -60,7 +60,7 @@ const SignUp = () => {
                 <div className="page-title">註冊</div>
                 <img id="seperate-line" src={SeperateLine} alt="" />
                 <AvatarPicker setShowPopup={setShowPopup} avatarIcon={images[currentAvatar]} />
-                <InputField Icon={PersonOutlinedIcon} placeholder="NAME" value={nameValue} onChange={handleNameChange} />
+                <InputField Icon={PersonOutlinedIcon} placeholder="Employee ID" value={nameValue} onChange={handleNameChange} />
                 <InputField Icon={MailOutlineIcon} placeholder="MAIL" value={mailValue} onChange={handleMailChange} />
                 <InputField Icon={LockOutlinedIcon} type="password" placeholder="PASSWORD" value={passwdValue} onChange={handlePasswdChange} />
                 {/* <button onClick={handleSignUp} id="create-button">Create Account</button> */}
