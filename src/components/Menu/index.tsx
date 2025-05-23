@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { List } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -77,6 +77,24 @@ const Menu = () => {
     },
     {
         id: '6',
+        name: 'Beef Noodles',
+        price: 119,
+        imageUrl: mealsvg,
+        category: ['主食'],
+        likeCount: 98,
+        dislikeCount: 9
+    },
+        {
+        id: '10',
+        name: 'Beef Noodles',
+        price: 119,
+        imageUrl: mealsvg,
+        category: ['主食'],
+        likeCount: 98,
+        dislikeCount: 9
+    },
+        {
+        id: '11',
         name: 'Beef Noodles',
         price: 119,
         imageUrl: mealsvg,
