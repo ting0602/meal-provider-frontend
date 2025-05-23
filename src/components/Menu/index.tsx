@@ -3,7 +3,7 @@ import { List } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import Meal from "components/CommonComponents/Meal";
-import Backheader from 'components/CommonComponents/BackHeader';
+import BackHeader from 'components/CommonComponents/BackHeader';
 import mealsvg from 'assets/meal/meal.svg';
 import car from 'assets/car 1.svg'
 
@@ -19,7 +19,7 @@ type CartItem = {
 
 const Menu = () => {
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-    const [restaurantName, setRestaurantName] = useState('Awesome Burger');
+    const [restaurantName, setRestaurantName] = useState('好吃漢堡');
     const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
     // TODO: Use real backend API
     // const { data, isLoading, error } = useRestaurantMenu(restaurantId);
@@ -145,50 +145,52 @@ const Menu = () => {
       };
 
     return (
-        <div id="restaurant-menu">
-            <Backheader description={restaurantName} backTo="/home" />
+        <div>
+          <BackHeader description={restaurantName} />
+          <div id="restaurant-menu">
 
-            <div id="menu-category-tabs">
-                {['推薦', '主食', '副餐', '其他'].map((cat) => (
-                    <div
-                        key={cat}
-                        className={`menu-tab ${selectedCategory === cat ? 'active' : ''}`}
-                        onClick={() => setSelectedCategory(cat as any)}
-                    >
-                        {cat}
-                    </div>
-                ))}
-            </div>
+              <div id="menu-category-tabs">
+                  {['推薦', '主食', '副餐', '其他'].map((cat) => (
+                      <div
+                          key={cat}
+                          className={`menu-tab ${selectedCategory === cat ? 'active' : ''}`}
+                          onClick={() => setSelectedCategory(cat as any)}
+                      >
+                          {cat}
+                      </div>
+                  ))}
+              </div>
 
-            <List className="menu-scroll-area">
-                <div className="menu-list">
-                    {menuItems
-                        .filter((item) => item.category.includes(selectedCategory))
-                        .map((item) => {
-                            const existing = cartItems.find(ci => ci.item.id === item.id);
-                            return (
-                                <Meal
-                                    key={item.id}
-                                    meal={item}
-                                    initialQuantity={existing?.quantity ?? 0}
-                                    onQuantityChange={(meal, q) => handleQuantityChange(meal, q)}
-                                />
-                            );
-                        })}
-                </div>
-            </List>
+              <List className="menu-scroll-area">
+                  <div className="menu-list">
+                      {menuItems
+                          .filter((item) => item.category.includes(selectedCategory))
+                          .map((item) => {
+                              const existing = cartItems.find(ci => ci.item.id === item.id);
+                              return (
+                                  <Meal
+                                      key={item.id}
+                                      meal={item}
+                                      initialQuantity={existing?.quantity ?? 0}
+                                      onQuantityChange={(meal, q) => handleQuantityChange(meal, q)}
+                                  />
+                              );
+                          })}
+                  </div>
+              </List>
 
-            <div
-                className="cart-button"
-                onClick={goToCart}
-                style={{
-                    opacity: totalPrice > 0 ? 1 : 0.6,
-                    pointerEvents: 'auto'
-                }}
-                >
-                <img src={car} alt="Cart" className="cart-icon" />
-                <span className="cart-price">${totalPrice}</span>
-            </div>
+              <div
+                  className="cart-button"
+                  onClick={goToCart}
+                  style={{
+                      opacity: totalPrice > 0 ? 1 : 0.6,
+                      pointerEvents: 'auto'
+                  }}
+                  >
+                  <img src={car} alt="Cart" className="cart-icon" />
+                  <span className="cart-price">${totalPrice}</span>
+              </div>
+          </div>
         </div>
     );
 };

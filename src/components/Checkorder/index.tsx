@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { List, Button } from '@mui/material';
 
-import Backheader from 'components/CommonComponents/BackHeader';
+import BackHeader from 'components/CommonComponents/BackHeader';
 import Meal from 'components/CommonComponents/Meal';
 import car from 'assets/car 1.svg'
 import './Checkorder.css';
@@ -101,45 +101,46 @@ const Checkorder = () => {
     const goToCheckout = () => {};
     const goToOrder = () => {}; // ./pos
     return (
-        <div id="checkorder-page">
-            <Backheader description="訂單資訊" backTo="/menu" /> {/*backto need adjust (-1)*/}
-            
-            <div id="staffid">
-                <div className="staff">員工代號:</div> 
-                <div className='id'>{fakeStaffId}</div>
-            </div> 
+        <div>
+          <BackHeader description="訂單資訊" /> 
+          <div id="checkorder-page">
+              <div id="staffid">
+                  <div className="staff">員工代號:</div> 
+                  <div className='id'>{fakeStaffId}</div>
+              </div> 
 
-            <List className="cart-scroll-area">
-                <div className="cart-list">
-                    {cartItems.length > 0 ? (
-                        cartItems.map((ci) => (
-                            <Meal
-                                key={ci.item.id}
-                                meal={ci.item}
-                                initialQuantity={ci.quantity}
-                                readOnly
-                            />
-                        ))
-                    ) : (
-                        <div className="cart-empty">購物車是空的</div>
-                    )}
-                </div>
-            </List>
-            <div id="fix-bottom">
-                <div className="dollars-bar">{/*adjust pos*/}
-                    <img src={car} alt="Cart" className="cart-icon" />
-                    ${totalPrice}
-                </div>
-                
-                <div className="button-wrapper two-buttons">
-                    <Button variant="contained" className="chorder-button" onClick={goToCheckout}>
-                        確認訂單
-                    </Button>
-                    <Button variant="contained" className="delorder-button" onClick={goToOrder}>
-                        取消訂單
-                    </Button>
-                </div>
-            </div>
+              <List className="cart-scroll-area">
+                  <div className="cart-list">
+                      {cartItems.length > 0 ? (
+                          cartItems.map((ci) => (
+                              <Meal
+                                  key={ci.item.id}
+                                  meal={ci.item}
+                                  initialQuantity={ci.quantity}
+                                  readOnly
+                              />
+                          ))
+                      ) : (
+                          <div className="cart-empty">購物車是空的</div>
+                      )}
+                  </div>
+              </List>
+              <div id="fix-bottom">
+                  <div className="dollars-bar">{/*adjust pos*/}
+                      <img src={car} alt="Cart" className="cart-icon" />
+                      ${totalPrice}
+                  </div>
+                  
+                  <div className="button-wrapper two-buttons">
+                      <Button variant="contained" className="chorder-button" onClick={goToCheckout}>
+                          確認訂單
+                      </Button>
+                      <Button variant="contained" className="delorder-button" onClick={goToOrder}>
+                          取消訂單
+                      </Button>
+                  </div>
+              </div>
+          </div>
         </div>
     );
 };

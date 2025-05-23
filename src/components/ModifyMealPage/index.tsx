@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import {
   Button, TextField, ToggleButton, ToggleButtonGroup
 } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import UploadIcon from '@mui/icons-material/Upload';
 import { useLocation, useNavigate } from 'react-router-dom';
 import MealShop from 'assets/shop/meal_shop.svg';
-
+import BackHeader from 'components/CommonComponents/BackHeader';
 import './ModifyMealPage.css';
 
 const ModifyMealPage = () => {
@@ -85,103 +84,99 @@ const ModifyMealPage = () => {
     image !== null;
 
   return (
-    <div className="modify-meal-page">
-      <div className="header">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          <ArrowBackIosNewIcon fontSize="medium" />
-        </button>
-        <h2 className="title">修改資訊</h2>
-      </div>
-
-      <div className='content'>
-        <div className="upload-section horizontal">
-          <div className='image-preview-wrapper'>
-            <div className="image-preview">
-              <img src={image ? URL.createObjectURL(image) : meal?.imageUrl || MealShop} alt="preview" />
+    <div>
+      <BackHeader description='修改資訊' />
+      <div className="modify-meal-page">
+        <div className='content'>
+          <div className="upload-section horizontal">
+            <div className='image-preview-wrapper'>
+              <div className="image-preview">
+                <img src={image ? URL.createObjectURL(image) : meal?.imageUrl || MealShop} alt="preview" />
+              </div>
+              <label htmlFor="image-upload">
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleImageUpload}
+                />
+                <Button variant="contained" component="span" className="upload-button" startIcon={<UploadIcon style={{ fontSize: '1.2rem' }} />}>
+                  上傳圖片
+                </Button>
+            </label>
             </div>
-            <label htmlFor="image-upload">
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleImageUpload}
-              />
-              <Button variant="contained" component="span" className="upload-button" startIcon={<UploadIcon style={{ fontSize: '1.2rem' }} />}>
-                上傳圖片
-              </Button>
-          </label>
+
+            <div className="meal-info">
+              <div className="meal-name">{meal?.name}</div>
+              <br />
+              <div className="meal-price">${meal?.price}</div>
+            </div>
           </div>
 
-          <div className="meal-info">
-            <div className="meal-name">{meal?.name}</div>
-            <br />
-            <div className="meal-price">${meal?.price}</div>
+          <div className='text-fields'>
+            <TextField
+              fullWidth
+              label="商品名稱"
+              variant="outlined"
+              value={name}
+              className="text-field"
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            <TextField
+              fullWidth
+              label="商品售價"
+              type="number"
+              variant="outlined"
+              value={price}
+              className="text-field"
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </div>
-        </div>
 
-        <div className='text-fields'>
-          <TextField
-            fullWidth
-            label="商品名稱"
-            variant="outlined"
-            value={name}
-            className="text-field"
-            onChange={(e) => setName(e.target.value)}
-          />
+          <div className="section">
+            <div className="toggle-buttons">
+              <ToggleButton
+                value="recommend"
+                selected={isRecommended}
+                onChange={() => setIsRecommended(!isRecommended)}
+                className="tag-button"
+              >
+                推薦
+              </ToggleButton>
 
-          <TextField
-            fullWidth
-            label="商品售價"
-            type="number"
-            variant="outlined"
-            value={price}
-            className="text-field"
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </div>
+              <div className='category-buttons'>
+                  <ToggleButtonGroup
+                  value={category}
+                  exclusive
+                  onChange={(_, newValue) => {
+                      if (newValue !== null) setCategory(newValue);
+                  }}
+                  >
+                  <ToggleButton value={0} className="tag-button">主食</ToggleButton>
+                  <ToggleButton value={1} className="tag-button">副餐</ToggleButton>
+                  <ToggleButton value={2} className="tag-button">其他</ToggleButton>
+                  </ToggleButtonGroup>
 
-        <div className="section">
-          <div className="toggle-buttons">
-            <ToggleButton
-              value="recommend"
-              selected={isRecommended}
-              onChange={() => setIsRecommended(!isRecommended)}
-              className="tag-button"
+              </div>
+            </div>
+          </div>
+
+          <div className="modify-button-wrapper two-buttons">
+            <Button variant="contained" color="error" className="delete-button" onClick={handleDelete}>
+              刪除餐點
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              className="submit-button"
+              disabled={!isFormValid || !hasChanges}
+              onClick={handleUpdate}
             >
-              推薦
-            </ToggleButton>
-
-            <div className='category-buttons'>
-                <ToggleButtonGroup
-                value={category}
-                exclusive
-                onChange={(_, newValue) => {
-                    if (newValue !== null) setCategory(newValue);
-                }}
-                >
-                <ToggleButton value={0} className="tag-button">主食</ToggleButton>
-                <ToggleButton value={1} className="tag-button">副餐</ToggleButton>
-                <ToggleButton value={2} className="tag-button">其他</ToggleButton>
-                </ToggleButtonGroup>
-
-            </div>
+              保存變更
+            </Button>
           </div>
-        </div>
-
-        <div className="modify-button-wrapper two-buttons">
-          <Button variant="contained" color="error" className="delete-button" onClick={handleDelete}>
-            刪除餐點
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            className="submit-button"
-            disabled={!isFormValid || !hasChanges}
-            onClick={handleUpdate}
-          >
-            保存變更
-          </Button>
         </div>
       </div>
     </div>

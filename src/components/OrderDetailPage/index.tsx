@@ -1,7 +1,6 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './OrderDetailPage.css';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-
+import BackHeader from 'components/CommonComponents/BackHeader';
 interface OrderItem {
   name: string;
   quantity: number;
@@ -22,32 +21,33 @@ const mockOrders: Record<string, OrderItem[]> = {
 
 const OrderDetailPage = () => {
   const { orderId } = useParams();
-  const navigate = useNavigate();
-
   const orderItems = mockOrders[orderId || '1'] || [];
   const totalPrice = orderItems.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div id="order-detail-page">
-      <div className="header">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          <ArrowBackIosNewIcon fontSize="medium" />
-        </button>
-        <h2 className="title">訂單紀錄</h2>
-      </div>
+    <div>
+      <BackHeader description='訂單紀錄' />
+      <div id="order-detail-page">
+        {/* <div className="header">
+          <button className="back-button" onClick={() => navigate(-1)}>
+            <ArrowBackIosNewIcon fontSize="medium" />
+          </button>
+          <h2 className="title">訂單紀錄</h2>
+        </div> */}
 
-      <div className="order-list">
-        {orderItems.map((item, index) => (
-          <div key={index} className="order-row">
-            <div className="item-name">{item.name} x{item.quantity}</div>
-            <div className="item-price">${item.price}</div>
-          </div>
-        ))}
-      </div>
+        <div className="order-list">
+          {orderItems.map((item, index) => (
+            <div key={index} className="order-row">
+              <div className="item-name">{item.name} x{item.quantity}</div>
+              <div className="item-price">${item.price}</div>
+            </div>
+          ))}
+        </div>
 
-      <div className="total-bar">
-        <div className="total-label">總計金額：</div>
-        <div className="total-value">${totalPrice}</div>
+        <div className="total-bar">
+          <div className="total-label">總計金額：</div>
+          <div className="total-value">${totalPrice}</div>
+        </div>
       </div>
     </div>
   );

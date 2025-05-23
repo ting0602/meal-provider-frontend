@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { List } from '@mui/material';
 
-import Backheader from 'components/CommonComponents/BackHeader';
+import BackHeader from 'components/CommonComponents/BackHeader';
 import Meal from 'components/CommonComponents/Meal';
 import car from 'assets/car 1.svg'
 import './Cart.css';
@@ -33,39 +33,41 @@ const Cart = () => {
     };
 
     return (
-        <div id="cart-page">
-            <Backheader description="購物車" backTo="/menu" />
-            <div className="dollars-bar">
-                <img src={car} alt="Cart" className="cart-icon" />
-                ${totalPrice}
-            </div>
+        <div>
+          <BackHeader description="購物車" />
+          <div id="cart-page">
+              <div className="dollars-bar">
+                  <img src={car} alt="Cart" className="cart-icon" />
+                  ${totalPrice}
+              </div>
 
-            <List className="cart-scroll-area">
-                <div className="cart-list">
-                    {cartItems.length > 0 ? (
-                        cartItems.map((ci) => (
-                            <Meal
-                                key={ci.item.id}
-                                meal={ci.item}
-                                initialQuantity={ci.quantity}
-                                readOnly
-                            />
-                        ))
-                    ) : (
-                        <div className="cart-empty">購物車是空的</div>
-                    )}
-                </div>
-            </List>
+              <List className="cart-scroll-area">
+                  <div className="cart-list">
+                      {cartItems.length > 0 ? (
+                          cartItems.map((ci) => (
+                              <Meal
+                                  key={ci.item.id}
+                                  meal={ci.item}
+                                  initialQuantity={ci.quantity}
+                                  readOnly
+                              />
+                          ))
+                      ) : (
+                          <div className="cart-empty">購物車是空的</div>
+                      )}
+                  </div>
+              </List>
 
-            <div
-                className="checkout-button"
-                role="button"
-                tabIndex={0}
-                onClick={goToCheckout}
-                onKeyDown={e => { if (e.key === 'Enter') goToCheckout() }}
-            >
-                <img src={car} alt="Cart" className="cart-icon" /> 結帳
-            </div>
+              <div
+                  className="checkout-button"
+                  role="button"
+                  tabIndex={0}
+                  onClick={goToCheckout}
+                  onKeyDown={e => { if (e.key === 'Enter') goToCheckout() }}
+              >
+                  <img src={car} alt="Cart" className="cart-icon" /> 結帳
+              </div>
+          </div>
         </div>
     );
 };

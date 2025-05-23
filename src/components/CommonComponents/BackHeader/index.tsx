@@ -1,34 +1,31 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './backheader.css';
-import backicon from 'assets/backicon.svg';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import './BackHeader.css';
+
 type HeaderProps = {
     description: string;
-    backTo?: string; // 可以不給，預設返回上一頁
 };
 
-const Header: React.FC<HeaderProps> = ({ description, backTo }) => {
+const BackHeader: React.FC<HeaderProps> = ({ description }) => {
     const navigate = useNavigate();
 
-    const handleBack = () => {
-        //if (backTo) {
-        //    navigate(backTo);
-        //} else {
-            navigate(-1); // 返回上一頁
-        //}
-    };
+    // const handleBack = () => {
+    //     //if (backTo) {
+    //     //    navigate(backTo);
+    //     //} else {
+    //         navigate(-1); // 返回上一頁
+    //     //}
+    // };
 
     return (
-        <div id="custom-header">
-            <img
-                src={backicon}
-                alt="返回"
-                className="back-icon"
-                onClick={handleBack}
-            />
-            <div className="header-description">{description}</div>
+        <div id="back-header">
+        <button className="back-button" onClick={() => navigate(-1)}>
+            <ArrowBackIosNewIcon fontSize="medium" />
+        </button>
+        <h2 className="title">{description}</h2>
         </div>
     );
+
 };
 
-export default Header;
+export default BackHeader;
