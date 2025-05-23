@@ -7,13 +7,8 @@ import Meal from 'components/CommonComponents/Meal';
 import car from 'assets/car 1.svg'
 import './Cart.css';
 
-type MenuItem = {
-    id: string;
-    name: string;
-    price: number;
-    imageUrl: string;
-    category: Array<'推薦' | '主食' | '副餐' | '其他'>;
-};
+import { MenuItem } from 'types/meal';
+
 
 type CartItem = {
     item: MenuItem;

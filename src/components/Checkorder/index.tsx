@@ -7,13 +7,7 @@ import Meal from 'components/CommonComponents/Meal';
 import car from 'assets/car 1.svg'
 import './Checkorder.css';
 
-type MenuItem = {
-    id: string;
-    name: string;
-    price: number;
-    imageUrl: string;
-    category: Array<'推薦' | '主食' | '副餐' | '其他'>;
-};
+import { MenuItem } from 'types/meal';
 
 type CartItem = {
     item: MenuItem;
@@ -32,7 +26,9 @@ const Checkorder = () => {
             name: '招牌牛肉麵',
             price: 120,
             imageUrl: 'https://via.placeholder.com/150',
-            category: ['推薦', '主食']
+            category: ['推薦', '主食'],
+            likeCount: 100,
+            dislikeCount: 5
           },
           quantity: 1
         },
@@ -42,7 +38,9 @@ const Checkorder = () => {
             name: '滷味拼盤',
             price: 60,
             imageUrl: 'https://via.placeholder.com/150',
-            category: ['副餐']
+            category: ['副餐'],
+            likeCount: 90,
+            dislikeCount: 19
           },
           quantity: 2
         },
@@ -52,7 +50,9 @@ const Checkorder = () => {
             name: '可樂',
             price: 35,
             imageUrl: 'https://via.placeholder.com/150',
-            category: ['其他']
+            category: ['其他'],
+            likeCount: 90,
+            dislikeCount: 5
           },
           quantity: 1
         },
@@ -62,7 +62,9 @@ const Checkorder = () => {
               name: '芬達',
               price: 35,
               imageUrl: 'https://via.placeholder.com/150',
-              category: ['其他']
+              category: ['其他'],
+              likeCount: 80,
+              dislikeCount: 12
             },
             quantity: 1
           },
@@ -72,7 +74,9 @@ const Checkorder = () => {
               name: '雪碧',
               price: 35,
               imageUrl: 'https://via.placeholder.com/150',
-              category: ['其他']
+              category: ['其他'],
+              likeCount: 10,
+              dislikeCount: 1
             },
             quantity: 1
           },
@@ -82,7 +86,9 @@ const Checkorder = () => {
               name: '七喜',
               price: 35,
               imageUrl: 'https://via.placeholder.com/150',
-              category: ['其他']
+              category: ['其他'],
+              likeCount: 20,
+              dislikeCount: 25
             },
             quantity: 1
           }
@@ -126,10 +132,10 @@ const Checkorder = () => {
                 </div>
                 
                 <div className="button-wrapper two-buttons">
-                    <Button variant="contained" color="success" className="chorder-button" onClick={goToCheckout}>
+                    <Button variant="contained" className="chorder-button" onClick={goToCheckout}>
                         確認訂單
                     </Button>
-                    <Button variant="contained" color="error" className="delorder-button" onClick={goToOrder}>
+                    <Button variant="contained" className="delorder-button" onClick={goToOrder}>
                         取消訂單
                     </Button>
                 </div>

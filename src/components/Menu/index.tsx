@@ -9,24 +9,15 @@ import car from 'assets/car 1.svg'
 
 import './Menu.css';
 
+import { MenuItem } from 'types/meal';
 // TODO: Replace with real API call
 // import { useRestaurantMenu } from 'hooks/useRestaurant';
-
-type MenuItem = {
-    id: string;
-    name: string;
-    //description: string;
-    price: number;
-    imageUrl: string;
-    category: Array<'推薦' | '主食' | '副餐' | '其他'>;
-};
-
 type CartItem = {
     item: MenuItem;
     quantity: number;
   };
 
-const RestaurantMenu = () => {
+const Menu = () => {
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [restaurantName, setRestaurantName] = useState('Awesome Burger');
     const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
@@ -38,50 +29,90 @@ const RestaurantMenu = () => {
 
     useEffect(() => {
         // 模擬從 API 取得資料
-        const mockMenu: MenuItem[] = [
-            {
-                id: '1',
-                name: 'Cheeseburger',
-                price: 159,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-            },
-            {
-                id: '2',
-                name: 'Chicken Nuggets',
-                price: 99,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-            },
-            {
-                id: '3',
-                name: 'French Fries',
-                price: 69,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-            },
-            {
-                id: '4',
-                name: 'two Chicken ',
-                price: 139,
-                imageUrl: mealsvg,
-                category: ['推薦' , '副餐'],
-            },
-            {
-                id: '5',
-                name: 'chocolate Nuggets',
-                price: 49,
-                imageUrl: mealsvg,
-                category: ['推薦' , '其他'],
-            },
-            {
-                id: '6',
-                name: 'beef noodles',
-                price: 119,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-            },
-        ];
+    const mockMenu: MenuItem[] = [
+    {
+        id: '1',
+        name: 'Cheeseburger',
+        price: 159,
+        imageUrl: mealsvg,
+        category: ['推薦', '主食'],
+        likeCount: 120,
+        dislikeCount: 8
+    },
+    {
+        id: '2',
+        name: 'Chicken Nuggets',
+        price: 99,
+        imageUrl: mealsvg,
+        category: ['推薦', '副餐'],
+        likeCount: 85,
+        dislikeCount: 10
+    },
+    {
+        id: '3',
+        name: 'French Fries',
+        price: 69,
+        imageUrl: mealsvg,
+        category: ['副餐'],
+        likeCount: 140,
+        dislikeCount: 12
+    },
+    {
+        id: '4',
+        name: 'Spicy Chicken Burger',
+        price: 179,
+        imageUrl: mealsvg,
+        category: ['主食'],
+        likeCount: 102,
+        dislikeCount: 6
+    },
+    {
+        id: '5',
+        name: 'Chocolate Shake',
+        price: 89,
+        imageUrl: mealsvg,
+        category: ['其他'],
+        likeCount: 76,
+        dislikeCount: 4
+    },
+    {
+        id: '6',
+        name: 'Beef Noodles',
+        price: 119,
+        imageUrl: mealsvg,
+        category: ['主食'],
+        likeCount: 98,
+        dislikeCount: 9
+    },
+    {
+        id: '7',
+        name: 'Grilled Sandwich',
+        price: 109,
+        imageUrl: mealsvg,
+        category: ['推薦', '主食'],
+        likeCount: 67,
+        dislikeCount: 5
+    },
+    {
+        id: '8',
+        name: 'Miso Soup',
+        price: 49,
+        imageUrl: mealsvg,
+        category: ['副餐'],
+        likeCount: 50,
+        dislikeCount: 3
+    },
+    {
+        id: '9',
+        name: 'Fruit Cup',
+        price: 59,
+        imageUrl: mealsvg,
+        category: ['其他'],
+        likeCount: 72,
+        dislikeCount: 2
+    }
+    ];
+
         
         const savedCart = localStorage.getItem('cartItems');
         if (savedCart) {
@@ -162,4 +193,4 @@ const RestaurantMenu = () => {
     );
 };
 
-export default RestaurantMenu;
+export default Menu;

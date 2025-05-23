@@ -14,7 +14,7 @@ import CreateMealPage from "components/CreateMealPage";
 import ModifyMealPage from "components/ModifyMealPage";
 import ShopAccountPage from "components/ShopAccountPage";
 import UserQRCode from "components/UserQRCode";
-import Shopkeep from "components/Shopkeepermeal";
+import RestaurantMenu from "components/RestaurantMenu";
 import Checkorder from "components/Checkorder";
 import ShopOrderPage from "components/ShopOrderPage";
 import QrCodeScanner from "components/QrCodeScanner";
@@ -40,7 +40,7 @@ const App = () => {
         {/*update to database*/}
         <Route path="/shop-account" element={<ShopAccountPage />} />
         {/*shop-account to shopkeep */}
-        <Route path="/shopkeep" element={<Shopkeep />} />
+        <Route path="/shopkeep" element={<RestaurantMenu />} />
         {/*Every time call shopkeep call api to get data*/}
         <Route path="/checkorder" element={<Checkorder />} />
         {/*pos to shopkeep, pos is almost the same as menu */}

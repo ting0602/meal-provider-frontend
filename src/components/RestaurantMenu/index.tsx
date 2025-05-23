@@ -6,19 +6,12 @@ import KMeal from "components/CommonComponents/Keepermeal";
 import Backheader from 'components/CommonComponents/BackHeader';
 import mealsvg from 'assets/meal/meal.svg';
 
-import './Skeepermeal.css';
+import { MenuItem } from 'types/meal';
+import './RestaurantMenu.css';
 
 // TODO: Replace with real API call
 // import { useRestaurantMenu } from 'hooks/useRestaurant';
 
-type MenuItem = {
-    id: string;
-    name: string;
-    //description: string;
-    price: number;
-    imageUrl: string;
-    category: Array<'推薦' | '主食' | '副餐' | '其他'>;
-};
 
 type CartItem = {
     item: MenuItem;
@@ -44,6 +37,8 @@ const RestaurantMenu = () => {
                 price: 159,
                 imageUrl: mealsvg,
                 category: ['推薦' , '主食'],
+                likeCount: 120,
+                dislikeCount: 8
             },
             {
                 id: '2',
@@ -51,6 +46,8 @@ const RestaurantMenu = () => {
                 price: 99,
                 imageUrl: mealsvg,
                 category: ['推薦' , '主食'],
+                likeCount: 85,
+                dislikeCount: 10
             },
             {
                 id: '3',
@@ -58,6 +55,8 @@ const RestaurantMenu = () => {
                 price: 69,
                 imageUrl: mealsvg,
                 category: ['推薦' , '主食'],
+                likeCount: 140,
+                dislikeCount: 12
             },
             {
                 id: '4',
@@ -65,6 +64,8 @@ const RestaurantMenu = () => {
                 price: 139,
                 imageUrl: mealsvg,
                 category: ['推薦' , '副餐'],
+                likeCount: 102,
+                dislikeCount: 6
             },
             {
                 id: '5',
@@ -72,6 +73,8 @@ const RestaurantMenu = () => {
                 price: 49,
                 imageUrl: mealsvg,
                 category: ['推薦' , '其他'],
+                likeCount: 140,
+                dislikeCount: 12    
             },
             {
                 id: '6',
@@ -79,6 +82,8 @@ const RestaurantMenu = () => {
                 price: 119,
                 imageUrl: mealsvg,
                 category: ['推薦' , '主食'],
+                likeCount: 98,  
+                dislikeCount: 9
             },
         ];
         

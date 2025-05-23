@@ -68,7 +68,6 @@
     padding: 0.5rem 0rem;
     border-top-left-radius: 1.2rem;
     border-top-right-radius: 1.2rem;
-    border-bottom: 0.1rem solid #ccc;
 }
 
 .cart-icon {
@@ -85,19 +84,22 @@
     justify-content: end;
     align-items: center;
     gap: 1rem;
+    margin-top: 1.5rem;
   }
   .chorder-button {
     background-color: #77C56D !important;
     color: #000 !important;
     font-size: 1rem !important;
-    padding: 0.5rem 2rem !important;
+    padding: 0.3rem 1.5rem !important;
     border-radius: 0.6rem !important;
+    box-shadow: none !important;
   }
   
   .delorder-button {
     background-color: #EF7753 !important;
     color: #000 !important;
     font-size: 1rem !important;
-    padding: 0.5rem 2rem !important;
+    padding: 0.3rem 1.5rem !important;
     border-radius: 0.6rem !important;
+    box-shadow: none !important;
   }
