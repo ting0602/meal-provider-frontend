@@ -29,7 +29,7 @@ const Cart = () => {
     const totalPrice = cartItems.reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0);
 
     const goToCheckout = () => {
-        navigate('/pay', {
+        navigate('/qrcode', {
             state: {
                 totalPrice,
                 cartItems,
