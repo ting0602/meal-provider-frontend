@@ -1,12 +1,15 @@
 #restaurant-menu {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     /* max-width: 50rem; */
     margin: 0 auto;
     padding: 1.25rem;
     box-sizing: border-box;
     overflow-x: hidden;
+    justify-content: flex-start;
+    overflow-y: hidden;
+
 }
 
 #menu-category-tabs {
@@ -14,9 +17,9 @@
     flex-direction: row; /* 預設值，但寫上更明確 */
     justify-content: space-around; /* 平均分布 */
     margin: 0rem 0;
-    margin-top: 2.5rem;
+    margin-top: 0rem;
     /* border-bottom: 0.1rem solid #ccc; */
-    border-bottom: none !important;
+    margin-bottom: 1rem;
 }
 
 .menu-tab {

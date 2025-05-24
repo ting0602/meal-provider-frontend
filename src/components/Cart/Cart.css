@@ -1,7 +1,7 @@
 #cart-page {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    /* height: 100vh; */
     max-width: 50rem;
     margin: 0 auto;
     padding: 1.25rem;
@@ -15,12 +15,13 @@
         /*height: 2.5rem;          /* need adjust*/
         background-color: #E0E096;
         font-weight: 600;
-        margin: 1rem 0;
-        margin-top: 2.5rem;
         padding: 0.5rem 0rem;
         border-top-left-radius: 1.2rem;
         border-top-right-radius: 1.2rem;
-        border-bottom: 0.1rem solid #ccc;
+        /* margin: 0rem 0; */
+        margin-top: 0rem;
+        margin-bottom: 1rem;
+        /* border-bottom: 0.1rem solid #ccc; */
     }
     
     .cart-icon {

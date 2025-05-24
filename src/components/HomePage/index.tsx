@@ -3,6 +3,7 @@ import Header from 'components/CommonComponents/Header';
 import Footer from 'components/CommonComponents/Footer';
 import ShopInfoCard from 'components/CommonComponents/ShopInfoCard';
 import ShopScoreCard from 'components/CommonComponents/ShopScoreCard';
+import MealScoreCard from 'components/CommonComponents/MealScoreCard';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import DrinkShop from 'assets/shop/drink_shop.svg';
 import MealShop from 'assets/shop/meal_shop.svg';
