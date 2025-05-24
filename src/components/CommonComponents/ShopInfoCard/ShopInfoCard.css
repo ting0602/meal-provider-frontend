@@ -53,11 +53,12 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 0.5rem;
+    padding: 0 0.2rem;
   }
   
   .shop-name {
     font-size: 1rem;
-    font-weight: bold;
+    /* font-weight: bold; */
     color: #D0694B;
     text-transform: lowercase;
   }

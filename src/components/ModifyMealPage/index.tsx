@@ -164,18 +164,16 @@ const ModifyMealPage = () => {
           </div>
 
           <div className="modify-button-wrapper two-buttons">
-            <Button variant="contained" color="error" className="delete-button" onClick={handleDelete}>
+            <button className="delete-button" onClick={handleDelete}>
               刪除餐點
-            </Button>
-            <Button
-              variant="contained"
-              color="success"
+            </button>
+            <button
               className="submit-button"
               disabled={!isFormValid || !hasChanges}
               onClick={handleUpdate}
             >
               保存變更
-            </Button>
+            </button>
           </div>
         </div>
       </div>

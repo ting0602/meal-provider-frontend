@@ -42,12 +42,17 @@ const ShopScoreCard = ({ shop, time, onClose, onSubmit }: ShopScoreCardProps) =>
             style={{ margin: '0.5rem' }}
         />
 
-        <Button
-            className="submit-button"
-            onClick={() => score && onSubmit(score)}
+        <button
+            className="submit-score-button"
+              onClick={() => {
+                if (score) {
+                onSubmit(score);
+                onClose();
+                }
+            }}
         >
             送出
-        </Button>
+        </button>
 
         <div className="mascots">
             <img src={MascotDog} alt="mascot dog" />

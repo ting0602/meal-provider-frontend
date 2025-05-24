@@ -60,15 +60,20 @@
   /* font-weight: 500; */
 }
 
-.submit-button {
-  /* margin: 2rem 1rem; */
-  margin-top: 1.5rem !important;
-  background-color: #E0E096 !important;
-  color: #333 !important;
-  padding: 0.2rem 2rem !important;
-  border-radius: 0.8rem !important;
-  font-size: 1rem !important;
+.submit-score-button {
+  all: unset;
+  display: inline-block;
+  background-color: #E0E096;
+  color: #333;
+  padding: 0.6rem 1.8rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 1rem;
+  z-index: 9;
 }
+
 
 .mascots {
   display: flex;

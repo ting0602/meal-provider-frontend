@@ -24,6 +24,7 @@ const shopList = [
 const HomePage = () => {
   const [selectedFactoryIndex, setSelectedFactoryIndex] = useState(0);
   const [showScoreModal, setShowScoreModal] = useState(true);
+  const [showMealScoreModal, setShowMealScoreModal] = useState(false);
 
 
   const filteredShops = shopList.filter(shop => shop.location === selectedFactoryIndex);
@@ -36,13 +37,34 @@ const HomePage = () => {
         <ShopScoreCard
             shop={{ type: 0, name: 'cool bibimbap', image: MealShop, rating: 4.7 }}
             time="2025/06/02 13:00"
-            onClose={() => setShowScoreModal(false)}
+            onClose={() => {setShowScoreModal(false); setShowMealScoreModal(true)}}
             onSubmit={(score) => {
             console.log('score is', score);
             setShowScoreModal(false);
+            setShowMealScoreModal(true)
             }}
         />
         )}
+        {showMealScoreModal && (
+        <MealScoreCard
+          meal={{
+            id: '123',
+            name: '香辣雞腿堡',
+            price: 159,
+            imageUrl: MealShop,
+            category: ['主食'],
+            likeCount: 128,
+            dislikeCount: 6,
+          }}
+          time="2025/06/02 13:00"
+          onClose={() => setShowMealScoreModal(false)}
+          onSubmit={(score) => {
+            console.log('meal score is', score);
+            setShowMealScoreModal(false);
+          }}
+        />
+      )}
+
 
         <div className="home-content">
           {filteredShops.map((shop) => (

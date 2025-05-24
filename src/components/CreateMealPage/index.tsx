@@ -33,8 +33,8 @@ const CreateMealPage = () => {
   return (
     <div>
       <BackHeader description='新增餐點' />
-      <div className="create-meal-page">
-        <div className='content'>
+      <div id="create-meal-page">
+        <div className='create-meal-content'>
           <div className="upload-section">
             <div className="image-preview">
               {image ? (
@@ -105,15 +105,13 @@ const CreateMealPage = () => {
             </div>
           </div>
           <div className="create-button-wrapper">
-            <Button
-              variant="contained"
-              color="success"
+            <button
               disabled={!isFormValid}
               onClick={handleSubmit}
-              className="submit-button"
+              className="submit-create-button"
             >
               新增餐點
-            </Button>
+            </button>
           </div>
         </div>
       </div>

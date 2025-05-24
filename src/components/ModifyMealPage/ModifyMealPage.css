@@ -120,12 +120,29 @@
   flex-direction: row;
   justify-content: end;
 }
+
+.modify-button-wrapper.two-buttons {
+  justify-content: space-between;
+}
+
 .submit-button {
-  background-color: #A3CFB2;
-  color: #000;
+  background-color: #77C56D !important;
+  color: #333 !important;
   font-size: 1rem !important;
-  padding: 0.5rem 2rem !important;
-  border-radius: 0.5rem;
+  padding: 1rem 2rem !important;
+  border-radius: 0.5rem !important;;
+  border: none;
+  margin-top: 1.5rem !important
+}
+
+.delete-button {
+  background-color: #EF7753 !important;
+  color: #fff !important;
+  font-size: 1rem !important;
+  padding: 1rem 2rem !important;
+  border-radius: 0.5rem !important;;
+  border: none;
+  margin-top: 1.5rem !important
 }
 
 .upload-section.horizontal {
@@ -153,16 +170,5 @@
   font-size: 0.9rem;
   margin-top: 0.3rem;
   color: #000;
-}
-
-.modify-button-wrapper.two-buttons {
-  justify-content: space-between;
-}
-
-.delete-button {
-  background-color: #EF7753 !important;
-  color: #fff !important;
-  font-size: 1rem !important;
-  padding: 0.5rem 1.5rem !important;
-  border-radius: 0.5rem;
+  align-self: self-start;
 }
