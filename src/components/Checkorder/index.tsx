@@ -101,7 +101,7 @@ const Checkorder = () => {
     const goToCheckout = () => {};
     const goToOrder = () => {}; // ./pos
     return (
-        <div>
+        <div id='checkorder-outline'>
           <BackHeader description="訂單資訊" /> 
           <div id="checkorder-page">
               <div id="staffid">

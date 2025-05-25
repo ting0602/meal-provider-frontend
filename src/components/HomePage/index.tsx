@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from 'components/CommonComponents/Header';
 import Footer from 'components/CommonComponents/Footer';
 import ShopInfoCard from 'components/CommonComponents/ShopInfoCard';
@@ -25,7 +26,7 @@ const HomePage = () => {
   const [selectedFactoryIndex, setSelectedFactoryIndex] = useState(0);
   const [showScoreModal, setShowScoreModal] = useState(true);
   const [showMealScoreModal, setShowMealScoreModal] = useState(false);
-
+  const navigate = useNavigate();
 
   const filteredShops = shopList.filter(shop => shop.location === selectedFactoryIndex);
 
@@ -77,7 +78,7 @@ const HomePage = () => {
             />
           ))}
         </div>
-        <button className="pay-button">
+        <button className="pay-button" onClick={() => navigate('/qrCode')}>
           <QrCodeScannerIcon className="pay-icon" />
           結帳條碼
         </button>

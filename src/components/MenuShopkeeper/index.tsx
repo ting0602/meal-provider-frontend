@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { List } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Meal from "components/CommonComponents/Meal";
 import BackHeader from 'components/CommonComponents/BackHeader';
@@ -17,13 +17,7 @@ type CartItem = {
     quantity: number;
   };
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
-const Menu = () => {
-  const query = useQuery();
-  const userId = query.get('userId');
+const MenuShopkeeper = () => {
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [restaurantName, setRestaurantName] = useState('好吃漢堡');
     const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
@@ -32,7 +26,6 @@ const Menu = () => {
 
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const navigate = useNavigate();
-    const cartKey = userId ? `cart_user_${userId}` : 'cartItems';
 
     useEffect(() => {
         // 模擬從 API 取得資料
@@ -146,16 +139,6 @@ const Menu = () => {
 
         setMenuItems(mockMenu);
     }, []);
-    const goToCheckout = () => {
-      localStorage.setItem(cartKey, JSON.stringify(cartItems));
-      if (userId) {
-        // 店家模式：跳轉到 checkorder
-        navigate(`/checkorder?userId=${userId}`);
-      } else {
-        // 使用者模式：跳轉到 cart 頁面
-        navigate('/cart', { state: { cartItems } });
-      }
-    };
 
     const handleQuantityChange = (meal: MenuItem, quantity: number) => {
         setCartItems((prev) => {
@@ -215,13 +198,13 @@ const Menu = () => {
               </List>
 
               <div
-                className="cart-button"
-                onClick={goToCheckout}
-                style={{
-                  opacity: totalPrice > 0 ? 1 : 0.6,
-                  pointerEvents: 'auto',
-                }}
-              >
+                  className="cart-button"
+                  onClick={goToCart}
+                  style={{
+                      opacity: totalPrice > 0 ? 1 : 0.6,
+                      pointerEvents: 'auto'
+                  }}
+                  >
                   <img src={car} alt="Cart" className="cart-icon" />
                   <span className="cart-price">${totalPrice}</span>
               </div>
@@ -230,4 +213,4 @@ const Menu = () => {
     );
 };
 
-export default Menu;
+export default MenuShopkeeper;

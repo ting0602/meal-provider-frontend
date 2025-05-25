@@ -1,10 +1,13 @@
+#checkorder-outline {
+    height: 100vh;
+}
 #checkorder-page {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 85%;
     max-width: 50rem;
     margin: 0 auto;
-    padding: 1.25rem;  
+    padding: 0 1.25rem;  
     box-sizing: border-box;
     position: relative;
     overflow: hidden; /* 防止外層滾動 */ 

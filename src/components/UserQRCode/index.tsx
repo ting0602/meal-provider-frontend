@@ -11,44 +11,40 @@ import av4 from 'assets/checkoutbottom/Avatar4.svg'
 import './UserQRCode.css';
 
 const UserQRCode = () => {
-  // # TODO: Replace with real userId from backend
-  // It will return like:
-  // {"userId":"user_123456"}
   const location = useLocation();
-  const { totalPrice, cartItems } = location.state || {};
+  const { totalPrice, cartItems, orderId } = location.state || {};
   const fakeUserId = 'user_123456';
 
-  // Optional: can add more info to the QR code data
-  const qrData = JSON.stringify({
-    userId: fakeUserId,
-    // iat: Date.now() / 1000, // validation time
-  });
+  // ➕ 根據有沒有 orderId 決定 QRCode 的內容
+  const qrData = orderId
+    ? JSON.stringify({ userId: fakeUserId, orderId }) // ✔ 用戶已點餐
+    : JSON.stringify({ userId: fakeUserId });          // ✔ 用戶尚未點餐
 
   return (
-      <div>
-        <BackHeader description="結帳" />
-        <div id="pay-page">
-            <div className="dollars-bar">
-                <img src={car} alt="Cart" className="cart-icon" />
-                ${totalPrice}
-            </div>
+    <div>
+      <BackHeader description="結帳" />
+      <div id="pay-page">
+        <div className="dollars-bar">
+          <img src={car} alt="Cart" className="cart-icon" />
+          ${totalPrice}
+        </div>
 
-          <div id='user-qrcode'>
-            {/* <p>請出示此 QRCode 給店家</p> */}
-            <QRCodeSVG value={qrData} size={210} />
-            <div className='userid'>{fakeUserId}</div>
-          </div>
-          
-          <div className="footer-images">
-            <img src={av1} alt="step 1" />
-            <img src={av2} alt="step 2" />
-            <img src={av3} alt="step 3" />
-            <img src={av4} alt="step 4" />
-          </div>
-          
+        <div id="user-qrcode">
+          <QRCodeSVG value={qrData} size={210} />
+          <div className="userid">{fakeUserId}</div>
+          {orderId && <div className="orderid">訂單編號：{orderId}</div>}
+        </div>
+
+        <div className="footer-images">
+          <img src={av1} alt="step 1" />
+          <img src={av2} alt="step 2" />
+          <img src={av3} alt="step 3" />
+          <img src={av4} alt="step 4" />
         </div>
       </div>
+    </div>
   );
 };
+
 
 export default UserQRCode;

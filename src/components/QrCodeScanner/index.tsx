@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
+import { Html5Qrcode, Html5QrcodeScannerState } from 'html5-qrcode';
+import { useNavigate } from 'react-router-dom';
+import PaymentResult from 'components/CommonComponents/PaymentResult';
 import './QrCodeScanner.css';
 
 const QrCodeScanner = () => {
   const qrRegionId = 'qr-reader';
   const qrRef = useRef<Html5Qrcode | null>(null);
-
-  const [userId, setUserId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [permissionGranted, setPermissionGranted] = useState(false);
+  const [scanCompleted, setScanCompleted] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // 確認是否允許權限
     navigator.mediaDevices
       .getUserMedia({ video: true })
       .then((stream) => {
-        stream.getTracks().forEach(track => track.stop()); // 先關閉臨時相機串流
+        stream.getTracks().forEach((track) => track.stop());
         setPermissionGranted(true);
       })
-      .catch((err) => {
+      .catch(() => {
         setError('請允許相機使用權限才能開始掃描');
       });
   }, []);
@@ -26,62 +28,104 @@ const QrCodeScanner = () => {
   useEffect(() => {
     if (!permissionGranted) return;
 
-    const qrScanner = new Html5Qrcode(qrRegionId);
-    qrRef.current = qrScanner;
+    const scanner = new Html5Qrcode(qrRegionId);
+    qrRef.current = scanner;
 
-    qrScanner
-      .start(
-        { facingMode: 'environment' },
-        { fps: 10, qrbox: 400, aspectRatio: 1.0 },
-        (decodedText) => {
-          try {
-            const parsed = JSON.parse(decodedText);
-            if (parsed.userId) {
-              setUserId(parsed.userId);
-              qrScanner.stop();
-            } else {
-              setError('找不到 userId');
+    const startScanner = async () => {
+      try {
+        await scanner.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: 250, aspectRatio: 1.0, },
+          async (decodedText) => {
+            if (scanCompleted) return;
+            setScanCompleted(true);
+
+            try {
+              const parsed = JSON.parse(decodedText);
+              if (parsed.userId && !parsed.orderId) {
+                await safeStopScanner();
+                navigate(`/menu?userId=${parsed.userId}`);
+              } else if (parsed.userId && parsed.orderId) {
+                await safeStopScanner();
+                setShowResult(true);
+              } else {
+                setError('QRCode 缺少 userId 或 orderId');
+                setScanCompleted(false);
+              }
+            } catch {
+              setError('QRCode 格式錯誤，請確認為 JSON 格式');
+              setScanCompleted(false);
             }
-          } catch {
-            setError('QRCode 資料格式錯誤');
+          },
+          (scanErr) => {
+            const silentErrors = ['NotFoundException', 'IndexSizeError', 'InvalidStateError'];
+            const errMsg = String(scanErr);
+
+            if (!silentErrors.some(e => errMsg.includes(e))) {
+              console.log('掃描進行中錯誤：', scanErr);
+            }
           }
-        },
-        (scanErr) => {
-          console.log('掃描進行中', scanErr);
+        );
+      } catch (err: any) {
+        const msg = err?.message || String(err);
+        setError('掃描器啟動失敗：' + msg);
+      }
+    };
+
+    const safeStopScanner = async () => {
+      if (!scanner) return;
+
+      const state = scanner.getState?.();
+      if (state === Html5QrcodeScannerState.SCANNING || state === Html5QrcodeScannerState.PAUSED) {
+        try {
+          await scanner.stop();
+          await scanner.clear();
+        } catch (err) {
+          console.warn('scanner 停止或清除失敗：', err);
         }
-      )
-      .catch((err) => {
-        setError('掃描器啟動失敗：' + err.message);
-      });
+      }
+    };
+
+
+    startScanner();
 
     return () => {
-      qrScanner.stop().catch(() => {});
+      safeStopScanner().catch(() => {});
     };
-  }, [permissionGranted]);
+  }, [permissionGranted, scanCompleted, navigate]);
 
   return (
     <div className="qr-container">
-      <h2>請掃描使用者 QRCode</h2>
+      <h2>請掃描使用者 QR Code</h2>
 
       {!permissionGranted && !error && <p>請允許相機使用權限...</p>}
+      <div id="qr-reader" />
 
-      <div id={qrRegionId} />
-
-      {userId && (
-        <div>
-          <h3>掃到的使用者 ID：</h3>
-          <p>{userId}</p>
+      {error && (
+        <div className="error-message">
+          <p style={{ color: 'red' }}>{error}</p>
+          <button onClick={() => window.location.reload()}>重新掃描</button>
         </div>
       )}
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <button className="cancel-button" onClick={() => window.history.back()}>
         取消
       </button>
+
+      {showResult && (
+        <PaymentResult
+          success={true}
+          amount={250}
+          timestamp={'2025/06/05 14:30'}
+          shopName={'胖胖豬韓式拌飯'}
+          onClose={() => {
+            setShowResult(false);
+            navigate('/home');
+          }}
+        />
+      )}
     </div>
   );
-
 };
 
 export default QrCodeScanner;

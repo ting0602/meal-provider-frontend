@@ -25,7 +25,7 @@ const OrderDetailPage = () => {
   const totalPrice = orderItems.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div>
+    <div id='order-detail-layout'>
       <BackHeader description='訂單紀錄' />
       <div id="order-detail-page">
         {/* <div className="header">

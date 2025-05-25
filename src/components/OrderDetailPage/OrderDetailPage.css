@@ -1,10 +1,14 @@
+#order-detail-layout {
+  height: 100vh;
+}
 #order-detail-page {
   /* background-color: #F9F9EE; */
-  max-height: 100vh;
+  height: 85%;
   display: flex;
+  flex: 1;
   flex-direction: column;
   font-family: 'jf-openhuninn-2.1', 'Noto Sans TC', sans-serif;
-  padding: 1rem;
+  padding: 0 1rem;
   box-sizing: border-box;
   font-weight: normal;
 }
@@ -44,7 +48,7 @@
   border-radius: 0.2rem;
   padding: 1.2rem;
   margin-bottom: 1rem;
-  height: 80vh;
+  height: 80%;
   overflow-y: auto;
 }
 

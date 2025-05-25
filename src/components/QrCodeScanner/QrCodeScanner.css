@@ -16,15 +16,6 @@ h2 {
   color: #333;
 }
 
-#qr-reader {
-  width: 280px;
-  height: 280px;
-  border: 2px solid #BABEF4;
-  border-radius: 0.5rem;
-  background-color: #fff;
-  margin: 1rem 0;
-}
-
 p {
   color: #7D7D2D;
   margin-top: 0.5rem;
@@ -47,9 +38,10 @@ button.cancel-button:hover {
 }
 
 #qr-reader {
-  width: 280px !important;
-  height: 280px !important;
+  /* width: 280px !important;
+  height: 280px !important; */
   max-width: 100%;
+  /* max-height: 100%; */
   border: 2px solid #BABEF4;
   border-radius: 0.5rem;
   background-color: #fff;
@@ -57,6 +49,15 @@ button.cancel-button:hover {
   position: relative;
   overflow: hidden;
 }
+
+#qr-reader video,
+#qr-reader canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0.5rem;
+}
+
 
 #qr-reader > div {
   width: 100% !important;
