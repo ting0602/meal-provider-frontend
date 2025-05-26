@@ -35,7 +35,7 @@ const QrCodeScanner = () => {
       try {
         await scanner.start(
           { facingMode: 'environment' },
-          { fps: 10, qrbox: 250, aspectRatio: 1.0, },
+          { fps: 10, qrbox: 250, aspectRatio: 1.0 },
           async (decodedText) => {
             if (scanCompleted) return;
             setScanCompleted(true);
@@ -47,7 +47,9 @@ const QrCodeScanner = () => {
                 navigate(`/menu?userId=${parsed.userId}`);
               } else if (parsed.userId && parsed.orderId) {
                 await safeStopScanner();
-                setShowResult(true);
+                navigate('/checkorder', {
+                  state: { userId: parsed.userId, orderId: parsed.orderId },
+                });
               } else {
                 setError('QRCode 缺少 userId 或 orderId');
                 setScanCompleted(false);
@@ -60,7 +62,6 @@ const QrCodeScanner = () => {
           (scanErr) => {
             const silentErrors = ['NotFoundException', 'IndexSizeError', 'InvalidStateError'];
             const errMsg = String(scanErr);
-
             if (!silentErrors.some(e => errMsg.includes(e))) {
               console.log('掃描進行中錯誤：', scanErr);
             }
@@ -73,8 +74,6 @@ const QrCodeScanner = () => {
     };
 
     const safeStopScanner = async () => {
-      if (!scanner) return;
-
       const state = scanner.getState?.();
       if (state === Html5QrcodeScannerState.SCANNING || state === Html5QrcodeScannerState.PAUSED) {
         try {
@@ -85,7 +84,6 @@ const QrCodeScanner = () => {
         }
       }
     };
-
 
     startScanner();
 
