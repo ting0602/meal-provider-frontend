@@ -10,8 +10,10 @@ type PaymentResultProps = {
   amount?: number;
   timestamp?: string;
   shopName?: string;
-  errorType?: '店家錯誤' | '訂單取消' | '未知錯誤';
+  errorType?: '支付失敗';
   onClose: () => void;
+  homePath?: string;
+  ordersPath?: string; 
 };
 
 const PaymentResult: React.FC<PaymentResultProps> = ({
@@ -21,17 +23,19 @@ const PaymentResult: React.FC<PaymentResultProps> = ({
   shopName,
   errorType,
   onClose,
+  homePath,
+  ordersPath,
 }) => {
   const navigate = useNavigate();
 
   const handleHome = () => {
     onClose();
-    navigate('/home');
+    navigate(homePath || '/home');
   };
 
   const handleOrders = () => {
     onClose();
-    navigate('/order');
+    navigate(ordersPath || '/order');
   };
 
   return (

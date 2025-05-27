@@ -12,7 +12,7 @@ import './RestaurantMenu.css';
 
 // TODO: Replace with real API call
 // import { useRestaurantMenu } from 'hooks/useRestaurant';
-
+// TODO: Use shop id to get menu data
 
 type CartItem = {
     item: MenuItem;

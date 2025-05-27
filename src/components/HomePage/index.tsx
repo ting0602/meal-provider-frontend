@@ -69,13 +69,19 @@ const HomePage = () => {
 
         <div className="home-content">
           {filteredShops.map((shop) => (
-            <ShopInfoCard
+            <div
               key={shop.id}
-              type={shop.type}
-              name={shop.name}
-              image={shop.image}
-              rating={shop.rating}
-            />
+              className="shop-button-wrapper"
+              onClick={() => navigate('/menu', { state: { shopId: shop.id } })}
+            >
+              <ShopInfoCard
+                key={shop.id}
+                type={shop.type}
+                name={shop.name}
+                image={shop.image}
+                rating={shop.rating}
+              />
+            </div>
           ))}
         </div>
         <button className="pay-button" onClick={() => navigate('/qrCode')}>

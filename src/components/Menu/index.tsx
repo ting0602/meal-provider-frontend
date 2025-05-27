@@ -12,6 +12,7 @@ import './Menu.css';
 import { MenuItem } from 'types/meal';
 // TODO: Replace with real API call
 // import { useRestaurantMenu } from 'hooks/useRestaurant';
+// TODO: Use shopid to get the menu data
 type CartItem = {
     item: MenuItem;
     quantity: number;

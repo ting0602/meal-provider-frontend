@@ -1,9 +1,10 @@
-import React from 'react';
+import {useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { List, Button } from '@mui/material';
 
 import BackHeader from 'components/CommonComponents/BackHeader';
 import Meal from 'components/CommonComponents/Meal';
+import PaymentResult from 'components/CommonComponents/PaymentResult';
 import car from 'assets/car 1.svg';
 import './Checkorder.css';
 
@@ -19,6 +20,17 @@ const Checkorder = () => {
   const navigate = useNavigate();
   const { userId, orderId } = location.state || {};
   const fakeStaffId = userId || 'user_123456';
+
+  const [showResult, setShowResult] = useState(false);
+  const [paymentData, setPaymentData] = useState<{
+    success: boolean;
+    amount?: number;
+    timestamp?: string;
+    shopName?: string;
+    errorType?: string;
+    homePath?: string;
+    ordersPath?: string; 
+  } | null>(null);
 
   const testCartItems: CartItem[] = [
     {
@@ -63,12 +75,28 @@ const Checkorder = () => {
   const totalPrice = cartItems.reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0);
 
   const goToCheckout = () => {
-    console.log('確認訂單:', { userId, orderId });
+    console.log('確認訂單:', { userId, orderId });// adjust
+    
+    setPaymentData({
+      success: true,
+      amount: totalPrice,
+      timestamp: new Date().toLocaleString(),
+      shopName: '胖胖豬韓式拌飯',
+      homePath: "/shop-account",
+      ordersPath: "/shop-order",
+    });
+    setShowResult(true);
   };
 
   const goToOrder = () => {
     console.log('取消訂單:', { userId, orderId });
-    navigate('/home');
+    
+    setPaymentData({
+      success: false,
+      errorType: '支付失敗',
+      homePath: "/shop-account",
+    });
+    setShowResult(true);
   };
 
   return (
@@ -108,6 +136,21 @@ const Checkorder = () => {
           </div>
         </div>
       </div>
+
+      {showResult && paymentData && (
+        <PaymentResult
+          success={paymentData.success}
+          amount={paymentData.amount}
+          timestamp={paymentData.timestamp}
+          shopName={paymentData.shopName}
+          errorType={paymentData.errorType as '支付失敗'}
+          homePath={paymentData.homePath}
+          ordersPath={paymentData.ordersPath}
+          onClose={() => {
+            setShowResult(false);
+          }}
+        />
+      )}
     </div>
   );
 };

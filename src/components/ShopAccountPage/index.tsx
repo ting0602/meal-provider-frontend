@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import FooterShop from 'components/CommonComponents/FooterShop';
 import ShopInfoCard from 'components/CommonComponents/ShopInfoCard';
 import DrinkShop from 'assets/shop/drink_shop.svg';
@@ -18,18 +19,26 @@ const shopInfo =
     };
   
 const ShopAccountPage = () => {
+    const navigate = useNavigate();
+
     return (
         <div>
             <div id='shop-account'>
                 <div className="shop-content">
                     <div className="page-title">{factories[shopInfo.locationIndex]}</div>
-                    <ShopInfoCard
-                    key={shopInfo.id}
-                    type={shopInfo.type}
-                    name={shopInfo.name}
-                    image={shopInfo.image}
-                    rating={shopInfo.rating}
-                    />
+                    <div
+                        key={shopInfo.id}
+                        className="shop-button-wrapper"
+                        onClick={() => navigate('/shopkeep', { state: { shopId: shopInfo.id } })}
+                    >
+                        <ShopInfoCard
+                        key={shopInfo.id}
+                        type={shopInfo.type}
+                        name={shopInfo.name}
+                        image={shopInfo.image}
+                        rating={shopInfo.rating}
+                        />
+                    </div>
                     <button className="logout-button">登出</button>
                     <img className="mascot" src={Mascot1} alt="" />
 

@@ -46,5 +46,18 @@
     .pay-icon {
     font-size: 1.4rem;
     }
+    
+    .shop-button-wrapper {
+        width: 90%;
+        max-width: 20rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        border-radius: 0.75rem;
+    }
+      
+    .shop-button-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
 }
