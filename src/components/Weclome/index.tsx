@@ -20,18 +20,18 @@ const Welcome = () => {
 
     return (
         <div id="welcome">
-            <div className="content">
-                <div className="page-title">Meal<br></br>Provider</div>
-                <img className="seperate-line" src={SeperateLine} alt="" />
-                {/* <button onClick={handleLogin} id="login-button">LOGIN</button> */}
-                <div className="decoration">
-                    {/* <img id="chef-cat-with-spoon" src={ChefCatWithSpoon} alt="" /> */}
-                    <img id="mascot" src={Mascot1} alt="" />
-                    {/* <img id="orange-star1" src={OrangeStar} alt="" />
-                    <img id="orange-star2" src={OrangeStar} alt="" /> */}
+            <div className="welcome-content">
+                <div className='welcome-title-wrapper'>
+                    <div className="page-title">Meal<br></br>Provider</div>
+                    <img className="seperate-line" src={SeperateLine} alt="" />
                 </div>
-                <button className="button" onClick={onClickLogin}>LOGIN</button>
-                <button className="button" onClick={onClickSignUp}>SIGN UP</button>
+                <div className="decoration">
+                    <img id="big-mascot" src={Mascot1} alt="" />
+                </div>
+                <div className='button-wrapper-weclcome'>
+                    <button className="button" onClick={onClickLogin}>LOGIN</button>
+                    <button className="button" onClick={onClickSignUp}>SIGN UP</button>
+                </div>
                 <div className='mascot-group'>
                     <img className="mascot-bottom" src={MascotCat} alt="" />
                     <img className="mascot-bottom" src={MascotDog} alt="" />

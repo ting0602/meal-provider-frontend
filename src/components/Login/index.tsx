@@ -44,8 +44,10 @@ const Login = () => {
   return (
     <div id="login">
       <div className="content">
-        <div className="page-title">登入</div>
-        <img id="seperate-line" src={SeperateLine} alt="" />
+        <div className="logo-wrapper">
+            <div className="page-title">登入</div>
+            <img id="seperate-line" src={SeperateLine} alt="" />
+        </div>
         <div className="input-wrapper">
           <InputField
             Icon={MailOutlineIcon}

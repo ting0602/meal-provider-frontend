@@ -60,34 +60,36 @@ const SignUp = () => {
   return (
     <div id="sign-up">
       <div className="content">
-        <div className="page-title">註冊</div>
-        <img id="seperate-line" src={SeperateLine} alt="" />
+        <div className="signup-title-wrapper">
+            <div className="page-title">註冊</div>
+            <img id="seperate-line" src={SeperateLine} alt="" />
+        </div>
 
         <AvatarPicker
           setShowPopup={setShowPopup}
           avatarIcon={images[currentAvatar]}
         />
-
-        <InputField
-          Icon={PersonOutlinedIcon}
-          placeholder="Employee ID"
-          value={employeeId}
-          onChange={handleEmployeeIdChange}
-        />
-        <InputField
-          Icon={MailOutlineIcon}
-          placeholder="MAIL"
-          value={mailValue}
-          onChange={handleMailChange}
-        />
-        <InputField
-          Icon={LockOutlinedIcon}
-          type="password"
-          placeholder="PASSWORD"
-          value={passwdValue}
-          onChange={handlePasswdChange}
-        />
-
+        <div className='signup-input-wrapper'>
+            <InputField
+            Icon={PersonOutlinedIcon}
+            placeholder="Employee ID"
+            value={employeeId}
+            onChange={handleEmployeeIdChange}
+            />
+            <InputField
+            Icon={MailOutlineIcon}
+            placeholder="MAIL"
+            value={mailValue}
+            onChange={handleMailChange}
+            />
+            <InputField
+            Icon={LockOutlinedIcon}
+            type="password"
+            placeholder="PASSWORD"
+            value={passwdValue}
+            onChange={handlePasswdChange}
+            />
+        </div>
         <button onClick={handleSignUp} id="create-button">
           Create Account
         </button>
