@@ -25,7 +25,6 @@ export interface User {
   account: string;
   password: string;
   employeeId: string;
-  name: string;
   location: number;
   head_sticker: number;
   order_history?: any[];
@@ -37,7 +36,6 @@ export interface SignupData {
   account: string;
   password: string;
   employeeId: string;
-  name: string;
   location: number;
   head_sticker: number;
 }

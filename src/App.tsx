@@ -1,6 +1,9 @@
 // App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// TODO: remove the comment when AuthProvider is ready
 // import AuthProvider from "provider/AuthProvider";
+// import { ProtectedRoute } from "authentication/ProtectedRoute";
+
 import Login from "components/Login";
 import Welcome from "components/Weclome";
 import SignUp from "components/SignUP";
@@ -23,30 +26,35 @@ import './App.css';
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/order" element={<OrderPage />} />
-        <Route path="/order/:orderId" element={<OrderDetailPage />} />
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/create-meal" element={<CreateMealPage />} />
-        {/* <Route path="/modify-meal/:mealId" element={<ModifyMealPage />} /> */}
-        <Route path="/modify-meal" element={<ModifyMealPage />} />
-        <Route path="/shop-account" element={<ShopAccountPage />} />
-        <Route path="/shopkeep" element={<RestaurantMenu />} />
-        <Route path="/checkorder" element={<Checkorder />} />
-        {/*pos to shopkeep, pos is almost the same as menu */}
-        <Route path="/shop-order" element={<ShopOrderPage />} />
-        <Route path="/qrcode" element={<UserQRCode />} />
-        <Route path="/scanner" element={<QrCodeScanner />} />
-        <Route path="/admin" element={<AdminPage />} />
-      </Routes>
-    </Router>
+    // TODO: remove the comment when AuthProvider is ready
+    // <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Welcome />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          {/* <Route element={<ProtectedRoute />}> */}
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/order" element={<OrderPage />} />
+            <Route path="/order/:orderId" element={<OrderDetailPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/create-meal" element={<CreateMealPage />} />
+            {/* <Route path="/modify-meal/:mealId" element={<ModifyMealPage />} /> */}
+            <Route path="/modify-meal" element={<ModifyMealPage />} />
+            <Route path="/shop-account" element={<ShopAccountPage />} />
+            <Route path="/shopkeep" element={<RestaurantMenu />} />
+            <Route path="/checkorder" element={<Checkorder />} />
+            {/*pos to shopkeep, pos is almost the same as menu */}
+            <Route path="/shop-order" element={<ShopOrderPage />} />
+            <Route path="/qrcode" element={<UserQRCode />} />
+            <Route path="/scanner" element={<QrCodeScanner />} />
+          {/* </Route> */}
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </Router>
+    // </AuthProvider>
   );
 };
 
