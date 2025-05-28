@@ -11,11 +11,17 @@ import {
 interface AuthContextProps {
   token: string | null;
   setToken: (newToken: string | null) => void;
+  userId: string | null;
+  setUserId: (newId: string | null) => void;
+  logout: () => void;
 }
 
 const initialAuthContext: AuthContextProps = {
   token: null,
   setToken: () => {},
+  userId: null,
+  setUserId: () => {},
+  logout: () => {},
 };
 
 const AuthContext = createContext<AuthContextProps>(initialAuthContext);
@@ -25,14 +31,28 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  // State to hold the authentication token
   const [token, setToken_] = useState<string | null>(
     localStorage.getItem("token")
   );
 
-  // Function to set the authentication token
+  const [userId, setUserId_] = useState<string | null>(
+    localStorage.getItem("userId")
+  );
+
   const setToken = (newToken: string | null) => {
     setToken_(newToken);
+  };
+
+  const setUserId = (newId: string | null) => {
+    setUserId_(newId);
+  };
+
+  const logout = () => {
+    setToken_(null);
+    setUserId_(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    delete axios.defaults.headers.common["Authorization"];
   };
 
   useEffect(() => {
@@ -45,16 +65,25 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [token]);
 
-  // Memoized value of the authentication context
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    } else {
+      localStorage.removeItem("userId");
+    }
+  }, [userId]);
+
   const contextValue = useMemo(
     () => ({
       token,
       setToken,
+      userId,
+      setUserId,
+      logout,
     }),
-    [token]
+    [token, userId]
   );
 
-  // Provide the authentication context to the children components
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );

@@ -29,18 +29,24 @@ export const useSignup = () => {
 
 export const useLogin = () => {
   const navigate = useNavigate();
-  const { setToken } = useAuth(); // 你可以定義 setToken 存入 localStorage 或 context
+  const { setToken, setUserId } = useAuth(); // 你可以定義 setToken 存入 localStorage 或 context
 
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log('登入成功', data);
-      setToken(data.token);
+      setUserId(data.user.id); 
+      setToken(data.token)
+      console.log('userid', data.user.id);
 
       // 根據是否為店家帳號決定導向路徑
       if (data.user.shopkeeper) {
         navigate('/shop-account');
-      } else {
+      } 
+      else if (data.user.admin) {
+        navigate('/admin');
+      }
+      else {
         navigate('/home');
       }
     },

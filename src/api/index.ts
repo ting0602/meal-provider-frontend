@@ -21,7 +21,7 @@ export interface APIResponse<T> {
 
 // User 型別
 export interface User {
-  _id?: string;
+  id: string;
   account: string;
   password: string;
   employeeId: string;
@@ -29,6 +29,7 @@ export interface User {
   head_sticker: number;
   order_history?: any[];
   shopkeeper?: string | null;
+  admin?: boolean | null;
 }
 
 // 註冊用型別

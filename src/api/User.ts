@@ -9,7 +9,7 @@ export const getAllUsers = async (): Promise<User[]> => {
 
 export const getUserById = async (id: string): Promise<User> => {
   const res = await axios.get(API.userById(id));
-  return res.data;
+  return res.data.user; // ✅ 這樣才會拿到真正的 user 物件
 };
 
 export const registerUser = async (data: SignupData): Promise<User> => {

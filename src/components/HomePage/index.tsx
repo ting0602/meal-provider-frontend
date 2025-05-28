@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from 'components/CommonComponents/Header';
 import Footer from 'components/CommonComponents/Footer';
@@ -9,6 +9,9 @@ import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import DrinkShop from 'assets/shop/drink_shop.svg';
 import MealShop from 'assets/shop/meal_shop.svg';
 import './HomePage.css';
+
+import { useAuth } from 'provider/AuthProvider';
+import { useGetUserById } from 'hooks/useUser';
 
 const shopList = [
   { id: 1, type: 1, name: '天天果汁', image: DrinkShop, rating: 4.7, location: 0 },
@@ -21,51 +24,66 @@ const shopList = [
   { id: 8, type: 0, name: '天天海南雞', image: MealShop, rating: 4.3, location: 2 },
 ];
 
-
 const HomePage = () => {
+  const { userId } = useAuth();
+  const { data: user, isLoading, isError } = useGetUserById(userId!);
   const [selectedFactoryIndex, setSelectedFactoryIndex] = useState(0);
   const [showScoreModal, setShowScoreModal] = useState(true);
   const [showMealScoreModal, setShowMealScoreModal] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (user) {
+      setSelectedFactoryIndex(user.location);
+    }
+  }, [user]);
+
   const filteredShops = shopList.filter(shop => shop.location === selectedFactoryIndex);
+
+  if (isLoading) return <div>載入中...</div>;
+  if (isError || !user) return <div>載入使用者資料失敗</div>;
 
   return (
     <div>
-      <Header onSelectFactory={(_, index) => setSelectedFactoryIndex(index)} />
+      <Header
+        defaultFactoryIndex={selectedFactoryIndex}
+        onSelectFactory={(_, index) => setSelectedFactoryIndex(index)}
+      />
       <div id='home-page'>
         {showScoreModal && (
-        <ShopScoreCard
+          <ShopScoreCard
             shop={{ type: 0, name: 'cool bibimbap', image: MealShop, rating: 4.7 }}
             time="2025/06/02 13:00"
-            onClose={() => {setShowScoreModal(false); setShowMealScoreModal(true)}}
-            onSubmit={(score) => {
-            console.log('score is', score);
-            setShowScoreModal(false);
-            setShowMealScoreModal(true)
+            onClose={() => {
+              setShowScoreModal(false);
+              setShowMealScoreModal(true);
             }}
-        />
+            onSubmit={(score) => {
+              console.log('score is', score);
+              setShowScoreModal(false);
+              setShowMealScoreModal(true);
+            }}
+          />
         )}
         {showMealScoreModal && (
-        <MealScoreCard
-          meal={{
-            id: '123',
-            name: '香辣雞腿堡',
-            price: 159,
-            imageUrl: MealShop,
-            category: ['主食'],
-            likeCount: 128,
-            dislikeCount: 6,
-          }}
-          time="2025/06/02 13:00"
-          onClose={() => setShowMealScoreModal(false)}
-          onSubmit={(score) => {
-            console.log('meal score is', score);
-            setShowMealScoreModal(false);
-          }}
-        />
-      )}
-
+          <MealScoreCard
+            meal={{
+              id: '123',
+              name: '香辣雞腿堡',
+              price: 159,
+              imageUrl: MealShop,
+              category: ['主食'],
+              likeCount: 128,
+              dislikeCount: 6,
+            }}
+            time="2025/06/02 13:00"
+            onClose={() => setShowMealScoreModal(false)}
+            onSubmit={(score) => {
+              console.log('meal score is', score);
+              setShowMealScoreModal(false);
+            }}
+          />
+        )}
 
         <div className="home-content">
           {filteredShops.map((shop) => (
@@ -84,6 +102,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
+
         <button className="pay-button" onClick={() => navigate('/qrCode')}>
           <QrCodeScannerIcon className="pay-icon" />
           結帳條碼

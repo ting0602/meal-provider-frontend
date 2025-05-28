@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { List, ListItemButton, ListItemText, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -6,20 +6,28 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './Header.css';
 
 type HeaderProps = {
+  defaultFactoryIndex?: number;
   onSelectFactory?: (factory: string, index: number) => void;
 };
 
-const Header = ({ onSelectFactory }: HeaderProps) => {
+
+const Header = ({ defaultFactoryIndex, onSelectFactory }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const factories = ['台積電1廠', '台積電2廠', '台積電3廠', '台積電4廠', '台積電5廠'];
-  const [selectedFactory, setSelectedFactory] = useState(factories[0]);
+  const [selectedFactory, setSelectedFactory] = useState(
+    factories[defaultFactoryIndex ?? 0]
+  );
+
+  useEffect(() => {
+    setSelectedFactory(factories[defaultFactoryIndex ?? 0]);
+  }, [defaultFactoryIndex, factories]);
 
   const handleToggle = () => setOpen(!open);
 
   const handleSelect = (factory: string, index: number) => {
     setSelectedFactory(factory);
     setOpen(false);
-    onSelectFactory?.(factory, index); // 通知父層
+    onSelectFactory?.(factory, index);
   };
 
   return (

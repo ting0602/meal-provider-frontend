@@ -1,8 +1,8 @@
 // App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // TODO: remove the comment when AuthProvider is ready
-// import AuthProvider from "provider/AuthProvider";
-// import { ProtectedRoute } from "authentication/ProtectedRoute";
+import AuthProvider from "provider/AuthProvider";
+import { ProtectedRoute } from "authentication/ProtectedRoute";
 
 import Login from "components/Login";
 import Welcome from "components/Weclome";
@@ -18,7 +18,7 @@ import ModifyMealPage from "components/ModifyMealPage";
 import ShopAccountPage from "components/ShopAccountPage";
 import UserQRCode from "components/UserQRCode";
 import RestaurantMenu from "components/RestaurantMenu";
-import Pos from "components/Posmenu";
+// import Pos from "components/Posmenu";
 import Checkorder from "components/Checkorder";
 import ShopOrderPage from "components/ShopOrderPage";
 import QrCodeScanner from "components/QrCodeScanner";
@@ -28,13 +28,13 @@ import './App.css';
 const App = () => {
   return (
     // TODO: remove the comment when AuthProvider is ready
-    // <AuthProvider>
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          {/* <Route element={<ProtectedRoute />}> */}
+          <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/cart" element={<Cart />} />
@@ -51,11 +51,11 @@ const App = () => {
             <Route path="/shop-order" element={<ShopOrderPage />} />
             <Route path="/qrcode" element={<UserQRCode />} />
             <Route path="/scanner" element={<QrCodeScanner />} />
-          {/* </Route> */}
-          <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+          </Route>
         </Routes>
       </Router>
-    // </AuthProvider>
+    </AuthProvider>
   );
 };
 

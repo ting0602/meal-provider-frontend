@@ -5,19 +5,50 @@ import avatar1 from 'assets/avatar/Avatar1.svg';
 import avatar2 from 'assets/avatar/Avatar2.svg';
 import avatar3 from 'assets/avatar/Avatar3.svg';
 import avatar4 from 'assets/avatar/Avatar4.svg';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { BarChart } from '@mui/x-charts';
+import { useAuth } from 'provider/AuthProvider';
+import { useGetUserById, useUpdateUser } from 'hooks/useUser';
+import { useNavigate } from 'react-router-dom';
+
+const avatars = [avatar1, avatar2, avatar3, avatar4];
+const factories = ['台積電1廠', '台積電2廠', '台積電3廠', '台積電4廠', '台積電5廠'];
 
 const AccountPage = () => {
-  // # TODO: Fetch these from API
-  const avatarIndex = 1; // # TODO: Replace with API response
-  const avatars = [avatar1, avatar2, avatar3, avatar4];
-  const factories = ['台積電1廠', '台積電2廠', '台積電3廠', '台積電4廠', '台積電5廠'];
-  const username = 'User name';
-  const employeeId = '123456789';
-  const [locationIndex, setLocationIndex] = useState(0);
-  console.log('目前地點：', factories[locationIndex]);
+  const { userId, logout } = useAuth();
+  const navigate = useNavigate();
+  const { data: user, isLoading, isError } = useGetUserById(userId!);
+  const { mutate: updateUser } = useUpdateUser(userId!);
+
+  const [selectedFactoryIndex, setSelectedFactoryIndex] = useState<number | null>(null);
+  const handleLogout = () => {
+    logout();             // 清除 userId/token 等
+    navigate('/');   // 導回登入頁
+  };
+  useEffect(() => {
+    if (user) {
+      setSelectedFactoryIndex(user.location);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    return () => {
+      if (
+        user &&
+        selectedFactoryIndex !== null &&
+        selectedFactoryIndex !== user.location
+      ) {
+        updateUser({ location: selectedFactoryIndex });
+      }
+    };
+  }, [selectedFactoryIndex, user, updateUser]);
+
+  if (isLoading) return <div>載入中...</div>;
+  if (isError || !user) return <div>無法載入使用者資料</div>;
+
+  const avatarIndex = user.head_sticker ?? 0;
+  const employeeId = user.employeeId ?? '';
+  const currentLocation = factories[selectedFactoryIndex ?? 0] ?? '';
 
   const weeklySpending = [
     { day: '6/13', amount: 50 },
@@ -32,44 +63,39 @@ const AccountPage = () => {
   const previousMonth = {
     month: '5月',
     amount: 3200,
-    pay_status: true, // false:'未支付', true:'已支付'
+    pay_status: true,
   };
 
   return (
     <div>
-      <Header onSelectFactory={(_, index) => setLocationIndex(index)} />
+    <Header
+      defaultFactoryIndex={selectedFactoryIndex ?? 0}
+      onSelectFactory={(_, index) => setSelectedFactoryIndex(index)}
+    />
       <div id='account-page'>
-        <div className="account-content">
+        <div className="user-account-content">
           <img src={avatars[avatarIndex]} className="avatar" alt="avatar" />
-          <div className="username">{username}</div>
+          {/* <div className="username">{user.account}</div> */}
           <div className="employee-id">{employeeId}</div>
-          <button className="logout-button">登出</button>
+          <button className="user-logout-button" onClick={handleLogout}>登出</button>
 
           <div className="chart-card">
             <div className="chart-title-day">6/19</div>
             <div className="chart-title-count">$180</div>
             <div className="mui-chart">
               <BarChart
-                xAxis={[
-                  {
-                    scaleType: 'band',
-                    dataKey: 'day',
-                    tickLabelStyle: {
-                      fill: '#EF7754',
-                      fontSize: 12,
-                      fontWeight: 700,
-                      fontFamily: 'jf-openhuninn-2.1, Noto Sans TC, sans-serif',
-                    },
+                xAxis={[{
+                  scaleType: 'band',
+                  dataKey: 'day',
+                  tickLabelStyle: {
+                    fill: '#EF7754',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    fontFamily: 'jf-openhuninn-2.1, Noto Sans TC, sans-serif',
                   },
-                ]}
+                }]}
                 yAxis={[{ id: 'amount', scaleType: 'linear' }]}
-                series={[
-                  {
-                    dataKey: 'amount',
-                    color: '#F4AFA3',
-                    label: '消費金額',
-                  },
-                ]}
+                series={[{ dataKey: 'amount', color: '#F4AFA3', label: '消費金額' }]}
                 slotProps={{ tooltip: { trigger: 'item' } }}
                 dataset={weeklySpending}
                 width={280}
@@ -82,27 +108,12 @@ const AccountPage = () => {
                     fontSize: '0.8rem',
                     display: 'block',
                   },
-                  '.MuiChartsAxis-left': {
-                    display: 'none',
-                  },
-                  '.MuiChartsAxis-right': {
-                    display: 'none',
-                  },
-                  '.MuiChartsAxis-bottom .MuiChartsAxis-line': {
-                    stroke: 'transparent',
-                  },
-                  '.MuiChartsAxis-bottom .MuiChartsAxis-tick': {
-                    stroke: 'transparent',
-                  },
-                  '.MuiChartsAxis-line': {
-                    stroke: 'transparent',
-                  },
-                  '.MuiChartsAxis-tick': {
+                  '.MuiChartsAxis-left, .MuiChartsAxis-right': { display: 'none' },
+                  '.MuiChartsAxis-bottom .MuiChartsAxis-line, .MuiChartsAxis-bottom .MuiChartsAxis-tick': {
                     stroke: 'transparent',
                   },
                 }}
               />
-
             </div>
           </div>
 
@@ -111,16 +122,15 @@ const AccountPage = () => {
             <div className="amount">${monthlyTotal}</div>
           </div>
 
-        <div className={`info-card ${previousMonth.pay_status ? 'paid' : 'unpaid'}`}>
-          <div>{previousMonth.month}賒帳金額</div>
-          <div className="amount">
-            ${previousMonth.amount}
-            <span className={`status ${previousMonth.pay_status ? 'paid' : 'unpaid'}`}>
-              {previousMonth.pay_status ? '已支付' : '未支付'}
-            </span>
+          <div className={`info-card ${previousMonth.pay_status ? 'paid' : 'unpaid'}`}>
+            <div>{previousMonth.month}賒帳金額</div>
+            <div className="amount">
+              ${previousMonth.amount}
+              <span className={`status ${previousMonth.pay_status ? 'paid' : 'unpaid'}`}>
+                {previousMonth.pay_status ? '已支付' : '未支付'}
+              </span>
+            </div>
           </div>
-        </div>
-
         </div>
       </div>
       <Footer />
