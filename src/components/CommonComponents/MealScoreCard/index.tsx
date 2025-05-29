@@ -10,6 +10,7 @@ import MascotRabbit from 'assets/mascots/mascot_rabbit.svg'
 import MascotCat from 'assets/mascots/mascot_cat.svg'
 
 import { MenuItem } from 'types/meal';
+import { formatTime } from 'utils';
 
 import './MealScoreCard.css';
 
@@ -17,7 +18,7 @@ interface MealScoreCardProps {
   meal: MenuItem;
   time: string;
   onClose: () => void;
-  onSubmit: (score: number) => void; // 1 = like, -1 = dislike
+  onSubmit: (score: 1 | -1) => void; // 1 = like, -1 = dislike
 }
 
 const MealScoreCard = ({ meal, time, onClose, onSubmit }: MealScoreCardProps) => {
@@ -32,7 +33,7 @@ const MealScoreCard = ({ meal, time, onClose, onSubmit }: MealScoreCardProps) =>
 
         <Meal meal={meal} showQuantityControl={false} />
 
-        <div className="score-time">{time}</div>
+        <div className="score-time">{formatTime(time ?? '')}</div>
 
         <div className="like-buttons">
           <button className="like-button" onClick={() => onSubmit(1)}>

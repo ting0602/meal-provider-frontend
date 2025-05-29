@@ -5,10 +5,12 @@ export interface Shop {
   id: string;
   name: string;
   location: number;
-  menu: string[]; // or ObjectId[]
+  menu: string[];
   order: string[];
   ratingCount: number;
   ratingAvg: number;
+  type: number; 
+  image?: string;
 }
 
 export interface ShopBody {
@@ -16,7 +18,11 @@ export interface ShopBody {
   location: number;
   menu: string[];
   order: string[];
+  type: number;
+  image?: string;
 }
+
+export interface ShopBody extends Omit<Shop, 'id' | 'ratingCount' | 'ratingAvg'> {}
 
 // 取得全部商店
 export const getAllShops = async (): Promise<Shop[]> => {

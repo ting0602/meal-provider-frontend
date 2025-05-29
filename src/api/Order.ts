@@ -17,7 +17,9 @@ export interface Order {
   totalPrice: number;
   scored: boolean;
   shopName: string;
-}
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type OrderBody = Omit<Order, 'id'>;
 

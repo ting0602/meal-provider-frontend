@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import './ShopInfoCard.css';
 import StarIcon from '@mui/icons-material/Star';
+import NoImg from 'assets/default-image.png';
 
 interface ShopInfoCardProps {
   type: number; // 0 = meal, 1 = drink/dessert/else
@@ -9,17 +11,17 @@ interface ShopInfoCardProps {
 }
 
 const ShopInfoCard = ({ type, name, image, rating }: ShopInfoCardProps) => {
-  // # TODO: {Replace hardcoded props with data from API once available}
+  const [imgSrc, setImgSrc] = useState(image || NoImg);
 
   return (
     <div className={`shop-card ${type === 0 ? 'type-meal' : 'type-dessert'}`}>
-      {/* <div className="image-container"> */}
       <div className={`image-container ${type === 0 ? 'type-meal' : 'type-dessert'}`}>
-        {image ? (
-          <img src={image} alt={name} className="shop-image" />
-        ) : (
-          <div className="placeholder" />
-        )}
+        <img
+          src={imgSrc}
+          alt={name}
+          className="shop-image"
+          onError={() => setImgSrc(NoImg)}
+        />
       </div>
       <div className="info-row">
         <div className="shop-name">{name}</div>

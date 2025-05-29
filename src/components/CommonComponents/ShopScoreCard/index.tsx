@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ShopInfoCard from 'components/CommonComponents/ShopInfoCard';
 import MascotDog from 'assets/mascots/mascot_dog.svg';
 import MascotRat from 'assets/mascots/mascot_rat.svg';
-
+import { formatTime } from 'utils';
 import './ShopScoreCard.css';
 
 interface ShopScoreCardProps {
@@ -33,7 +33,7 @@ const ShopScoreCard = ({ shop, time, onClose, onSubmit }: ShopScoreCardProps) =>
         <div className="modal-title">為店家評分</div>
 
         <ShopInfoCard {...shop} />
-        <div className="score-time">{time}</div>
+        <div className="score-time">{formatTime(time)}</div>
 
         <Rating
             value={score}

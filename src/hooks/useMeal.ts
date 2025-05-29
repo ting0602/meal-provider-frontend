@@ -19,11 +19,19 @@ export const useGetAllMeals = () => {
   });
 };
 
-export const useGetMealById = (id: string) => {
+// export const useGetMealById = (id: string) => {
+//   return useQuery<MealShop>({
+//     queryKey: ['meal', id],
+//     queryFn: () => getMealById(id),
+//     enabled: !!id,
+//   });
+// };
+
+export const useGetMealById = (id: string, options?: { enabled?: boolean }) => {
   return useQuery<MealShop>({
     queryKey: ['meal', id],
     queryFn: () => getMealById(id),
-    enabled: !!id,
+    enabled: !!id && (options?.enabled ?? true),
   });
 };
 
