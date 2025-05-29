@@ -1,0 +1,79 @@
+// src/hooks/useMeal.ts
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  getAllMeals,
+  getMealById,
+  createMeal,
+  updateMeal,
+  deleteMeal,
+  likeMeal,
+  dislikeMeal,
+  MealShop,
+  MealShopBody,
+} from 'api/Meal';
+
+export const useGetAllMeals = () => {
+  return useQuery<MealShop[]>({
+    queryKey: ['meals'],
+    queryFn: getAllMeals,
+  });
+};
+
+export const useGetMealById = (id: string) => {
+  return useQuery<MealShop>({
+    queryKey: ['meal', id],
+    queryFn: () => getMealById(id),
+    enabled: !!id,
+  });
+};
+
+export const useCreateMeal = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createMeal,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meals'] });
+    },
+  });
+};
+
+export const useUpdateMeal = (id: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: Partial<MealShopBody>) => updateMeal(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meals'] });
+      queryClient.invalidateQueries({ queryKey: ['meal', id] });
+    },
+  });
+};
+
+export const useDeleteMeal = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteMeal,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meals'] });
+    },
+  });
+};
+
+export const useLikeMeal = (id: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => likeMeal(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meal', id] });
+    },
+  });
+};
+
+export const useDislikeMeal = (id: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => dislikeMeal(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meal', id] });
+    },
+  });
+};

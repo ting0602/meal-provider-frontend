@@ -1,48 +1,41 @@
 // src/api/index.ts
 
-// ✔ 本地 or 遠端後端網址
+// Backend URL
 const backendBaseUrl = 'http://localhost:8888/api';
-// 若之後部署改用正式主機，只要改這一行即可
 // const backendBaseUrl = 'https://your-production-domain.com/api';
 
 export const API = {
+  // === User APIs ===
   users: `${backendBaseUrl}/users`, // GET all, POST new user
   userById: (id: string) => `${backendBaseUrl}/users/${id}`, // GET / PUT
-  register: `${backendBaseUrl}/users/register`, // POST 註冊
-  login: `${backendBaseUrl}/users/login`,       // POST 登入
+  register: `${backendBaseUrl}/users/register`, // POST
+  login: `${backendBaseUrl}/users/login`,       // POST
+
+  userMonthlyTotal: (id: string, year: number, month: number) =>
+    `${backendBaseUrl}/users/${id}/monthly_total?year=${year}&month=${month}`,
+  userMonthlyOrders: (id: string, year: number, month: number) =>
+    `${backendBaseUrl}/users/${id}/monthly_orders?year=${year}&month=${month}`,
+  userWeeklyPrice: (id: string, date: string) =>
+    `${backendBaseUrl}/users/${id}/weekly_price?date=${date}`,
+  userLastOrder: (id: string) =>
+    `${backendBaseUrl}/users/${id}/last_order`,
+
+
+  // === Shop APIs ===
+  shops: `${backendBaseUrl}/shops`,
+  shopById: (id: string) => `${backendBaseUrl}/shops/${id}`,
+  rateShop: (id: string) => `${backendBaseUrl}/shops/${id}/rate`,
+
+  // === Order APIs ===
+  orders: `${backendBaseUrl}/orders`,
+  orderById: (id: string) => `${backendBaseUrl}/orders/${id}`,
+  ordersByBuyer: (buyerId: string) => `${backendBaseUrl}/orders?buyerId=${buyerId}`,
+  ordersByShop: (shopId: string) => `${backendBaseUrl}/orders?shopId=${shopId}`,
+
+  // === Meal APIs ===
+  meals: `${backendBaseUrl}/meals`,
+  mealById: (id: string) => `${backendBaseUrl}/meals/${id}`,
+  likeMeal: (id: string) => `${backendBaseUrl}/meals/${id}/like`,
+  dislikeMeal: (id: string) => `${backendBaseUrl}/meals/${id}/dislike`,
 };
 
-// 統一回傳格式型別
-export interface APIResponse<T> {
-  isSuccess: boolean;
-  data: T;
-  message: string | null;
-}
-
-// User 型別
-export interface User {
-  id: string;
-  account: string;
-  password: string;
-  employeeId: string;
-  location: number;
-  head_sticker: number;
-  order_history?: any[];
-  shopkeeper?: string | null;
-  admin?: boolean | null;
-}
-
-// 註冊用型別
-export interface SignupData {
-  account: string;
-  password: string;
-  employeeId: string;
-  location: number;
-  head_sticker: number;
-}
-
-// 登入用型別
-export interface LoginData {
-  account: string;
-  password: string;
-}

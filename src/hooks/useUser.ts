@@ -2,14 +2,19 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
+  User,
   getAllUsers,
   getUserById,
   registerUser,
   loginUser,
   updateUser,
+  fetchUserMonthlyTotal,
+  fetchUserLastOrderId,
+  fetchUserMonthlyOrders,
+  fetchUserWeeklyPrice
 } from 'api/User';
+
 import { useAuth } from 'provider/AuthProvider';
-import { User } from 'api';
 
 
 export const useSignup = () => {
@@ -29,7 +34,7 @@ export const useSignup = () => {
 
 export const useLogin = () => {
   const navigate = useNavigate();
-  const { setToken, setUserId } = useAuth(); // 你可以定義 setToken 存入 localStorage 或 context
+  const { setToken, setUserId } = useAuth();
 
   return useMutation({
     mutationFn: loginUser,
@@ -39,7 +44,6 @@ export const useLogin = () => {
       setToken(data.token)
       console.log('userid', data.user.id);
 
-      // 根據是否為店家帳號決定導向路徑
       if (data.user.shopkeeper) {
         navigate('/shop-account');
       } 
@@ -94,5 +98,37 @@ export const useUpdateUser = (userId: string) => {
     onError: (error) => {
       console.error('使用者資料更新失敗', error);
     },
+  });
+};
+
+export const useUserMonthlyTotal = (userId: string, year: number, month: number) => {
+  return useQuery({
+    queryKey: ['userMonthlyTotal', userId, year, month],
+    queryFn: () => fetchUserMonthlyTotal(userId, year, month),
+    enabled: !!userId,
+  });
+};
+
+export const useUserMonthlyOrders = (userId: string, year: number, month: number) => {
+  return useQuery({
+    queryKey: ['userMonthlyOrders', userId, year, month],
+    queryFn: () => fetchUserMonthlyOrders(userId, year, month),
+    enabled: !!userId,
+  });
+};
+
+export const useUserWeeklyPrice = (userId: string, date: string) => {
+  return useQuery({
+    queryKey: ['userWeeklyPrice', userId, date],
+    queryFn: () => fetchUserWeeklyPrice(userId, date),
+    enabled: !!userId && !!date,
+  });
+};
+
+export const useUserLastOrder = (userId: string) => {
+  return useQuery({
+    queryKey: ['userLastOrder', userId],
+    queryFn: () => fetchUserLastOrderId(userId),
+    enabled: !!userId,
   });
 };

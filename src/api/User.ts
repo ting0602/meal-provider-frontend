@@ -1,6 +1,41 @@
 // src/api/user.ts
 import axios from "axios";
-import { API, User, SignupData, LoginData } from './index';
+import { API } from './index';
+
+// 統一回傳格式型別
+export interface APIResponse<T> {
+  isSuccess: boolean;
+  data: T;
+  message: string | null;
+}
+
+// User 型別
+export interface User {
+  id: string;
+  account: string;
+  password: string;
+  employeeId: string;
+  location: number;
+  head_sticker: number;
+  order_history?: any[];
+  shopkeeper?: string | null;
+  admin?: boolean | null;
+}
+
+// 註冊用型別
+export interface SignupData {
+  account: string;
+  password: string;
+  employeeId: string;
+  location: number;
+  head_sticker: number;
+}
+
+// 登入用型別
+export interface LoginData {
+  account: string;
+  password: string;
+}
 
 export const getAllUsers = async (): Promise<User[]> => {
   const res = await axios.get(API.users);
@@ -9,7 +44,7 @@ export const getAllUsers = async (): Promise<User[]> => {
 
 export const getUserById = async (id: string): Promise<User> => {
   const res = await axios.get(API.userById(id));
-  return res.data.user; // ✅ 這樣才會拿到真正的 user 物件
+  return res.data.user; 
 };
 
 export const registerUser = async (data: SignupData): Promise<User> => {
@@ -31,4 +66,40 @@ export const loginUser = async (data: LoginData): Promise<LoginResponse> => {
 export const updateUser = async (id: string, data: Partial<User>): Promise<User> => {
   const res = await axios.put(API.userById(id), data);
   return res.data;
+};
+
+export const fetchUserMonthlyTotal = async (
+  id: string,
+  year: number,
+  month: number
+): Promise<number> => {
+  const res = await axios.get(API.userMonthlyTotal(id, year, month));
+  return res.data.total;
+};
+
+export const fetchUserMonthlyOrders = async (
+  id: string,
+  year: number,
+  month: number
+): Promise<
+  Array<{
+    shopName: string;
+    meals: Array<{ name: string; price: number; quantity: number }>;
+  }>
+> => {
+  const res = await axios.get(API.userMonthlyOrders(id, year, month));
+  return res.data.orders;
+};
+
+export const fetchUserWeeklyPrice = async (
+  id: string,
+  date: string
+): Promise<number[]> => {
+  const res = await axios.get(API.userWeeklyPrice(id, date));
+  return res.data.dailyPrices;
+};
+
+export const fetchUserLastOrderId = async (id: string): Promise<string> => {
+  const res = await axios.get(API.userLastOrder(id));
+  return res.data.lastOrderId;
 };

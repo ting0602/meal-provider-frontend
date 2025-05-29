@@ -8,11 +8,10 @@ import avatar4 from 'assets/avatar/Avatar4.svg';
 import { useEffect, useState } from 'react';
 import { BarChart } from '@mui/x-charts';
 import { useAuth } from 'provider/AuthProvider';
-import { useGetUserById, useUpdateUser } from 'hooks/useUser';
+import { useGetUserById, useUpdateUser, useUserWeeklyPrice, useUserMonthlyTotal } from 'hooks/useUser';
 import { useNavigate } from 'react-router-dom';
 
 const avatars = [avatar1, avatar2, avatar3, avatar4];
-const factories = ['台積電1廠', '台積電2廠', '台積電3廠', '台積電4廠', '台積電5廠'];
 
 const AccountPage = () => {
   const { userId, logout } = useAuth();
@@ -20,7 +19,24 @@ const AccountPage = () => {
   const { data: user, isLoading, isError } = useGetUserById(userId!);
   const { mutate: updateUser } = useUpdateUser(userId!);
 
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const dateStr = today.toISOString().split('T')[0];
+
+  const { data: weeklySpendingData = [] } = useUserWeeklyPrice(userId!, dateStr);
+  const { data: currentMonthTotal = 0 } = useUserMonthlyTotal(userId!, year, month);
+
+  const getAdjustedYearMonth = (year: number, month: number) => {
+    if (month === 0) return { year: year - 1, month: 12 };
+    return { year, month };
+  };
+
+  const { year: lastMonthYear, month: lastMonthNum } = getAdjustedYearMonth(year, month - 1);
+  const { data: lastMonthTotal = 0 } = useUserMonthlyTotal(userId!, lastMonthYear, lastMonthNum);
+
   const [selectedFactoryIndex, setSelectedFactoryIndex] = useState<number | null>(null);
+
   const handleLogout = () => {
     logout();             // 清除 userId/token 等
     navigate('/');   // 導回登入頁
@@ -48,23 +64,34 @@ const AccountPage = () => {
 
   const avatarIndex = user.head_sticker ?? 0;
   const employeeId = user.employeeId ?? '';
-  const currentLocation = factories[selectedFactoryIndex ?? 0] ?? '';
+  const pay_status = 'unpaid';
 
-  const weeklySpending = [
-    { day: '6/13', amount: 50 },
-    { day: '6/14', amount: 100 },
-    { day: '6/15', amount: 120 },
-    { day: '6/16', amount: 150 },
-    { day: '6/17', amount: 170 },
-    { day: '6/18', amount: 130 },
-    { day: '6/19', amount: 180 },
-  ];
-  const monthlyTotal = 700;
-  const previousMonth = {
-    month: '5月',
-    amount: 3200,
-    pay_status: true,
-  };
+
+  const weeklySpending = weeklySpendingData.map((amount, i) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - (6 - i));
+    const label = `${d.getMonth() + 1}/${d.getDate()}`;
+    return { day: label, amount };
+  });
+
+
+  // const currentLocation = factories[ßselectedFactoryIndex ?? 0] ?? '';
+
+  // const weeklySpending = [
+  //   { day: '6/13', amount: 50 },
+  //   { day: '6/14', amount: 100 },
+  //   { day: '6/15', amount: 120 },
+  //   { day: '6/16', amount: 150 },
+  //   { day: '6/17', amount: 170 },
+  //   { day: '6/18', amount: 130 },
+  //   { day: '6/19', amount: 180 },
+  // ];
+  // const monthlyTotal = 700;
+  // const previousMonth = {
+  //   month: '5月',
+  //   amount: 3200,
+  //   pay_status: true,
+  // };
 
   return (
     <div>
@@ -80,8 +107,8 @@ const AccountPage = () => {
           <button className="user-logout-button" onClick={handleLogout}>登出</button>
 
           <div className="chart-card">
-            <div className="chart-title-day">6/19</div>
-            <div className="chart-title-count">$180</div>
+            <div className="chart-title-day">{weeklySpending.at(-1)?.day}</div>
+            <div className="chart-title-count">${weeklySpending.at(-1)?.amount}</div>
             <div className="mui-chart">
               <BarChart
                 xAxis={[{
@@ -119,15 +146,15 @@ const AccountPage = () => {
 
           <div className="info-card">
             <div>本月累積金額</div>
-            <div className="amount">${monthlyTotal}</div>
+            <div className="amount">${currentMonthTotal}</div>
           </div>
 
-          <div className={`info-card ${previousMonth.pay_status ? 'paid' : 'unpaid'}`}>
-            <div>{previousMonth.month}賒帳金額</div>
+          <div className={`info-card ${pay_status ? 'paid' : 'unpaid'}`}>
+            <div>{lastMonthNum}月賒帳金額</div>
             <div className="amount">
-              ${previousMonth.amount}
-              <span className={`status ${previousMonth.pay_status ? 'paid' : 'unpaid'}`}>
-                {previousMonth.pay_status ? '已支付' : '未支付'}
+              ${lastMonthTotal}
+              <span className={`status ${pay_status ? 'paid' : 'unpaid'}`}>
+                {pay_status ? '已支付' : '未支付'}
               </span>
             </div>
           </div>
