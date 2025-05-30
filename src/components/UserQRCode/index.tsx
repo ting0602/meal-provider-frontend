@@ -3,7 +3,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { useLocation } from 'react-router-dom';
 
 import BackHeader from 'components/CommonComponents/BackHeader';
-import car from 'assets/car 1.svg'
+import car from 'assets/car1.svg'
 import av1 from 'assets/checkoutbottom/Avatar1.svg'
 import av2 from 'assets/checkoutbottom/Avatar2.svg'
 import av3 from 'assets/checkoutbottom/Avatar3.svg'

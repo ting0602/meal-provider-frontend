@@ -76,6 +76,15 @@ const HomePage = () => {
     }
   }, [lastOrder]);
 
+  useEffect(() => {
+    // remove any localStorage key that begins with "cart_"
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('cart_')) {
+        localStorage.removeItem(key);
+      }
+    });
+  }, []);
+
   const handleShopScoreSubmit = (score: number) => {
     rateShop(score);
     setHasRated(true);
@@ -154,7 +163,7 @@ const HomePage = () => {
             <div
               key={shop.id}
               className="shop-button-wrapper"
-              onClick={() => navigate('/menu', { state: { shopId: shop.id } })}
+              onClick={() => navigate(`/menu?shopId=${shop.id}${userId ? `&userId=${userId}` : ''}`)}
             >
               <ShopInfoCard
                 key={shop.id}

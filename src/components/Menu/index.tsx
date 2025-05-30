@@ -1,22 +1,24 @@
+// Menu.tsx
 import { useEffect, useState } from 'react';
 import { List } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import Meal from "components/CommonComponents/Meal";
+import Meal from 'components/CommonComponents/Meal';
 import BackHeader from 'components/CommonComponents/BackHeader';
-import mealsvg from 'assets/meal/meal.svg';
-import car from 'assets/car 1.svg'
+// import mealsvg from 'assets/meal/meal.svg';
+import NoImg from 'assets/default-image.png';
+import car from 'assets/car1.svg';
+
+import { useGetShopById } from 'hooks/useShop';
+import { useGetUserById } from 'hooks/useUser'
+import { MenuItem } from 'types/meal';
 
 import './Menu.css';
 
-import { MenuItem } from 'types/meal';
-// TODO: Replace with real API call
-// import { useRestaurantMenu } from 'hooks/useRestaurant';
-// TODO: Use shopid to get the menu data
 type CartItem = {
-    item: MenuItem;
-    quantity: number;
-  };
+  item: MenuItem;
+  quantity: number;
+};
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -24,211 +26,128 @@ function useQuery() {
 
 const Menu = () => {
   const query = useQuery();
+  const shopId = query.get('shopId');
   const userId = query.get('userId');
-    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-    const [restaurantName, setRestaurantName] = useState('好吃漢堡');
-    const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
-    // TODO: Use real backend API
-    // const { data, isLoading, error } = useRestaurantMenu(restaurantId);
+  const { data: user } = useGetUserById(userId!);
+  const { data: shop, isLoading, isError } = useGetShopById(shopId || '');
+  const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const navigate = useNavigate();
+  const cartKey = `cart_${shopId}_${userId}`;
 
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
-    const navigate = useNavigate();
-    const cartKey = userId ? `cart_user_${userId}` : 'cartItems';
-
-    useEffect(() => {
-        // 模擬從 API 取得資料
-    const mockMenu: MenuItem[] = [
-    {
-        id: '1',
-        name: 'Cheeseburger',
-        price: 159,
-        imageUrl: mealsvg,
-        category: ['推薦', '主食'],
-        likeCount: 120,
-        dislikeCount: 8
-    },
-    {
-        id: '2',
-        name: 'Chicken Nuggets',
-        price: 99,
-        imageUrl: mealsvg,
-        category: ['推薦', '副餐'],
-        likeCount: 85,
-        dislikeCount: 10
-    },
-    {
-        id: '3',
-        name: 'French Fries',
-        price: 69,
-        imageUrl: mealsvg,
-        category: ['副餐'],
-        likeCount: 140,
-        dislikeCount: 12
-    },
-    {
-        id: '4',
-        name: 'Spicy Chicken Burger',
-        price: 179,
-        imageUrl: mealsvg,
-        category: ['主食'],
-        likeCount: 102,
-        dislikeCount: 6
-    },
-    {
-        id: '5',
-        name: 'Chocolate Shake',
-        price: 89,
-        imageUrl: mealsvg,
-        category: ['其他'],
-        likeCount: 76,
-        dislikeCount: 4
-    },
-    {
-        id: '6',
-        name: 'Beef Noodles',
-        price: 119,
-        imageUrl: mealsvg,
-        category: ['主食'],
-        likeCount: 98,
-        dislikeCount: 9
-    },
-        {
-        id: '10',
-        name: 'Beef Noodles',
-        price: 119,
-        imageUrl: mealsvg,
-        category: ['主食'],
-        likeCount: 98,
-        dislikeCount: 9
-    },
-        {
-        id: '11',
-        name: 'Beef Noodles',
-        price: 119,
-        imageUrl: mealsvg,
-        category: ['主食'],
-        likeCount: 98,
-        dislikeCount: 9
-    },
-    {
-        id: '7',
-        name: 'Grilled Sandwich',
-        price: 109,
-        imageUrl: mealsvg,
-        category: ['推薦', '主食'],
-        likeCount: 67,
-        dislikeCount: 5
-    },
-    {
-        id: '8',
-        name: 'Miso Soup',
-        price: 49,
-        imageUrl: mealsvg,
-        category: ['副餐'],
-        likeCount: 50,
-        dislikeCount: 3
-    },
-    {
-        id: '9',
-        name: 'Fruit Cup',
-        price: 59,
-        imageUrl: mealsvg,
-        category: ['其他'],
-        likeCount: 72,
-        dislikeCount: 2
+  useEffect(() => {
+    const savedCart = localStorage.getItem(cartKey);
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
     }
-    ];
+  }, [cartKey]);
 
-        
-        const savedCart = localStorage.getItem('cartItems');
-        if (savedCart) {
-            setCartItems(JSON.parse(savedCart));
+  const handleQuantityChange = (meal: MenuItem, quantity: number) => {
+    setCartItems((prev) => {
+      const existing = prev.find(ci => ci.item.id === meal.id);
+      if (existing) {
+        if (quantity === 0) {
+          return prev.filter(ci => ci.item.id !== meal.id);
+        } else {
+          return prev.map(ci => ci.item.id === meal.id ? { ...ci, quantity } : ci);
         }
-
-        setMenuItems(mockMenu);
-    }, []);
-    const goToCheckout = () => {
-      localStorage.setItem(cartKey, JSON.stringify(cartItems));
-      if (userId) {
-        // 店家模式：跳轉到 checkorder
-        navigate(`/checkorder?userId=${userId}`);
-      } else {
-        // 使用者模式：跳轉到 cart 頁面
-        navigate('/cart', { state: { cartItems } });
+      } else if (quantity > 0) {
+        return [...prev, { item: meal, quantity }];
       }
-    };
+      return prev;
+    });
+  };
 
-    const handleQuantityChange = (meal: MenuItem, quantity: number) => {
-        setCartItems((prev) => {
-            const existing = prev.find(ci => ci.item.id === meal.id);
-            if (existing) {
-              if (quantity === 0) {
-                return prev.filter(ci => ci.item.id !== meal.id);
-              } else {
-                return prev.map(ci => ci.item.id === meal.id ? {...ci, quantity} : ci);
-              }
-            } else if (quantity > 0) {
-              return [...prev, {item: meal, quantity}];
-            }
-            return prev;
-          });
-      };
-    
-      const totalPrice = cartItems.reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0);
-      const goToCart = () => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        navigate('/cart', { state: { cartItems } });
-      };
+  // FIXME: negative error
+  const goToCheckout = () => {
+    // first navigate
+    if (user?.shopkeeper) {
+      // shopkeeper
+      navigate(`/checkorder?shopId=${shopId}&userId=${userId}`);
+    } else {
+      // regular user
+      navigate(`/cart?shopId=${shopId}&userId=${userId}`);
+    }
+    // then persist cart
+    localStorage.setItem(cartKey, JSON.stringify(cartItems));
+  };
 
-    return (
-        <div>
-          <BackHeader description={restaurantName} />
-          <div id="restaurant-menu">
+  const totalPrice = cartItems.reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0);
+  const restaurantName = shop?.name ?? '載入中...';
 
-              <div id="menu-category-tabs">
-                  {['推薦', '主食', '副餐', '其他'].map((cat) => (
-                      <div
-                          key={cat}
-                          className={`menu-tab ${selectedCategory === cat ? 'active' : ''}`}
-                          onClick={() => setSelectedCategory(cat as any)}
-                      >
-                          {cat}
-                      </div>
-                  ))}
-              </div>
+  const filteredMenu = (shop?.menu ?? []).filter((item: any) => {
+    if (selectedCategory === '推薦') return item.recommand;
+    const typeMap = { 主食: 0, 副餐: 1, 其他: 2 };
+    return item.type === typeMap[selectedCategory];
+  });
 
-              <List className="menu-scroll-area">
-                  <div className="menu-list">
-                      {menuItems
-                          .filter((item) => item.category.includes(selectedCategory))
-                          .map((item) => {
-                              const existing = cartItems.find(ci => ci.item.id === item.id);
-                              return (
-                                  <Meal
-                                      key={item.id}
-                                      meal={item}
-                                      initialQuantity={existing?.quantity ?? 0}
-                                      onQuantityChange={(meal, q) => handleQuantityChange(meal, q)}
-                                  />
-                              );
-                          })}
-                  </div>
-              </List>
+  if (isLoading) return <div>載入中...</div>;
+  if (isError || !shop) return <div>餐廳資料載入失敗</div>;
 
-              <div
-                className="cart-button"
-                onClick={goToCheckout}
-                style={{
-                  opacity: totalPrice > 0 ? 1 : 0.6,
-                  pointerEvents: 'auto',
-                }}
-              >
-                  <img src={car} alt="Cart" className="cart-icon" />
-                  <span className="cart-price">${totalPrice}</span>
-              </div>
-          </div>
+  return (
+    <div>
+      <BackHeader description={restaurantName} />
+      <div id="restaurant-menu">
+        <div id="menu-category-tabs">
+          {['推薦', '主食', '副餐', '其他'].map((cat) => (
+            <div
+              key={cat}
+              className={`menu-tab ${selectedCategory === cat ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(cat as any)}
+            >
+              {cat}
+            </div>
+          ))}
         </div>
-    );
+
+        <List className="menu-scroll-area">
+          <div className="menu-list">
+            {filteredMenu.map((meal: any) => {
+              const convertedMeal: MenuItem = {
+                id: meal.id,
+                name: meal.name,
+                price: meal.price,
+                imageUrl: meal.picture ?? NoImg,
+                category: (() => {
+                  const c: ("推薦" | "主食" | "副餐" | "其他")[] = [];
+                  if (meal.recommand) c.push("推薦");
+                  if (meal.type === 0) c.push("主食");
+                  else if (meal.type === 1) c.push("副餐");
+                  else c.push("其他");
+                  return c;
+                })(),
+                likeCount: meal.likes,
+                dislikeCount: meal.dislikes,
+              };
+
+              const existing = cartItems.find(ci => ci.item.id === meal.id);
+
+              return (
+                <Meal
+                  key={meal.id}
+                  meal={convertedMeal}
+                  initialQuantity={existing?.quantity ?? 0}
+                  onQuantityChange={(meal, q) => handleQuantityChange(meal, q)}
+                />
+              );
+            })}
+          </div>
+        </List>
+
+        <div
+          className="cart-button"
+          onClick={goToCheckout}
+          style={{
+            opacity: totalPrice > 0 ? 1 : 0.6,
+            pointerEvents: totalPrice > 0 ? 'auto' : 'none',
+          }}
+        >
+          <img src={car} alt="Cart" className="cart-icon" />
+          <span className="cart-price">${totalPrice}</span>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Menu;

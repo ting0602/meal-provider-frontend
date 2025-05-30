@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Meal from "components/CommonComponents/Meal";
 import BackHeader from 'components/CommonComponents/BackHeader';
 import mealsvg from 'assets/meal/meal.svg';
-import car from 'assets/car 1.svg'
+import car from 'assets/car1.svg'
 
 import './Posmenu.css';
 

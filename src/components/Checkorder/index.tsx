@@ -5,7 +5,7 @@ import { List, Button } from '@mui/material';
 import BackHeader from 'components/CommonComponents/BackHeader';
 import Meal from 'components/CommonComponents/Meal';
 import PaymentResult from 'components/CommonComponents/PaymentResult';
-import car from 'assets/car 1.svg';
+import car from 'assets/car1.svg';
 import './Checkorder.css';
 
 import { MenuItem } from 'types/meal';

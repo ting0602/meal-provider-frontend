@@ -21,7 +21,7 @@
       padding: 0.5rem 0rem;
       border-top-left-radius: 1.2rem;
       border-top-right-radius: 1.2rem;
-      border-bottom: 0.1rem solid #ccc;
+      /* border-bottom: 0.1rem solid #ccc; */
   }
   
   .cart-icon {
