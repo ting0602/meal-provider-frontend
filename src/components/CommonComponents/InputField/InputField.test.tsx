@@ -1,5 +1,4 @@
 // src/components/CommonComponents/InputField.test.tsx
-import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import InputField from 'components/CommonComponents/InputField'
