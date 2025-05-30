@@ -1,7 +1,7 @@
 #pay-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 85vh;
   max-width: 50rem;
   margin: 0 auto;
   padding-top: 1.25rem;

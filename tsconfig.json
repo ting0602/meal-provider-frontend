@@ -19,7 +19,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "provider/*":        ["provider/*"],
+      "authentication/*":  ["authentication/*"],
+      "components/*":      ["components/*"],
+      "hooks/*":           ["hooks/*"],
+      "api/*":             ["api/*"],
+      // …add any other top-level alias you use…
+   }
   },
   "include": [
     "src"
