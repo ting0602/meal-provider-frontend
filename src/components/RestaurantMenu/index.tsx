@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { List } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import KMeal from "components/CommonComponents/Keepermeal";
 import Meal from 'components/CommonComponents/Meal';
 import BackHeader from 'components/CommonComponents/BackHeader';
 import mealsvg from 'assets/meal/meal.svg';
