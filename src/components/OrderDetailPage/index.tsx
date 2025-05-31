@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './OrderDetailPage.css';
 import BackHeader from 'components/CommonComponents/BackHeader';
 interface OrderItem {
@@ -7,22 +7,20 @@ interface OrderItem {
   price: number;
 }
 
-const mockOrders: Record<string, OrderItem[]> = {
-  '1': [
-    { name: '好韓好韓韓式拌飯', quantity: 1, price: 180 },
-    { name: '好好韓韓式拌飯', quantity: 2, price: 360 },
-  ],
-  '2': [
-    { name: '水果派對', quantity: 1, price: 70 },
-    { name: '木果奶奶', quantity: 2, price: 85 },
-  ],
-  // # TODO: Replace mock data with API call using orderId
-};
+interface OrderDetailState {
+  order: {
+    meals: OrderItem[];
+    totalPrice: number;
+  };
+}
 
 const OrderDetailPage = () => {
-  const { orderId } = useParams();
-  const orderItems = mockOrders[orderId || '1'] || [];
-  const totalPrice = orderItems.reduce((sum, item) => sum + item.price, 0);
+  const { state } = useLocation();
+
+  const { meals, totalPrice } = state.order as OrderDetailState["order"];
+
+  //const orderItems = mockOrders[orderId || '1'] || [];
+  //const totalPrice = orderItems.reduce((sum, item) => sum + item.price, 0);
 
   return (
     <div id='order-detail-layout'>
@@ -36,10 +34,11 @@ const OrderDetailPage = () => {
         </div> */}
 
         <div className="order-list">
-          {orderItems.map((item, index) => (
+          {meals.map((item, index) => (
             <div key={index} className="order-row">
               <div className="item-name">{item.name} x{item.quantity}</div>
               <div className="item-price">${item.price}</div>
+              {/*<div className="item-price">${item.price * item.quantity}</div>*/}
             </div>
           ))}
         </div>
