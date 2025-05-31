@@ -77,20 +77,31 @@ export const fetchUserMonthlyTotal = async (
   return res.data.total;
 };
 
+export interface MealItem {
+  name: string
+  price: number
+  quantity: number
+}
+
+export interface MonthlyOrder {
+  shopName: string
+  meals: MealItem[]
+}
 export const fetchUserMonthlyOrders = async (
   id: string,
   year: number,
   month: number
-): Promise<
-  Array<{
-    shopName: string;
-    meals: Array<{ name: string; price: number; quantity: number }>;
-  }>
-> => {
-  const res = await axios.get(API.userMonthlyOrders(id, year, month));
-  return res.data.orders;
-};
-
+): Promise<MonthlyOrder[]> => {
+  try {
+    const res = await axios.get(API.userMonthlyOrders(id, year, month))
+    return res.data.orders as MonthlyOrder[]
+  } catch (err: any) {
+    if (err.response?.status === 404) {
+      return []
+    }
+    throw err
+  }
+}
 export const fetchUserWeeklyPrice = async (
   id: string,
   date: string
