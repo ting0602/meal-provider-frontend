@@ -13,6 +13,7 @@ import './AdminPage.css'
 
 const AdminPage: React.FC = () => {
   const today = new Date()
+  const year = today.getFullYear()
   const MIN_MONTH = 1
   const MAX_MONTH = today.getMonth() + 1
   // default to current month:
@@ -22,17 +23,19 @@ const AdminPage: React.FC = () => {
 
   // pull back totals for every user in this month
   const { data: totals, isLoading, isError } =
-    useAllUsersMonthlyTotals(today.getFullYear(), month)
-    useEffect(() => {
-      console.log(today.getFullYear(), month)
-      console.log(`Fetched totals for ${today.getFullYear()}-${month}:`, totals)
-    }, [totals, month])
+    useAllUsersMonthlyTotals(year, month)
+
+  // 只依赖 year、month、totals，就不会因为 today 是新对象而误触发
+  useEffect(() => {
+    console.log(year, month)
+    console.log(`Fetched totals for ${year}-${month}:`, totals)
+  }, [year, month, totals])
   // decorate with `paid` boolean
   const enriched = useMemo(
     () =>
       totals.map((u) => ({
         ...u,
-        paid: u.total > 0,
+        paid: u.total >= 0,
       })),
     [totals]
   )

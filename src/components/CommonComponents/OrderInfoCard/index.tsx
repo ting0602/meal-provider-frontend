@@ -1,4 +1,7 @@
-import './OrderInfoCard.css';
+// src/components/CommonComponents/OrderInfoCard.tsx
+import React, { useState } from "react";
+import NoImg from "assets/default-image.png";
+import "./OrderInfoCard.css";
 
 interface OrderInfoCardProps {
   type: 0 | 1; // 0: meal, 1: dessert/drink
@@ -9,29 +12,37 @@ interface OrderInfoCardProps {
   quantity: number;
 }
 
-const OrderInfoCard = ({
+const OrderInfoCard: React.FC<OrderInfoCardProps> = ({
   type,
   name,
   image,
   date,
   price,
   quantity,
-}: OrderInfoCardProps) => {
+}) => {
+
+  const [imgSrc, setImgSrc] = useState<string | undefined>(image);
+
   return (
     <div className="order-item">
-      <div className={`order-card ${type === 0 ? 'type-meal' : 'type-dessert'}`}>
+      <div className={`order-card ${type === 0 ? "type-meal" : "type-dessert"}`}>
         <div className="image-circle">
-          {image ? (
-            <img src={image} alt={name} className="order-image" />
-          ) : (
-            <div className="image-placeholder" />
-          )}
+          <img
+            src={imgSrc || NoImg}
+            alt={name}
+            className="order-image"
+            onError={() => {
+              if (imgSrc !== NoImg) {
+                setImgSrc(NoImg);
+              }
+            }}
+          />
         </div>
         <div className="order-info">
           <div className="order-title">{name}</div>
           <div className="order-date">{date}</div>
           <div className="order-detail">
-            ${price} {quantity}份餐點
+            ${price} {quantity} 份餐點
           </div>
         </div>
       </div>

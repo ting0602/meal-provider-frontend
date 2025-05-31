@@ -1,74 +1,128 @@
-import { useNavigate } from 'react-router-dom';
-import Footer from 'components/CommonComponents/Footer';
-import OrderInfoCard from 'components/CommonComponents/OrderInfoCard';
+// src/pages/OrderPage.tsx
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQueries } from "@tanstack/react-query";
 
-import DrinkShop from 'assets/shop/drink_shop.svg';
-import MealShop from 'assets/shop/meal_shop.svg';
-import './OrderPage.css';
+import Footer from "components/CommonComponents/Footer";
+import OrderInfoCard from "components/CommonComponents/OrderInfoCard";
 
-const orderList = [
-  {
-    id: 1,
-    type: 1,
-    name: 'magic juice',
-    image: DrinkShop,
-    date: '2025/05/28',
-    price: 65,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    type: 0,
-    name: 'noodle paradise',
-    image: MealShop,
-    date: '2025/05/28',
-    price: 480,
-    quantity: 3,
-  },
-  {
-    id: 3,
-    type: 0,
-    name: '胖胖豬韓式拌飯',
-    image: MealShop,
-    date: '2025/05/27',
-    price: 320,
-    quantity: 2,
-  },
-  {
-    id: 4,
-    type: 1,
-    name: '蜂蜜檸檬茶',
-    image: DrinkShop,
-    date: '2025/05/27',
-    price: 70,
-    quantity: 1,
-  },
-];
+import DrinkShop from "assets/shop/drink_shop.svg";
+import MealShop from "assets/shop/meal_shop.svg";
 
-const OrderPage = () => {
+import { useAuth } from "provider/AuthProvider";
+import { useGetOrdersByUser } from "hooks/useOrder";
+import { getShopById, Shop } from "api/Shop";
+import { formatTime } from "utils";
+
+import "./OrderPage.css";
+
+const OrderPage: React.FC = () => {
   const navigate = useNavigate();
+  const { userId } = useAuth();
 
-  const handleClick = (orderId: number) => {
+  const {
+    data: orders = [], 
+    isLoading: ordersLoading,
+    isError: ordersError,
+  } = useGetOrdersByUser(userId!);
+
+  const uniqueShopIds = useMemo(() => {
+    const idSet = new Set<string>();
+    for (const o of orders) {
+      if (o.shopId) {
+        idSet.add(o.shopId);
+      }
+    }
+    return Array.from(idSet);
+  }, [orders]);
+
+  const shopQueries = useQueries({
+    queries: uniqueShopIds.map((shopId) => ({
+      queryKey: ["shop", shopId],
+      queryFn: () => getShopById(shopId),
+      enabled: !!shopId,
+    })),
+  });
+
+  const shopDataMap = useMemo(() => {
+    const map: Record<string, Shop> = {};
+    shopQueries.forEach((q, idx) => {
+      if (q.data) {
+        map[uniqueShopIds[idx]] = q.data;
+      }
+    });
+    return map;
+  }, [shopQueries, uniqueShopIds]);
+
+  const shopsLoading = shopQueries.some((q) => q.isLoading);
+  const shopsError = shopQueries.some((q) => q.isError);
+
+  const orderCards = useMemo(() => {
+    const sortedOrders = [...orders].sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+    return sortedOrders.map((order) => {
+      const shopData = shopDataMap[order.shopId] || ({} as Shop);
+
+      const totalQuantity = order.meals.reduce(
+        (acc: number, meal) => acc + meal.quantity,
+        0
+      );
+
+      const shopType = shopData.type === 1 ? 1 : 0;
+
+      const rawImage = (shopData.image as string) || "";
+      const imageSrc = rawImage || (shopType === 1 ? DrinkShop : MealShop);
+
+      const dateStr = formatTime(order.createdAt);
+
+      return {
+        id: order.id,
+        type: shopType as 0 | 1,
+        name: shopData.name || "未知店家",
+        image: imageSrc,
+        date: dateStr,
+        price: order.totalPrice,
+        quantity: totalQuantity,
+      };
+    });
+  }, [orders, shopDataMap]);
+
+  if (ordersLoading || shopsLoading) {
+    return <div className="order-page-loading">Loading orders…</div>;
+  }
+  if (ordersError || shopsError) {
+    return <div className="order-page-error">Failed to load your orders.</div>;
+  }
+
+  const handleClick = (orderId: string) => {
     navigate(`/order/${orderId}`);
   };
 
   return (
-    <div>
-      <div id="order-page">
-        <div className="content">
-          {orderList.map((order) => (
-            <div key={order.id} onClick={() => handleClick(order.id)} style={{ cursor: 'pointer' }}>
+    <div id="order-page">
+      <div className="content">
+        {orderCards.length === 0 ? (
+          <div className="no-orders">目前尚無訂單</div>
+        ) : (
+          orderCards.map((o) => (
+            <div
+              key={o.id}
+              onClick={() => handleClick(o.id)}
+              style={{ cursor: "pointer" }}
+            >
               <OrderInfoCard
-                type={order.type as 0 | 1}
-                name={order.name}
-                image={order.image}
-                date={order.date}
-                price={order.price}
-                quantity={order.quantity}
+                type={o.type}
+                name={o.name}
+                image={o.image}
+                date={o.date}
+                price={o.price}
+                quantity={o.quantity}
               />
             </div>
-          ))}
-        </div>
+          ))
+        )}
       </div>
       <Footer />
     </div>
