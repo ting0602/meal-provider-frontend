@@ -52,7 +52,8 @@ describe('User API client', () => {
         admin: null
       }
     ]
-    mockedAxios.get.mockResolvedValue({ data: fakeUsers })
+    // 把 data 包成 { users: fakeUsers }
+    mockedAxios.get.mockResolvedValue({ data: { users: fakeUsers } })
 
     const result = await getAllUsers()
     expect(mockedAxios.get).toHaveBeenCalledWith(API.users)

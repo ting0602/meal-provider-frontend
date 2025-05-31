@@ -1,69 +1,82 @@
 // src/pages/AdminPage.tsx
-import React, { useState } from 'react';
-import './AdminPage.css';
+import React, { useState, useMemo, useEffect } from 'react'
+import { IconButton, TextField, Button } from '@mui/material'
+import {
+  ArrowBackIosNew as ArrowBack,
+  ArrowForwardIos as ArrowForward,
+  Search as SearchIcon,
+  NotificationsActive as NotifyIcon,
+} from '@mui/icons-material'
+import { useAllUsersMonthlyTotals } from 'hooks/useUser'
+import './AdminPage.css'
 
-import { TextField, IconButton, Button } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
-const data = [
-  { employeeId: 'EMP001', amount: 3200, paid: false },
-  { employeeId: 'EMP002', amount: 3600, paid: true },
-  { employeeId: 'EMP003', amount: 6500, paid: false },
-  { employeeId: 'EMP004', amount: 4300, paid: true },
-  { employeeId: 'EMP005', amount: 3200, paid: false },
-  { employeeId: 'EMP006', amount: 4400, paid: false },
-  { employeeId: 'EMP007', amount: 5400, paid: false },
-  { employeeId: 'EMP008', amount: 6400, paid: false },
-];
+const AdminPage: React.FC = () => {
+  const today = new Date()
+  const MIN_MONTH = 1
+  const MAX_MONTH = today.getMonth() + 1
+  // default to current month:
+  const [month, setMonth] = useState(today.getMonth() + 1)
+  const [filter, setFilter] = useState<'all' | 'paid' | 'unpaid'>('all')
+  const [search, setSearch] = useState('')
 
-const MIN_MONTH = 1;
-const MAX_MONTH = 5;
+  // pull back totals for every user in this month
+  const { data: totals, isLoading, isError } =
+    useAllUsersMonthlyTotals(today.getFullYear(), month)
+    useEffect(() => {
+      console.log(today.getFullYear(), month)
+      console.log(`Fetched totals for ${today.getFullYear()}-${month}:`, totals)
+    }, [totals, month])
+  // decorate with `paid` boolean
+  const enriched = useMemo(
+    () =>
+      totals.map((u) => ({
+        ...u,
+        paid: u.total > 0,
+      })),
+    [totals]
+  )
 
-const AdminPage = () => {
-  const [month, setMonth] = useState(5);
-  const [filter, setFilter] = useState<'all' | 'paid' | 'unpaid'>('all');
-  const [search, setSearch] = useState('');
+  // apply search + paid/unpaid filters
+  const filtered = useMemo(
+    () =>
+      enriched.filter((item) => {
+        const matchSearch = item.employeeId
+          .toLowerCase()
+          .includes(search.toLowerCase())
+        const matchFilter =
+          filter === 'all' ||
+          (filter === 'paid' && item.paid) ||
+          (filter === 'unpaid' && !item.paid)
+        return matchSearch && matchFilter
+      }),
+    [enriched, search, filter]
+  )
 
-  const toggleFilter = (type: 'paid' | 'unpaid') => {
-    setFilter((prev) => (prev === type ? 'all' : type));
-  };
+  // clamp month between 1 and 12
+  const changeMonth = (delta: number) =>
+    setMonth((m) => Math.max(MIN_MONTH, Math.min(MAX_MONTH, m + delta)))
 
-  const filtered = data.filter((item) => {
-    const matchSearch = item.employeeId.toLowerCase().includes(search.toLowerCase());
-    const matchFilter =
-      filter === 'all' || (filter === 'paid' && item.paid) || (filter === 'unpaid' && !item.paid);
-    return matchSearch && matchFilter;
-  });
-
-  const changeMonth = (delta: number) => {
-    setMonth((prev) => {
-      const next = prev + delta;
-      return Math.min(MAX_MONTH, Math.max(MIN_MONTH, next));
-    });
-  };
+  if (isLoading) return <div>Loading…</div>
+  if (isError) return <div>Failed to load data</div>
 
   return (
     <div className="admin-container">
-        <div className="month-header">
+      <div className="month-header">
         <IconButton
-            onClick={() => changeMonth(-1)}
-            style={{ visibility: month > MIN_MONTH ? 'visible' : 'hidden' }}
+          onClick={() => changeMonth(-1)}
+          style={{ visibility: month > MIN_MONTH ? 'visible' : 'hidden' }}
         >
-            <ArrowBackIosNewIcon />
+          <ArrowBack />
         </IconButton>
-
-        <h2 className="month-title">{month}月</h2>
-
+        <h2 className="month-title">{month} 月</h2>
         <IconButton
-            onClick={() => changeMonth(1)}
-            style={{ visibility: month < MAX_MONTH ? 'visible' : 'hidden' }}
+          onClick={() => changeMonth(1)}
+          style={{ visibility: month < MAX_MONTH ? 'visible' : 'hidden' }}
         >
-            <ArrowForwardIosIcon />
+          <ArrowForward />
         </IconButton>
-        </div>
+      </div>
 
       <div className="search-bar">
         <TextField
@@ -72,9 +85,7 @@ const AdminPage = () => {
           placeholder="搜尋員工 ID"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          InputProps={{
-            endAdornment: <SearchIcon />
-          }}
+          InputProps={{ endAdornment: <SearchIcon /> }}
           fullWidth
         />
       </div>
@@ -82,13 +93,15 @@ const AdminPage = () => {
       <div className="filter-buttons">
         <button
           className={filter === 'unpaid' ? 'active' : ''}
-          onClick={() => toggleFilter('unpaid')}
+          onClick={() =>
+            setFilter((f) => (f === 'unpaid' ? 'all' : 'unpaid'))
+          }
         >
           未支付
         </button>
         <button
           className={filter === 'paid' ? 'active' : ''}
-          onClick={() => toggleFilter('paid')}
+          onClick={() => setFilter((f) => (f === 'paid' ? 'all' : 'paid'))}
         >
           已支付
         </button>
@@ -96,21 +109,24 @@ const AdminPage = () => {
 
       <div className="card-list">
         {filtered.map((item) => (
-          <div key={item.employeeId} className={`card ${item.paid ? 'paid' : 'unpaid'}`}>
+          <div
+            key={item.userId}
+            className={`card ${item.paid ? 'paid' : 'unpaid'}`}
+          >
             <div className="label">{item.employeeId}</div>
-            <div className="amount">${item.amount}</div>
+            <div className="amount">${item.total}</div>
             <div className="status">{item.paid ? '已支付' : '未支付'}</div>
           </div>
         ))}
       </div>
 
       <div className="notify-button">
-        <Button variant="contained" startIcon={<NotificationsActiveIcon />}>
+        <Button variant="contained" startIcon={<NotifyIcon />}>
           一鍵通知
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AdminPage;
+export default AdminPage

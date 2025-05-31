@@ -39,7 +39,7 @@ export interface LoginData {
 
 export const getAllUsers = async (): Promise<User[]> => {
   const res = await axios.get(API.users);
-  return res.data;
+  return res.data.users as User[];
 };
 
 export const getUserById = async (id: string): Promise<User> => {

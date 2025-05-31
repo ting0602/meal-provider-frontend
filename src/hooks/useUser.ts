@@ -1,5 +1,5 @@
 // hooks/useUser.ts
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueries } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
   User,
@@ -132,3 +132,43 @@ export const useUserLastOrder = (userId: string) => {
     enabled: !!userId,
   });
 };
+
+export interface UserMonthlyTotal {
+  userId: string
+  employeeId: string
+  total: number
+}
+
+export const useAllUsersMonthlyTotals = (
+  year: number,
+  month: number
+): {
+  data: UserMonthlyTotal[]
+  isLoading: boolean
+  isError: boolean
+} => {
+  // Get raw users from hook and explicitly type
+  const { data: rawUsers = [], isLoading: loadingUsers, isError: errorUsers } = useGetUsers()
+  const users: User[] = Array.isArray(rawUsers) ? rawUsers : []
+
+  // Fetch monthly total for each user
+  const totalsQueries = useQueries({
+    queries: users.map((u: User) => ({
+      queryKey: ['userMonthlyTotal', u.id, year, month],
+      queryFn: () => fetchUserMonthlyTotal(u.id, year, month),
+      enabled: !!u.id,
+    })),
+  })
+
+  // Build typed result array
+  const data: UserMonthlyTotal[] = users.map((u: User, idx: number) => ({
+    userId: u.id,
+    employeeId: u.employeeId,
+    total: totalsQueries[idx].data ?? 0,
+  }))
+
+  const isLoading = loadingUsers || totalsQueries.some((q) => q.isLoading)
+  const isError = errorUsers || totalsQueries.some((q) => q.isError)
+
+  return { data, isLoading, isError }
+}
