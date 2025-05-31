@@ -7,6 +7,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import MealShop from 'assets/shop/meal_shop.svg';
 import BackHeader from 'components/CommonComponents/BackHeader';
 import './ModifyMealPage.css';
+import { useUpdateMeal, useDeleteMeal } from 'hooks/useMeal';
+
+// 在 component 裡初始化 hooks
 
 const ModifyMealPage = () => {
   const location = useLocation();
@@ -32,6 +35,8 @@ const ModifyMealPage = () => {
   */
   
   const meal = location.state?.meal;
+  const updateMealMutation = useUpdateMeal(meal?.id);
+  const deleteMealMutation = useDeleteMeal();
 
   useEffect(() => {
     if (!meal) {
@@ -68,12 +73,42 @@ const ModifyMealPage = () => {
     if (!isFormValid) return;
     console.log({ image, name, price, category, isRecommended });
     // TODO: 呼叫 API 更新資料
+    if (!isFormValid || !meal) return;
+
+    updateMealMutation.mutate(
+      {
+        name,
+        price: Number(price),
+        type: category,
+        recommand: isRecommended
+        // 若你的 API 支援圖片上傳，這邊要特別處理 image；目前暫略
+      },
+      {
+        onSuccess: () => {
+          alert('更新成功！');
+          navigate(-1); // 返回上一頁
+        },
+        onError: () => {
+          alert('更新失敗，請稍後再試。');
+        },
+      }
+    );
   };
 
   const handleDelete = () => {
+    if (!meal) return;
+
     if (window.confirm('確定要刪除這個餐點嗎？')) {
       console.log('刪除餐點');
-      // TODO: 呼叫 API 刪除資料
+      deleteMealMutation.mutate(meal.id, {
+        onSuccess: () => {
+          alert('刪除成功');
+          navigate(-1); // 返回上一頁
+        },
+        onError: () => {
+          alert('刪除失敗，請稍後再試。');
+        },
+      });
     }
   };
   const hasChanges =

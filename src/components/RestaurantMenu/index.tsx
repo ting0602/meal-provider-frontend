@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { List } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Meal from 'components/CommonComponents/Meal';
 import BackHeader from 'components/CommonComponents/BackHeader';
 import mealsvg from 'assets/meal/meal.svg';
 
+import { useGetShopById } from 'hooks/useShop';
 import { MenuItem } from 'types/meal';
+import NoImg from 'assets/default-image.png';
 import './RestaurantMenu.css';
 
 // TODO: Replace with real API call
@@ -19,90 +21,46 @@ type CartItem = {
   };
 
 const RestaurantMenu = () => {
-    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-    const [restaurantName, setRestaurantName] = useState('Awesome Burger');
+    const location = useLocation();
+    const { shopId } = location.state || {};
+    const { data: shop, isLoading, isError } = useGetShopById(shopId);
+    const navigate = useNavigate();
+    //const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+    //const [restaurantName, setRestaurantName] = useState('Awesome Burger');
     const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
     // TODO: Use real backend API
     // const { data, isLoading, error } = useRestaurantMenu(restaurantId);
-
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
-    const navigate = useNavigate();
+    
 
     useEffect(() => {
-        // 模擬從 API 取得資料
-        const mockMenu: MenuItem[] = [
-            {
-                id: '1',
-                name: 'Cheeseburger',
-                price: 159,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-                likeCount: 120,
-                dislikeCount: 8
-            },
-            {
-                id: '2',
-                name: 'Chicken Nuggets',
-                price: 99,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-                likeCount: 85,
-                dislikeCount: 10
-            },
-            {
-                id: '3',
-                name: 'French Fries',
-                price: 69,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-                likeCount: 140,
-                dislikeCount: 12
-            },
-            {
-                id: '4',
-                name: 'two Chicken ',
-                price: 139,
-                imageUrl: mealsvg,
-                category: ['推薦' , '副餐'],
-                likeCount: 102,
-                dislikeCount: 6
-            },
-            {
-                id: '5',
-                name: 'chocolate Nuggets',
-                price: 49,
-                imageUrl: mealsvg,
-                category: ['推薦' , '其他'],
-                likeCount: 140,
-                dislikeCount: 12    
-            },
-            {
-                id: '6',
-                name: 'beef noodles',
-                price: 119,
-                imageUrl: mealsvg,
-                category: ['推薦' , '主食'],
-                likeCount: 98,  
-                dislikeCount: 9
-            },
-        ];
-        
         const savedCart = localStorage.getItem('cartItems');
         if (savedCart) {
-            setCartItems(JSON.parse(savedCart));
+          setCartItems(JSON.parse(savedCart));
         }
-
-        setMenuItems(mockMenu);
     }, []);
 
-        const goToCreate = () => { // need adjust
+    const goToCreate = () => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        navigate('/create-meal', { state: { shopId, cartItems } });
+    };
+    /*
+    const goToCreate = () => { // need adjust
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
         navigate('/create-meal', { state: { cartItems } });
-        };
+    };*/
+    const filteredMenu = (shop?.menu ?? []).filter((item: any) => {
+        if (selectedCategory === '推薦') return item.recommand;
+        const typeMap = { 主食: 0, 副餐: 1, 其他: 2 };
+        return item.type === typeMap[selectedCategory];
+    });
+
+    if (isLoading) return <div>載入中...</div>;
+    if (isError || !shop) return <div>餐廳資料載入失敗</div>;
 
     return (
         <div>
-            <BackHeader description={restaurantName} /> 
+            <BackHeader description={shop?.name || '載入中...'} /> 
             <div id="restaurant-menu">
                 <div id="menu-category-tabs">
                     {['推薦', '主食', '副餐', '其他'].map((cat) => (
@@ -118,17 +76,32 @@ const RestaurantMenu = () => {
 
                 <List className="menu-scroll-area">
                     <div className="menu-list">
-                        {menuItems
-                            .filter((item) => item.category.includes(selectedCategory))
-                            .map((item) => {
-                                //const existing = cartItems.find(ci => ci.item.id === item.id);
-                                return (
-                                    <Meal
-                                        key={item.id}
-                                        meal={item}
-                                        editable
-                                    />
-                                );
+                        {filteredMenu.map((meal: any) => {
+                            const convertedMeal: MenuItem = {
+                                id: meal.id,
+                                name: meal.name,
+                                price: meal.price,
+                                imageUrl: meal.picture ?? NoImg,
+                                category: (() => {
+                                const c: ("推薦" | "主食" | "副餐" | "其他")[] = [];
+                                if (meal.recommand) c.push("推薦");
+                                if (meal.type === 0) c.push("主食");
+                                else if (meal.type === 1) c.push("副餐");
+                                else c.push("其他");
+                                return c;
+                                })(),
+                                likeCount: meal.likes,
+                                dislikeCount: meal.dislikes,
+                            };
+
+                            //const existing = cartItems.find(ci => ci.item.id === meal.id);
+                            return (
+                                <Meal
+                                    key={meal.id}
+                                    meal={convertedMeal}
+                                    editable
+                                />
+                            );
                             })}
                     </div>
                 </List>
