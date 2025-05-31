@@ -103,26 +103,22 @@ const OrderPage: React.FC = () => {
   return (
     <div id="order-page">
       <div className="content">
-        {orderCards.length === 0 ? (
-          <div className="no-orders">目前尚無訂單</div>
-        ) : (
-          orderCards.map((o) => (
-            <div
-              key={o.id}
-              onClick={() => handleClick(o.id)}
-              style={{ cursor: "pointer" }}
-            >
-              <OrderInfoCard
-                type={o.type}
-                name={o.name}
-                image={o.image}
-                date={o.date}
-                price={o.price}
-                quantity={o.quantity}
-              />
-            </div>
-          ))
-        )}
+        {orderCards.map((o) => (
+          <div
+            key={o.id}
+            onClick={() => handleClick(o.id)}
+            style={{ cursor: "pointer" }}
+          >
+            <OrderInfoCard
+              type={o.type}
+              name={o.name}
+              image={o.image}
+              date={o.date}
+              price={o.price}
+              quantity={o.quantity}
+            />
+          </div>
+        ))}
       </div>
       <Footer />
     </div>
