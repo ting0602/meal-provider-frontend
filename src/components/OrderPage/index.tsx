@@ -6,8 +6,8 @@ import { useQueries } from "@tanstack/react-query";
 import Footer from "components/CommonComponents/Footer";
 import OrderInfoCard from "components/CommonComponents/OrderInfoCard";
 
-import DrinkShop from "assets/shop/drink_shop.svg";
-import MealShop from "assets/shop/meal_shop.svg";
+// import DrinkShop from "assets/shop/drink_shop.svg";
+// import MealShop from "assets/shop/meal_shop.svg";
 
 import { useAuth } from "provider/AuthProvider";
 import { useGetOrdersByUser } from "hooks/useOrder";
@@ -70,10 +70,10 @@ const OrderPage: React.FC = () => {
         0
       );
 
-      const shopType = shopData.type === 1 ? 1 : 0;
+      const shopType = shopData.type;
 
-      const rawImage = (shopData.image as string) || "";
-      const imageSrc = rawImage || (shopType === 1 ? DrinkShop : MealShop);
+      const imageSrc = (shopData.image as string) || "";
+      // const imageSrc = rawImage || (shopType === 1 ? DrinkShop : MealShop);
 
       const dateStr = formatTime(order.createdAt);
 
