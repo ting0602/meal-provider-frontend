@@ -9,6 +9,7 @@ import Welcome from "components/Weclome";
 import SignUp from "components/SignUP";
 import HomePage from "components/HomePage";
 import Menu from "components/Menu";
+import PosMenu from "components/PosMenu";
 import Cart from "components/Cart";
 import OrderPage from "components/OrderPage";
 import OrderDetailPage from "components/OrderDetailPage";
@@ -37,6 +38,7 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/posmenu" element={<PosMenu />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/order" element={<OrderPage />} />
             <Route path="/order/:orderId" element={<OrderDetailPage />} />
