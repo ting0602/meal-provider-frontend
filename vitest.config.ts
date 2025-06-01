@@ -2,6 +2,7 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import path from 'path'
 
 export default defineConfig({
   plugins: [
@@ -16,10 +17,12 @@ export default defineConfig({
     coverage: { reporter: ['text', 'lcov'] },
   },
   resolve: {
-    alias: {
-      // (Optional override or addition)
-      // 'provider': '/src/provider',
-      // 'authentication': '/src/authentication',
-    }
+    alias: [
+      { find: 'hooks', replacement: path.resolve(__dirname, 'src/hooks') },
+      { find: 'api', replacement: path.resolve(__dirname, 'src/api') },
+      { find: 'components', replacement: path.resolve(__dirname, 'src/components') },
+      { find: 'provider', replacement: path.resolve(__dirname, 'src/provider') },
+      { find: 'authentication', replacement: path.resolve(__dirname, 'src/authentication') },
+    ],
   }
 })
