@@ -11,6 +11,7 @@ import BackHeader from 'components/CommonComponents/BackHeader';
 import NoImg from 'assets/default-image.png';
 import car from 'assets/car1.svg';
 
+import { useAuth } from 'provider/AuthProvider';
 import { useGetShopById } from 'hooks/useShop';
 import { useGetUserById } from 'hooks/useUser'
 import { MenuItem } from 'types/meal';
@@ -27,11 +28,16 @@ function useQuery() {
 }
 
 const PosMenu = () => {
-  const query = useQuery();
-  const shopId = query.get('shopId');
-  const userId = query.get('userId');
+  //const query = useQuery();
+  //const buyerId = query.get('buyerId');
+  const { userId } = useAuth();
   const { data: user } = useGetUserById(userId!);
-  const { data: shop, isLoading, isError } = useGetShopById(shopId || '');
+  const shopId = user?.shopkeeper;
+  const { data: shop, isLoading, isError } = useGetShopById(shopId!);
+  //const shopName = shop?.name || '';
+  const location = useLocation();
+  const { buyerId } = location.state || {};
+
   const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const navigate = useNavigate();
@@ -63,7 +69,12 @@ const PosMenu = () => {
   // FIXME: negative error
   const goToCheckout = () => {
     // shopkeeper
-    navigate(`/checkorder?shopId=${shopId}&userId=${userId}`);
+    navigate(`/checkorder?shopId=${shopId}&buyerId=${buyerId}`, {
+      state: {
+        buyerId,
+        cartItems,
+      },
+    });
     localStorage.setItem(cartKey, JSON.stringify(cartItems));
   };
 

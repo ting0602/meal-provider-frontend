@@ -35,20 +35,22 @@ const QrCodeScanner = () => {
       try {
         await scanner.start(
           { facingMode: 'environment' },
-          { fps: 10, qrbox: 250, aspectRatio: 1.0 },
+          { fps: 20, qrbox: 250, aspectRatio: 1.0 },
           async (decodedText) => {
             if (scanCompleted) return;
             setScanCompleted(true);
 
             try {
               const parsed = JSON.parse(decodedText);
-              if (parsed.userId && !parsed.orderId) {
-                await safeStopScanner();
-                navigate(`/menu?userId=${parsed.userId}`);
-              } else if (parsed.userId && parsed.orderId) {
+              if (parsed.userId && parsed.cartItems) {
                 await safeStopScanner();
                 navigate('/checkorder', {
-                  state: { userId: parsed.userId, orderId: parsed.orderId },
+                  state: { buyerId: parsed.userId, cartItems: parsed.cartItems },
+                });
+              } else if (parsed.userId && !parsed.cartItems) {
+                await safeStopScanner();
+                navigate(`/posmenu`, {
+                  state: { buyerId: parsed.userId },
                 });
               } else {
                 setError('QRCode 缺少 userId 或 orderId');

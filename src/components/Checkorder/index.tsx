@@ -2,6 +2,11 @@ import {useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { List, Button } from '@mui/material';
 
+import { useAuth } from 'provider/AuthProvider';
+import { useGetUserById } from 'hooks/useUser';
+import { useGetShopById } from 'hooks/useShop';
+import { useCreateOrder } from 'hooks/useOrder';
+
 import BackHeader from 'components/CommonComponents/BackHeader';
 import Meal from 'components/CommonComponents/Meal';
 import PaymentResult from 'components/CommonComponents/PaymentResult';
@@ -16,10 +21,17 @@ type CartItem = {
 };
 
 const Checkorder = () => {
+  const { userId } = useAuth();
+  const { data: user } = useGetUserById(userId!);
+  const shopId = user?.shopkeeper;
+  const { data: shop } = useGetShopById(shopId!);
+  const shopName = shop?.name || '';
   const location = useLocation();
-  const navigate = useNavigate();
-  const { userId, orderId } = location.state || {};
-  const fakeStaffId = userId || 'user_123456';
+  const { mutate: createOrder } = useCreateOrder();
+  //const navigate = useNavigate();
+  const { buyerId, cartItems: incomingCartItems } = location.state || {};
+  //const fakeStaffId = userId || 'user_123456';
+  const cartItems: CartItem[] = Array.isArray(incomingCartItems) ? incomingCartItems : [];
 
   const [showResult, setShowResult] = useState(false);
   const [paymentData, setPaymentData] = useState<{
@@ -31,7 +43,7 @@ const Checkorder = () => {
     homePath?: string;
     ordersPath?: string; 
   } | null>(null);
-
+  /*
   const testCartItems: CartItem[] = [
     {
       item: {
@@ -69,19 +81,43 @@ const Checkorder = () => {
       },
       quantity: 1,
     },
-  ];
+  ];*/
 
-  const cartItems: CartItem[] = location.state?.cartItems || testCartItems;
-  const totalPrice = cartItems.reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0);
+  const totalPrice = cartItems
+    .map((ci) => {
+      const price = Number(ci?.item?.price ?? 0);
+      const quantity = Number(ci?.quantity ?? 0);
+      return isNaN(price) || isNaN(quantity) ? 0 : price * quantity;
+    })
+    .reduce((sum, val) => sum + val, 0);
 
   const goToCheckout = () => {
-    console.log('確認訂單:', { userId, orderId });// adjust
+    console.log('確認訂單:', { buyerId, cartItems });
     
+    const meals = cartItems.map(ci => ({
+      name: ci.item.name,
+      price: ci.item.price,
+      quantity: ci.quantity,
+    }));
+    const timestamp = new Date().toISOString();
+    const mealsId = cartItems.map(ci => ci.item.id);
+    createOrder({
+      buyerId,
+      shopId: shopId!,
+      meals,
+      mealsId,
+      totalPrice,
+      scored: false,
+      shopName,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    });
+
     setPaymentData({
       success: true,
       amount: totalPrice,
       timestamp: new Date().toLocaleString(),
-      shopName: '胖胖豬韓式拌飯',
+      shopName,
       homePath: "/shop-account",
       ordersPath: "/shop-order",
     });
@@ -89,7 +125,7 @@ const Checkorder = () => {
   };
 
   const goToOrder = () => {
-    console.log('取消訂單:', { userId, orderId });
+    console.log('取消訂單:', { buyerId, cartItems });
     
     setPaymentData({
       success: false,
@@ -105,7 +141,7 @@ const Checkorder = () => {
       <div id="checkorder-page">
         <div id="staffid">
           <div className="staff">員工代號:</div>
-          <div className="id">{fakeStaffId}</div>
+          <div className="id">{userId}</div>
         </div>
 
         <List className="cart-scroll-area">
