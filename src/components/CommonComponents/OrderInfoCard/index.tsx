@@ -42,7 +42,7 @@ const OrderInfoCard: React.FC<OrderInfoCardProps> = ({
           <div className="order-title">{name}</div>
           <div className="order-date">{date}</div>
           <div className="order-detail">
-            ${price} {quantity} 份餐點
+            ${price} / {quantity}份餐點
           </div>
         </div>
       </div>
