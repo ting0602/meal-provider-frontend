@@ -86,6 +86,7 @@ export interface MealItem {
 export interface MonthlyOrder {
   shopName: string
   meals: MealItem[]
+  order_time: string
 }
 export const fetchUserMonthlyOrders = async (
   id: string,
@@ -102,6 +103,7 @@ export const fetchUserMonthlyOrders = async (
     throw err
   }
 }
+
 export const fetchUserWeeklyPrice = async (
   id: string,
   date: string

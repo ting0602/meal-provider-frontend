@@ -9,9 +9,10 @@ import {
 } from '@mui/icons-material'
 import { useAllUsersMonthlyTotals } from 'hooks/useUser'
 import { User, getUserById } from 'api/User'                      // Import base fetch function
-import { fetchUserMonthlyOrders } from 'api/User'                 // Import base fetch function
+import { fetchUserMonthlyOrders, MonthlyOrder } from 'api/User'                 // Import base fetch function
 import { useQueries } from '@tanstack/react-query'
 import emailjs from '@emailjs/browser'
+import { formatTime } from 'utils'
 import './AdminPage.css'
 
 const AdminPage: React.FC = () => {
@@ -78,7 +79,7 @@ const AdminPage: React.FC = () => {
     queries: unpaidUsers.map((u) => ({
       queryKey: ['userMonthlyOrders', u.userId, year, month],
       queryFn: () => fetchUserMonthlyOrders(u.userId, year, month),
-      enabled: !!u.userId && u.total !== 0, // Only fetch if total != 0
+      enabled: !!u.userId && u.total !== 0,
       retry: false,
       refetchOnWindowFocus: false,
     })),
@@ -137,7 +138,11 @@ const AdminPage: React.FC = () => {
 
 
       const toEmail = userInfo.account
-      const orders = ordersArray
+      const orders = ordersQueries[idx].data as MonthlyOrder[] | undefined
+      if (!orders) {
+        console.warn(`Skip orders at index ${idx}`)
+        return
+      }
 
       // Convert orders to plain text (could be formatted as HTML instead)
       let detailText = ''
@@ -145,7 +150,7 @@ const AdminPage: React.FC = () => {
         detailText = '當月無任何訂單紀錄。'
       } else {
         orders.forEach((o) => {
-          detailText += `● [${o.shopName}]\n`
+          detailText += `● [${formatTime(o.order_time)}] ${o.shopName}\n`
           o.meals.forEach((m) => {
             detailText += `   – ${m.name} x ${m.quantity} (單價 ${m.price} 元)\n`
           })
