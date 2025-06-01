@@ -4,16 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import Meal from 'components/CommonComponents/Meal';
 import BackHeader from 'components/CommonComponents/BackHeader';
-import mealsvg from 'assets/meal/meal.svg';
-
 import { useGetShopById } from 'hooks/useShop';
 import { MenuItem } from 'types/meal';
 import NoImg from 'assets/default-image.png';
 import './RestaurantMenu.css';
-
-// TODO: Replace with real API call
-// import { useRestaurantMenu } from 'hooks/useRestaurant';
-// TODO: Use shop id to get menu data
 
 type CartItem = {
     item: MenuItem;
@@ -25,11 +19,7 @@ const RestaurantMenu = () => {
     const { shopId } = location.state || {};
     const { data: shop, isLoading, isError } = useGetShopById(shopId);
     const navigate = useNavigate();
-    //const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-    //const [restaurantName, setRestaurantName] = useState('Awesome Burger');
     const [selectedCategory, setSelectedCategory] = useState<'推薦' | '主食' | '副餐' | '其他'>('推薦');
-    // TODO: Use real backend API
-    // const { data, isLoading, error } = useRestaurantMenu(restaurantId);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     
 
@@ -44,11 +34,7 @@ const RestaurantMenu = () => {
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
         navigate('/create-meal', { state: { shopId, cartItems } });
     };
-    /*
-    const goToCreate = () => { // need adjust
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        navigate('/create-meal', { state: { cartItems } });
-    };*/
+
     const filteredMenu = (shop?.menu ?? []).filter((item: any) => {
         if (selectedCategory === '推薦') return item.recommand;
         const typeMap = { 主食: 0, 副餐: 1, 其他: 2 };
