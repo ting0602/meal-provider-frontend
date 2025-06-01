@@ -6,7 +6,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import './Meal.css';
 import PlusIcon from 'assets/meal/plus.svg';
 import MinusIcon from 'assets/meal/minus.svg';
-import mealsvg from 'assets/meal/meal.svg';
+// import mealsvg from 'assets/meal/meal.svg';
 
 import { MenuItem } from 'types/meal';
 
@@ -53,7 +53,7 @@ const Meal: React.FC<MealProps> = ({
       <div className="meal-content">
         <div className="meal-image-wrapper">
           <div className="meal-image-background">
-            <img src={mealsvg} alt={meal.name} className="meal-image" />
+            <img src={meal.imageUrl} alt={meal.name} className="meal-image" />
           </div>
         </div>
 
