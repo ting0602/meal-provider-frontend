@@ -37,16 +37,19 @@ export const useCreateMeal = () => {
   });
 };
 
-export const useUpdateMeal = (id: string) => {
+export const useUpdateMeal = (mealId: string, shopId: string) => {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: Partial<MealShopBody>) => updateMeal(id, data),
-    onSuccess: () => {
+
+  return useMutation<MealShop, Error, MealShopBody, unknown>({
+    mutationFn: (newData: MealShopBody) => updateMeal(mealId, newData),
+
+    onSuccess: (updatedMeal: MealShop) => {
       queryClient.invalidateQueries({ queryKey: ['meals'] });
-      queryClient.invalidateQueries({ queryKey: ['meal', id] });
+      queryClient.invalidateQueries({ queryKey: ['shop', shopId] });
     },
   });
 };
+
 
 export const useDeleteMeal = () => {
   const queryClient = useQueryClient();

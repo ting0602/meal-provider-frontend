@@ -31,8 +31,10 @@ export const useGetShopById = (shopId: string) => {
     queryKey: ['shop', shopId],
     queryFn: () => getShopById(shopId),
     enabled: !!shopId,
+    refetchOnMount: true,
   });
 };
+
 
 export const useCreateShop = () => {
   const queryClient = useQueryClient();

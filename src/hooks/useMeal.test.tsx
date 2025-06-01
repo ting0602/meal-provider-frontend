@@ -56,13 +56,38 @@ describe('useCreateMeal', () => {
 
 describe('useUpdateMeal', () => {
   it('calls updateMeal mutation', async () => {
-    const patch = { price: 40 }
-    vi.spyOn(api, 'updateMeal').mockResolvedValue({ id:'m4', name:'D', price:40, type:0, recommand:true, shop:'s4', likes:0, dislikes:0 })
-    const { result } = renderHook(() => useUpdateMeal('m4'), { wrapper: createWrapper() })
-    result.current.mutate(patch)
-    await waitFor(() => expect(result.current.isSuccess).toBe(true))
-  })
-})
+    // 1. 先模拟后端回传时带上 shop 字段（s4）
+    vi.spyOn(api, 'updateMeal').mockResolvedValue({
+      id: 'm4',
+      name: 'D',
+      price: 40,
+      type: 0,
+      recommand: true,
+      shop: 's4',
+      likes: 0,
+      dislikes: 0,
+      picture: '',
+    });
+
+    const patch = {
+      name: 'D',
+      price: 40,
+      type: 1,
+      recommand: true,
+      picture: '',
+      shop: 'shop4',
+    };
+
+    // 3. 这边要传两个参数：mealId 和 shopId
+    const { result } = renderHook(
+      () => useUpdateMeal('meal4', 'shop4'),
+      { wrapper: createWrapper() }
+    );
+
+    result.current.mutate(patch);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  });
+});
 
 describe('useDeleteMeal', () => {
   it('calls deleteMeal mutation', async () => {
