@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { List, Button } from '@mui/material';
 
 import { useAuth } from 'provider/AuthProvider';
-import { useGetUserById } from 'hooks/useUser';
+import { useGetUserById, useUpdateUser } from 'hooks/useUser';
 import { useGetShopById } from 'hooks/useShop';
 import { useCreateOrder } from 'hooks/useOrder';
 
@@ -27,9 +27,12 @@ const Checkorder = () => {
   const { data: shop } = useGetShopById(shopId!);
   const shopName = shop?.name || '';
   const location = useLocation();
+  const navigate = useNavigate();
   const { mutate: createOrder } = useCreateOrder();
+  
   //const navigate = useNavigate();
   const { buyerId, cartItems: incomingCartItems } = location.state || {};
+  const { mutateAsync: updateUser } = useUpdateUser(buyerId!);
   //const fakeStaffId = userId || 'user_123456';
   const cartItems: CartItem[] = Array.isArray(incomingCartItems) ? incomingCartItems : [];
 
@@ -112,7 +115,7 @@ const Checkorder = () => {
       createdAt: timestamp,
       updatedAt: timestamp,
     });
-
+    updateUser({ id: buyerId, pay_state: 1 });
     setPaymentData({
       success: true,
       amount: totalPrice,
@@ -126,7 +129,7 @@ const Checkorder = () => {
 
   const goToOrder = () => {
     console.log('取消訂單:', { buyerId, cartItems });
-    
+    updateUser({ id: buyerId, pay_state: 2 });
     setPaymentData({
       success: false,
       errorType: '支付失敗',

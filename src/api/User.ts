@@ -20,6 +20,7 @@ export interface User {
   order_history?: any[];
   shopkeeper?: string | null;
   admin?: boolean | null;
+  pay_state?: number;
 }
 
 // 註冊用型別

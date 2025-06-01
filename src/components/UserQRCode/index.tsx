@@ -1,9 +1,13 @@
 // components/UserQRCode.tsx
+import { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from 'provider/AuthProvider';
-
+import { useGetUserById, useUpdateUser } from 'hooks/useUser';
+import { fetchUserLastOrderId } from 'api/User';
+import { getOrderById } from 'api/Order';
 import BackHeader from 'components/CommonComponents/BackHeader';
+import PaymentResult from 'components/CommonComponents/PaymentResult';
 import car from 'assets/car1.svg'
 import av1 from 'assets/checkoutbottom/Avatar1.svg'
 import av2 from 'assets/checkoutbottom/Avatar2.svg'
@@ -14,8 +18,53 @@ import './UserQRCode.css';
 const UserQRCode = () => {
   const { userId } = useAuth();
   const location = useLocation();
+  const { data: user, refetch } = useGetUserById(userId!);
+  const updateUser = useUpdateUser(userId!);
   const { totalPrice, cartItems } = location.state || {};
+  const [showResult, setShowResult] = useState(false);
+  const [paymentData, setPaymentData] = useState<{
+    success: boolean;
+    amount?: number;
+    timestamp?: string;
+    shopName?: string;
+    errorType?: string;
+    homePath?: string;
+    ordersPath?: string; 
+  } | null>(null);
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      await refetch();
+      const payState = user?.pay_state;
+
+      if (payState === 1) {
+        const lastOrderId = await fetchUserLastOrderId(userId!);
+        const lastOrder = await getOrderById(lastOrderId);
+        setPaymentData({
+          success: true,
+          amount: lastOrder.totalPrice,
+          timestamp: lastOrder.createdAt,
+          shopName: lastOrder.shopName,
+          homePath: '/account',
+          ordersPath: '/order',
+        });
+        setShowResult(true);
+
+        await updateUser.mutateAsync({ id: userId!, pay_state: 0 });
+      } else if (payState === 2) {
+        setPaymentData({
+          success: false,
+          errorType: '支付失敗',
+          homePath: "/account",
+        });
+        setShowResult(true);
+
+        await updateUser.mutateAsync({ id: userId!, pay_state: 0 });
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [userId, user, refetch, updateUser]);
   // ➕ 根據有沒有 orderId 決定 QRCode 的內容
   const qrData = cartItems
     ? JSON.stringify({ userId, cartItems }) // ✔ 用戶已點餐
@@ -43,6 +92,19 @@ const UserQRCode = () => {
           <img src={av4} alt="step 4" />
         </div>
       </div>
+
+      {showResult && paymentData && (
+        <PaymentResult
+          success={paymentData.success}
+          amount={paymentData.amount}
+          timestamp={paymentData.timestamp}
+          shopName={paymentData.shopName}
+          errorType={paymentData.errorType as '支付失敗'}
+          homePath={paymentData.homePath}
+          ordersPath={paymentData.ordersPath}
+          onClose={() => setShowResult(false)}
+        />
+      )}
     </div>
   );
 };
