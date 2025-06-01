@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import Meal from 'components/CommonComponents/Meal';
 import BackHeader from 'components/CommonComponents/BackHeader';
-import mealsvg from 'assets/meal/meal.svg';
-
 import { useGetShopById } from 'hooks/useShop';
 import { MenuItem } from 'types/meal';
 import NoImg from 'assets/default-image.png';
