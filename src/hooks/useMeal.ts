@@ -19,14 +19,6 @@ export const useGetAllMeals = () => {
   });
 };
 
-// export const useGetMealById = (id: string) => {
-//   return useQuery<MealShop>({
-//     queryKey: ['meal', id],
-//     queryFn: () => getMealById(id),
-//     enabled: !!id,
-//   });
-// };
-
 export const useGetMealById = (id: string, options?: { enabled?: boolean }) => {
   return useQuery<MealShop>({
     queryKey: ['meal', id],
@@ -37,7 +29,7 @@ export const useGetMealById = (id: string, options?: { enabled?: boolean }) => {
 
 export const useCreateMeal = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<MealShop, Error, MealShopBody, unknown>({
     mutationFn: createMeal,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['meals'] });

@@ -37,5 +37,8 @@ export const API = {
   mealById: (id: string) => `${backendBaseUrl}/meals/${id}`,
   likeMeal: (id: string) => `${backendBaseUrl}/meals/${id}/like`,
   dislikeMeal: (id: string) => `${backendBaseUrl}/meals/${id}/dislike`,
+
+  // === Upload Image API ===
+  uploadImage: `${backendBaseUrl}/uploadImage`,
 };
 
