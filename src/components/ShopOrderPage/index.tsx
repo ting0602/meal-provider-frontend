@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import FooterShop from 'components/CommonComponents/FooterShop';
 import OrderInfoCard from 'components/CommonComponents/OrderInfoCard';
-
+import { useAuth } from 'provider/AuthProvider';
+import { useGetUserById } from 'hooks/useUser';
 // import DrinkShop from 'assets/shop/drink_shop.svg';
 import MealShop from 'assets/shop/meal_shop.svg';
 import './ShopOrderPage.css';
+
 
 const orderList = [
   {
@@ -47,7 +49,8 @@ const orderList = [
 
 const ShopOrderPage = () => {
   const navigate = useNavigate();
-
+  const { userId } = useAuth();
+  const { data: user } = useGetUserById(userId!);
   const handleClick = (orderId: number) => {
     navigate(`/order/${orderId}`);
   };
@@ -70,7 +73,7 @@ const ShopOrderPage = () => {
           ))}
         </div>
       </div>
-      <FooterShop />
+      <FooterShop avatarIndex={user?.head_sticker ?? 0} />
     </div>
   );
 };

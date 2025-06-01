@@ -11,6 +11,7 @@ import OrderInfoCard from "components/CommonComponents/OrderInfoCard";
 
 import { useAuth } from "provider/AuthProvider";
 import { useGetOrdersByUser } from "hooks/useOrder";
+import { useGetUserById } from "hooks/useUser";
 import { getShopById, Shop } from "api/Shop";
 import { formatTime } from "utils";
 
@@ -19,12 +20,13 @@ import "./OrderPage.css";
 const OrderPage: React.FC = () => {
   const navigate = useNavigate();
   const { userId } = useAuth();
+  const { data: user } = useGetUserById(userId!)
 
   const {
-    data: orders = [], 
+    data: orders = [],
     isLoading: ordersLoading,
     isError: ordersError,
-  } = useGetOrdersByUser(userId!);
+  } = useGetOrdersByUser(userId!)
 
   const uniqueShopIds = useMemo(() => {
     const idSet = new Set<string>();
@@ -131,7 +133,7 @@ const OrderPage: React.FC = () => {
           </div>
         ))}
       </div>
-      <Footer />
+      <Footer avatarIndex={user?.head_sticker ?? 0} />
     </div>
   );
 };

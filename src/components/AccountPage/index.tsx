@@ -160,7 +160,7 @@ const AccountPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer avatarIndex={user.head_sticker} />
     </div>
   );
 };

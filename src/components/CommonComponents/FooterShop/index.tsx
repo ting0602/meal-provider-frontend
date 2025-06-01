@@ -12,15 +12,14 @@ import './FooterShop.css';
 
 const avatarImages = [avatar1, avatar2, avatar3, avatar4];
 
-const FooterShop = () => {
-  const [avatarIndex, setAvatarIndex] = useState(0);
+interface FooterShopProps {
+  /** Index of avatar image (0–3) */
+  avatarIndex: number
+}
+
+const FooterShop: React.FC<FooterShopProps> = ({ avatarIndex }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    // # TODO: {Fetch avatar index from backend}
-    setAvatarIndex(1);
-  }, []);
 
   const navItems = [
     { label: '訂單', icon: <ReceiptLongIcon className="footer-icon" />, path: '/shop-order' },

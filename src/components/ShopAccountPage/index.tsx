@@ -51,7 +51,7 @@ const ShopAccountPage = () => {
 
                 </div>
             </div>
-            <FooterShop />
+            <FooterShop avatarIndex={user?.head_sticker ?? 0} />
             
         </div>
     );

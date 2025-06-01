@@ -181,7 +181,7 @@ const HomePage = () => {
           結帳條碼
         </button>
       </div>
-      <Footer />
+      <Footer avatarIndex={user.head_sticker} />
     </div>
   );
 };

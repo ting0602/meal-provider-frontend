@@ -30,8 +30,8 @@
 }
 
 #meal-card .meal-image {
-  width: 90%;
-  height: 90%;
+  width: 70%;
+  height: 65%;
   object-fit: contain;
   border-radius: 0.2rem;
 }
