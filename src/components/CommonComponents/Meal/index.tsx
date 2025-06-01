@@ -92,6 +92,7 @@ const Meal: React.FC<MealProps> = ({
                       src={MinusIcon}
                       alt="減少"
                       className="quantity-icon"
+                      loading="lazy"
                     />
                   </div>
                   <div className="quantity-display-box">{quantity}</div>
