@@ -97,7 +97,18 @@ const OrderPage: React.FC = () => {
   }
 
   const handleClick = (orderId: string) => {
-    navigate(`/order/${orderId}`);
+    const selectedOrder = orders.find((o) => o.id === orderId);
+    if (!selectedOrder) return;
+
+    const shop = shopDataMap[selectedOrder.shopId] || {};
+
+    navigate(`/order/${orderId}`, {
+      state: {
+        order: selectedOrder,
+        shop,
+      },
+    });
+    //navigate(`/order/${orderId}`);
   };
 
   return (

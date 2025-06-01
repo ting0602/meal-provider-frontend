@@ -3,31 +3,55 @@ import {
   Button, TextField, ToggleButton, ToggleButtonGroup
 } from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import BackHeader from 'components/CommonComponents/BackHeader';
+import { useCreateMeal } from 'hooks/useMeal';
+import mealsvg from 'assets/meal/meal.svg';
 import './CreateMealPage.css';
 
 const CreateMealPage = () => {
+  const location = useLocation();
+  const { shopId } = location.state || {};
   const [image, setImage] = useState<File | null>(null);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState<number | null>(null);
   const [isRecommended, setIsRecommended] = useState(false);
   const navigate = useNavigate();
+  const createMealMutation = useCreateMeal();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
     }
   };
-
-  const isFormValid = !!image && !!name && !!price && category !== null;
-
+  // TODO: fig need add
+  //const isFormValid = !!image && !!name && !!price && category !== null;
+  const isFormValid = !!name && !!price && category !== null;
 
   const handleSubmit = () => {
     if (!isFormValid) return;
     // # TODO: Using API to add meal
     console.log({ image, name, price, category, isRecommended });
+    createMealMutation.mutate(
+      {
+        name,
+        price: Number(price),
+        type: category!,
+        recommand: isRecommended,
+        shop: shopId
+        // ⚠️ 若有處理圖片上傳 API，這邊應一併加入 image（建議用 FormData 格式）
+      },
+      {
+        onSuccess: () => {
+          alert('新增成功！');
+          navigate(-1); // 回到上一頁或主頁
+        },
+        onError: () => {
+          alert('新增失敗，請稍後再試。');
+        },
+      }
+    );
   };
 
   return (
