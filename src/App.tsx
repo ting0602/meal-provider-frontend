@@ -51,6 +51,7 @@ const App = () => {
             <Route path="/checkorder" element={<Checkorder />} />
             {/*pos to shopkeep, pos is almost the same as menu */}
             <Route path="/shop-order" element={<ShopOrderPage />} />
+            <Route path="/shop-order/:orderId" element={<OrderDetailPage />} />
             <Route path="/qrcode" element={<UserQRCode />} />
             <Route path="/scanner" element={<QrCodeScanner />} />
             <Route path="/admin" element={<AdminPage />} />

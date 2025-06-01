@@ -21,12 +21,12 @@ const OrderPage: React.FC = () => {
   const navigate = useNavigate();
   const { userId } = useAuth();
   const { data: user } = useGetUserById(userId!)
-
   const {
     data: orders = [],
     isLoading: ordersLoading,
     isError: ordersError,
   } = useGetOrdersByUser(userId!)
+  
 
   const uniqueShopIds = useMemo(() => {
     const idSet = new Set<string>();
@@ -110,7 +110,6 @@ const OrderPage: React.FC = () => {
         shop,
       },
     });
-    //navigate(`/order/${orderId}`);
   };
 
   return (

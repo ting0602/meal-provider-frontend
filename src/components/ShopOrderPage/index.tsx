@@ -61,7 +61,7 @@ const ShopOrderPage: React.FC = () => {
   }
 
   const handleClick = (orderId: string | number) => {
-    navigate(`/order/${orderId}`, {
+    navigate(`/shop-order/${orderId}`, {
       state: { orderId },
     })
   }
