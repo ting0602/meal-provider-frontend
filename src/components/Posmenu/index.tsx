@@ -16,7 +16,7 @@ import { useGetShopById } from 'hooks/useShop';
 import { useGetUserById } from 'hooks/useUser'
 import { MenuItem } from 'types/meal';
 
-import './PosMenu.css';
+import './Posmenu.css';
 
 type CartItem = {
   item: MenuItem;

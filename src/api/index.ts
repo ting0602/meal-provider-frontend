@@ -1,7 +1,7 @@
 // src/api/index.ts
 
 // Backend URL
-const backendBaseUrl = 'http://localhost:8888/api';
+const backendBaseUrl = '/api';
 // const backendBaseUrl = 'https://your-production-domain.com/api';
 
 export const API = {
