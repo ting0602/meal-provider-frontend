@@ -9,7 +9,7 @@ import Welcome from "components/Weclome";
 import SignUp from "components/SignUP";
 import HomePage from "components/HomePage";
 import Menu from "components/Menu";
-import PosMenu from "components/PosMenu";
+import PosMenu from "components/Posmenu";
 import Cart from "components/Cart";
 import OrderPage from "components/OrderPage";
 import OrderDetailPage from "components/OrderDetailPage";

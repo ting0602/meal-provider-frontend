@@ -17,7 +17,7 @@ import { useGetUserById } from 'hooks/useUser'
 import { MenuItem } from 'types/meal';
 import { useCreateOrder } from 'hooks/useOrder';
 import { fetchUserLastOrderId } from 'api/User';
-import './PosMenu.css';
+import './Posmenu.css';
 
 type CartItem = {
   item: MenuItem;
