@@ -5,7 +5,8 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from 'provider/AuthProvider';
 import { useGetUserById, useUpdateUser } from 'hooks/useUser';
 import { fetchUserLastOrderId } from 'api/User';
-import { getOrderById } from 'api/Order';
+import { getOrderById, deleteOrder } from 'api/Order';
+import { useDeleteOrder } from 'hooks/useOrder';
 import BackHeader from 'components/CommonComponents/BackHeader';
 import PaymentResult from 'components/CommonComponents/PaymentResult';
 import car from 'assets/car1.svg'
@@ -20,7 +21,7 @@ const UserQRCode = () => {
   const location = useLocation();
   const { data: user, refetch } = useGetUserById(userId!);
   const updateUser = useUpdateUser(userId!);
-  const { totalPrice, cartItems } = location.state || {};
+  const { totalPrice, cartItems, orderId } = location.state || {};
   const [showResult, setShowResult] = useState(false);
   const [paymentData, setPaymentData] = useState<{
     success: boolean;
@@ -52,6 +53,13 @@ const UserQRCode = () => {
 
         await updateUser.mutateAsync({ id: userId!, pay_state: 0 });
       } else if (payState === 2) {
+        // add 取消訂單
+        const lastOrderId = await fetchUserLastOrderId(userId!);
+        //const lastOrder = await getOrderById(lastOrderId);
+        //await useDeleteOrder(lastOrderId);
+        console.log("delete orderid：", lastOrderId);
+        await deleteOrder(lastOrderId);
+        
         setPaymentData({
           success: false,
           errorType: '支付失敗',
@@ -66,10 +74,10 @@ const UserQRCode = () => {
     return () => clearInterval(interval);
   }, [userId, user, refetch, updateUser]);
   // ➕ 根據有沒有 orderId 決定 QRCode 的內容
-  const qrData = cartItems
-    ? JSON.stringify({ userId, cartItems }) // ✔ 用戶已點餐
+  const qrData = orderId
+    ? JSON.stringify({ userId, orderId }) // ✔ 用戶已點餐
     : JSON.stringify({ userId});          // ✔ 用戶尚未點餐
-
+  console.log('QRCode data:', qrData);
   return (
     <div>
       <BackHeader description="結帳" />
@@ -81,7 +89,7 @@ const UserQRCode = () => {
 
         <div id="user-qrcode">
           <QRCodeSVG value={qrData} size={210} />
-          <div className="userid">{userId}</div>
+          <div className="userid">{user?.employeeId}</div>
           {/*orderId && <div className="orderid">訂單編號：{orderId}</div>*/}
         </div>
 

@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { List } from '@mui/material';
 
+import { useCreateOrder } from 'hooks/useOrder';
+import { useGetShopById } from 'hooks/useShop';
+import { fetchUserLastOrderId } from 'api/User';
+import { useUserLastOrder } from 'hooks/useUser';
+
 import BackHeader from 'components/CommonComponents/BackHeader';
 import Meal from 'components/CommonComponents/Meal';
 import car from 'assets/car1.svg';
@@ -21,7 +26,9 @@ const Cart = () => {
   const userId = query.get('userId');
   const shopId = query.get('shopId');
   const cartKey = `cart_${shopId}_${userId ?? 'guest'}`;
-
+  const { mutate: createOrder } = useCreateOrder();
+  //const { fetchUserLastOrderId } = useUserLastOrder();
+  const { data: shop } = useGetShopById(shopId!);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
@@ -37,13 +44,41 @@ const Cart = () => {
 
   const totalPrice = cartItems.reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0);
 
-  const goToCheckout = () => {
-    navigate('/qrcode', {
-      state: {
-        totalPrice,
-        cartItems,
-      },
+  const goToCheckout = async () =>  {
+
+    const meals = cartItems.map(ci => ({
+      name: ci.item.name,
+      price: ci.item.price,
+      quantity: ci.quantity,
+    }));
+    const timestamp = new Date().toISOString();
+    const mealsId = cartItems.map(ci => ci.item.id);
+
+    const createorder = await createOrder({
+      buyerId: userId!,
+      shopId: shopId!,
+      meals,
+      mealsId,
+      totalPrice,
+      scored: false,
+      shopName: shop?.name!,
+      createdAt: timestamp,
+      updatedAt: timestamp,
     });
+    console.log('定單：', createorder);
+    setTimeout(async () => {
+      const lastOrderId = await fetchUserLastOrderId(userId!);
+      navigate('/qrcode', {
+        state: {
+          totalPrice,
+          cartItems,
+          orderId: lastOrderId,
+        },
+      });
+    }, 1500);
+    //const lastOrderId = await fetchUserLastOrderId(userId!);
+    //const lastOrderId = await fetchUserLastOrderId(userId!);
+
   };
 
   return (
