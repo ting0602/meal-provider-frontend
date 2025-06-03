@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# NYCU 2025 Cloud Native Development and Best Practice - Meal Provider
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -14,15 +16,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.  
 You may also see any lint errors in the console.
 
-### `npm test` or `npm run test:unit`
+### `npm run test`
 
 Runs the unit tests in watch mode using Vitest.  
-Both commands invoke Vitest in interactive watch mode.
-
-### `npm run test:ci`
-
-Runs all tests once and generates a coverage report.  
-This command is intended for continuous integration environments. It is equivalent to running `vitest run --coverage`.
+> **Note:** Only `npm run test` is supported; there is no `npm test`, `npm run test:unit`, or `npm run test:ci` in this project.
 
 ### `npm run build`
 
@@ -36,40 +33,21 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+> **Warning:** This is a one-way operation. Once you `eject`, you can’t go back!
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc.) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point, you are on your own.
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc.) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At that point, you are on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and medium deployments, and you shouldn't feel obligated to use this feature. However, we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+You don’t have to ever use `eject`. The curated feature set is suitable for small and medium deployments, and you shouldn’t feel obligated to use this feature.
 
-## Learn More
+## Email Notification Feature (AdminPage)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+If you want to enable the email notification functionality on the AdminPage, you need to create a `.env` file in the root of your project and add the following environment variables. These values are masked here; you must replace each masked entry with your own values obtained from [EmailJS](https://www.emailjs.com):
+```
+# .env
+REACT_APP_EMAILJS_SERVICE_ID=service_xxx
+REACT_APP_EMAILJS_TEMPLATE_ID=template_xxx
+REACT_APP_EMAILJS_USER_ID=xxxxxxxxxx
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
