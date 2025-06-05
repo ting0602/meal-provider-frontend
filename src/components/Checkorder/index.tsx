@@ -41,7 +41,7 @@ const Checkorder = () => {
         id: meal.id,
         name: meal.name,
         price: meal.price,
-        imageUrl: meal.picture ?? '',
+        imageUrl: '', // order.meals didn't save imageUrl, so we use a placeholder
         category: [], // 若需要分類可再補資料來源
         likeCount: meal.likes ?? 0,
         dislikeCount: meal.dislikes ?? 0,

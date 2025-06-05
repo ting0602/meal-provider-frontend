@@ -14,6 +14,7 @@ import av1 from 'assets/checkoutbottom/Avatar1.svg'
 import av2 from 'assets/checkoutbottom/Avatar2.svg'
 import av3 from 'assets/checkoutbottom/Avatar3.svg'
 import av4 from 'assets/checkoutbottom/Avatar4.svg'
+import { formatTime } from 'utils';
 import './UserQRCode.css';
 
 const UserQRCode = () => {
@@ -44,7 +45,7 @@ const UserQRCode = () => {
         setPaymentData({
           success: true,
           amount: lastOrder.totalPrice,
-          timestamp: lastOrder.createdAt,
+          timestamp: formatTime(lastOrder.createdAt),
           shopName: lastOrder.shopName,
           homePath: '/account',
           ordersPath: '/order',
