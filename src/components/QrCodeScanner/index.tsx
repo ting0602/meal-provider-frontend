@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import PaymentResult from 'components/CommonComponents/PaymentResult';
 import './QrCodeScanner.css';
 
+import { useGetOrderById } from 'hooks/useOrder';
+import { MenuItem } from 'types/meal';
+
 const QrCodeScanner = () => {
   const qrRegionId = 'qr-reader';
   const qrRef = useRef<Html5Qrcode | null>(null);
@@ -41,13 +44,35 @@ const QrCodeScanner = () => {
             setScanCompleted(true);
 
             try {
+              //console.log("掃描到的文字：", decodedText);
               const parsed = JSON.parse(decodedText);
-              if (parsed.userId && parsed.cartItems) {
+              //console.log("掃描到的user：", parsed.userId);
+              //console.log("掃描到的order：", parsed.orderId);
+              //const res = await fetch(`/api/orders/${parsed.orderId}`);
+              //console.log('fetch 回傳狀態：', res.status);
+              if (parsed.userId && parsed.orderId) {
                 await safeStopScanner();
+                //const order = useGetOrderById(parsed.orderId)
+                //const order = await fetch(`/api/orders/${parsed.orderId}`).then((res) => res.json());
+                //console.log('fetch 回傳狀態：', order.status);
+                /*
+                const cartItems = order.items.map((item: any) => ({
+                  item: {
+                    id: item.meal.id,
+                    name: item.meal.name,
+                    price: item.meal.price,
+                    imageUrl: item.meal.picture ?? '',
+                    category: [], // optional: 可根據需要補上分類資訊
+                    likeCount: item.meal.likes,
+                    dislikeCount: item.meal.dislikes,
+                  } as MenuItem,
+                  quantity: item.quantity,
+                }));
+                */
                 navigate('/checkorder', {
-                  state: { buyerId: parsed.userId, cartItems: parsed.cartItems },
+                  state: { buyerId: parsed.userId, orderId: parsed.orderId },
                 });
-              } else if (parsed.userId && !parsed.cartItems) {
+              } else if (parsed.userId && !parsed.orderId) {
                 await safeStopScanner();
                 navigate(`/posmenu`, {
                   state: { buyerId: parsed.userId },

@@ -1,11 +1,11 @@
-import {useState} from 'react';
+import { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { List, Button } from '@mui/material';
 
 import { useAuth } from 'provider/AuthProvider';
 import { useGetUserById, useUpdateUser } from 'hooks/useUser';
 import { useGetShopById } from 'hooks/useShop';
-import { useCreateOrder } from 'hooks/useOrder';
+import { useGetOrderById } from 'hooks/useOrder';
 
 import BackHeader from 'components/CommonComponents/BackHeader';
 import Meal from 'components/CommonComponents/Meal';
@@ -28,13 +28,27 @@ const Checkorder = () => {
   const shopName = shop?.name || '';
   const location = useLocation();
   const navigate = useNavigate();
-  const { mutate: createOrder } = useCreateOrder();
   
   //const navigate = useNavigate();
-  const { buyerId, cartItems: incomingCartItems } = location.state || {};
+  const { buyerId, orderId } = location.state || {};
   const { mutateAsync: updateUser } = useUpdateUser(buyerId!);
   //const fakeStaffId = userId || 'user_123456';
-  const cartItems: CartItem[] = Array.isArray(incomingCartItems) ? incomingCartItems : [];
+  const { data: order, isLoading, isError } = useGetOrderById(orderId!);
+  const cartItems: CartItem[] = useMemo(() => {
+    if (!order || !Array.isArray(order.meals)) return [];
+    return order.meals.map((meal: any) => ({
+      item: {
+        id: meal.id,
+        name: meal.name,
+        price: meal.price,
+        imageUrl: '', // order.meals didn't save imageUrl, so we use a placeholder
+        category: [], // 若需要分類可再補資料來源
+        likeCount: meal.likes ?? 0,
+        dislikeCount: meal.dislikes ?? 0,
+      },
+      quantity: meal.quantity ?? 1,
+    }));
+  }, [order]);
 
   const [showResult, setShowResult] = useState(false);
   const [paymentData, setPaymentData] = useState<{
@@ -96,7 +110,7 @@ const Checkorder = () => {
 
   const goToCheckout = () => {
     console.log('確認訂單:', { buyerId, cartItems });
-    
+    /*
     const meals = cartItems.map(ci => ({
       name: ci.item.name,
       price: ci.item.price,
@@ -114,7 +128,7 @@ const Checkorder = () => {
       shopName,
       createdAt: timestamp,
       updatedAt: timestamp,
-    });
+    });*/
     updateUser({ id: buyerId, pay_state: 1 });
     setPaymentData({
       success: true,
@@ -127,9 +141,9 @@ const Checkorder = () => {
     setShowResult(true);
   };
 
-  const goToOrder = () => {
+  const goToOrder = async () => {
     console.log('取消訂單:', { buyerId, cartItems });
-    updateUser({ id: buyerId, pay_state: 2 });
+    await updateUser({ id: buyerId, pay_state: 2 });
     setPaymentData({
       success: false,
       errorType: '支付失敗',
@@ -137,6 +151,9 @@ const Checkorder = () => {
     });
     setShowResult(true);
   };
+
+  if (isLoading) return <div>載入中...</div>;
+  if (isError || !order) return <div>無法取得訂單資料</div>;
 
   return (
     <div id="checkorder-outline">

@@ -1,7 +1,9 @@
 // src/api/index.ts
 
 // Backend URL
-const backendBaseUrl = '/api';
+// FIXME: Update this URL to match your backend server
+// If you using k8s, you should use '/api'
+const backendBaseUrl = 'http://localhost:8888/api';
 // const backendBaseUrl = 'https://your-production-domain.com/api';
 
 export const API = {

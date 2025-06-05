@@ -15,7 +15,8 @@ import { useAuth } from 'provider/AuthProvider';
 import { useGetShopById } from 'hooks/useShop';
 import { useGetUserById } from 'hooks/useUser'
 import { MenuItem } from 'types/meal';
-
+import { useCreateOrder } from 'hooks/useOrder';
+import { fetchUserLastOrderId } from 'api/User';
 import './Posmenu.css';
 
 type CartItem = {
@@ -34,6 +35,7 @@ const PosMenu = () => {
   const { data: user } = useGetUserById(userId!);
   const shopId = user?.shopkeeper;
   const { data: shop, isLoading, isError } = useGetShopById(shopId!);
+  const { mutate: createOrder } = useCreateOrder();
   //const shopName = shop?.name || '';
   const location = useLocation();
   const { buyerId } = location.state || {};
@@ -67,14 +69,38 @@ const PosMenu = () => {
   };
 
   // FIXME: negative error
-  const goToCheckout = () => {
+  const goToCheckout = async () => {
     // shopkeeper
-    navigate(`/checkorder?shopId=${shopId}&buyerId=${buyerId}`, {
-      state: {
-        buyerId,
-        cartItems,
-      },
+    // add create order
+    const meals = cartItems.map(ci => ({
+      name: ci.item.name,
+      price: ci.item.price,
+      quantity: ci.quantity,
+    }));
+    const timestamp = new Date().toISOString();
+    const mealsId = cartItems.map(ci => ci.item.id);
+
+    const createorder = await createOrder({
+      buyerId: buyerId!,
+      shopId: shopId!,
+      meals,
+      mealsId,
+      totalPrice,
+      scored: false,
+      shopName: shop?.name!,
+      createdAt: timestamp,
+      updatedAt: timestamp,
     });
+    console.log('定單：', createorder);
+    setTimeout(async () => {
+      const lastOrderId = await fetchUserLastOrderId(buyerId!);
+      navigate(`/checkorder?shopId=${shopId}&buyerId=${buyerId}`, {
+        state: {
+          buyerId,
+          orderId: lastOrderId,
+        },
+      });
+    }, 1500);
     localStorage.setItem(cartKey, JSON.stringify(cartItems));
   };
 

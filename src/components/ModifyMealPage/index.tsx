@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import MealShop from 'assets/shop/meal_shop.svg';
 import BackHeader from 'components/CommonComponents/BackHeader';
 import { useUpdateMeal, useDeleteMeal } from 'hooks/useMeal';
 import { useUploadImage } from 'hooks/useUploadImage';
@@ -17,16 +16,17 @@ import { useAuth } from 'provider/AuthProvider';
 import { useGetUserById } from 'hooks/useUser';
 import './ModifyMealPage.css';
 
+import NoImgPlaceholder from 'assets/default-image.png';
+
 const ModifyMealPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userId } = useAuth();
-  const user = useGetUserById(userId!);
-  const meal = location.state?.meal;
-  const updateMealMutation = useUpdateMeal(meal!.id, user.data?.shopkeeper || '');
-  const deleteMealMutation = useDeleteMeal();
+  const { data: user } = useGetUserById(userId!);
 
-  // 如果找不到 meal 資料，跳回上一頁
+  const meal = location.state?.meal;
+  const shopId = user?.shopkeeper || '';
+
   useEffect(() => {
     if (!meal) {
       alert('錯誤：找不到餐點資料，將返回前頁。');
@@ -34,17 +34,19 @@ const ModifyMealPage: React.FC = () => {
     }
   }, [meal, navigate]);
 
-  // 1. 圖片編輯相關
+
+  const initialImageSrc = meal?.imageUrl || NoImgPlaceholder;
+  const [currentSrc, setCurrentSrc] = useState<string>(initialImageSrc);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
-  // 圖片上傳到 S3 的 hook
+
   const {
     upload: uploadImageToS3,
     loading: uploading,
     error: uploadError,
   } = useUploadImage();
 
-  // 2. 其他欄位：名稱鎖死、可編輯的只有 price、category、isRecommended
-  const [name] = useState(meal?.name || ''); // disabled，不會改變
+  const [name] = useState(meal?.name || '');
   const [price, setPrice] = useState(String(meal?.price || ''));
   const getCategoryValue = (cats: string[]) => {
     if (cats.includes('主食')) return 0;
@@ -58,26 +60,29 @@ const ModifyMealPage: React.FC = () => {
     meal?.category?.includes('推薦') || false
   );
 
-  // 3. 判斷表單是否有效：名稱不用檢查（固定），只要 price 不空、category 不為 null
   const isFormValid = price.trim() !== '' && category !== null;
 
-  // 4. 處理檔案選擇：先把 File 存起來，預覽用
+  const updateMealMutation = useUpdateMeal(meal!.id, shopId);
+  const deleteMealMutation = useDeleteMeal();
+
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setImageFile(file);
+
+      const previewUrl = URL.createObjectURL(file);
+      setCurrentSrc(previewUrl);
     }
   };
 
-  // 5. 按下「保存變更」時的流程：先上傳圖片（若有新圖），拿到 pictureUrl 再送給 updateMeal
   const handleUpdate = async () => {
     if (!isFormValid || !meal) return;
 
-    let pictureUrl = meal.imageUrl || ''; // 預設使用原本的 imageUrl
+    let finalPictureUrl = meal.imageUrl || ''; // 初始仍是旧的 imageUrl 或空串
 
-    // 如果有新選的圖片，就先上傳到 S3，並更新 pictureUrl
     if (imageFile) {
       try {
-        pictureUrl = await uploadImageToS3(imageFile);
+        finalPictureUrl = await uploadImageToS3(imageFile);
       } catch {
         alert('圖片上傳失敗，請重新再試一次');
         return;
@@ -86,12 +91,12 @@ const ModifyMealPage: React.FC = () => {
 
     updateMealMutation.mutate(
       {
-        name: meal.name, 
+        name: meal.name,
         price: Number(price),
         type: category,
         recommand: isRecommended,
-        picture: pictureUrl,
-        shop: meal.shop,  
+        picture: finalPictureUrl,
+        shop: meal.shop,
       },
       {
         onSuccess: () => {
@@ -105,7 +110,7 @@ const ModifyMealPage: React.FC = () => {
     );
   };
 
-  // 6. 刪除餐點
+
   const handleDelete = () => {
     if (!meal) return;
     if (window.confirm('確定要刪除這個餐點嗎？')) {
@@ -121,14 +126,9 @@ const ModifyMealPage: React.FC = () => {
     }
   };
 
-  // 7. 判斷是否有變更：只看 price、category、isRecommended 或 user 選了新圖
   const hasChanges =
     price !== String(meal?.price) ||
-    category !== (meal?.category?.[0] === '主食'
-      ? 0
-      : meal?.category?.[0] === '副餐'
-      ? 1
-      : 2) ||
+    category !== getCategoryValue(meal?.category || []) ||
     isRecommended !== meal?.category?.includes('推薦') ||
     imageFile !== null;
 
@@ -137,18 +137,10 @@ const ModifyMealPage: React.FC = () => {
       <BackHeader description="修改資訊" />
       <div className="modify-meal-page">
         <div className="content">
-          {/* 圖片上傳區 */}
           <div className="upload-section horizontal">
             <div className="image-preview-wrapper">
               <div className="image-preview">
-              {imageFile ? (
-                <img
-                  src={URL.createObjectURL(imageFile)}
-                  alt="preview"
-                />
-              ) : (
-                <div className="image-placeholder"></div>
-              )}
+                <img src={currentSrc} alt="Meal Preview" />
               </div>
               <label htmlFor="image-upload">
                 <input
@@ -187,14 +179,12 @@ const ModifyMealPage: React.FC = () => {
             </div>
 
             <div className="meal-info">
-              {/* 名稱一律顯示為 meal.name，不可改 */}
               <div className="meal-name">{meal?.name}</div>
               <br />
               <div className="meal-price">${meal?.price}</div>
             </div>
           </div>
 
-          {/* 文字欄位：商品名稱禁用、商品售價可編輯 */}
           <div className="text-fields">
             <TextField
               fullWidth
@@ -202,7 +192,7 @@ const ModifyMealPage: React.FC = () => {
               variant="outlined"
               value={name}
               className="text-field"
-              disabled // 無法編輯
+              disabled
             />
 
             <TextField
@@ -216,7 +206,6 @@ const ModifyMealPage: React.FC = () => {
             />
           </div>
 
-          {/* 推薦 & 分類 Toggle */}
           <div className="section">
             <div className="toggle-buttons">
               <ToggleButton
@@ -250,7 +239,6 @@ const ModifyMealPage: React.FC = () => {
             </div>
           </div>
 
-          {/* 底部按鈕：刪除 & 保存變更 */}
           <div className="modify-button-wrapper two-buttons">
             <button className="delete-button" onClick={handleDelete}>
               刪除餐點
