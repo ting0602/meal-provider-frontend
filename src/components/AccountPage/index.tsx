@@ -64,7 +64,7 @@ const AccountPage = () => {
 
   const avatarIndex = user.head_sticker ?? 0;
   const employeeId = user.employeeId ?? '';
-  const pay_status = 'unpaid';
+  const pay_status = true;
 
 
   const weeklySpending = weeklySpendingData.map((amount, i) => {
@@ -150,7 +150,7 @@ const AccountPage = () => {
           </div>
 
           <div className={`info-card ${pay_status ? 'paid' : 'unpaid'}`}>
-            <div>{lastMonthNum}月賒帳金額</div>
+            <div>{lastMonthNum} 月賒帳金額</div>
             <div className="amount">
               ${lastMonthTotal}
               <span className={`status ${pay_status ? 'paid' : 'unpaid'}`}>
