@@ -1,4 +1,13 @@
-# NYCU 2025 Cloud Native Development and Best Practice - Meal Provider
+# Meal Provider
+**NYCU 2025 - Cloud Native Development and Best Practice**
+
+## Flow Diagrams
+### Report: [MealProvider](docs/MealProvider_Group21.pdf)
+![Flow 0](docs/flow-0.png)  
+![Flow 1](docs/flow-1.png)  
+![Flow 2](docs/flow-2.png)  
+![Flow 3](docs/flow-3.png)  
+
 
 ## Getting Started with Create React App
 
@@ -15,6 +24,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.  
 You may also see any lint errors in the console.
+
+**Remember to download backend code in here: [meal-provider-backend](https://github.com/ting0602/meal-provider-backend)**
 
 ### `npm run test`
 
